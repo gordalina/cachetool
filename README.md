@@ -1,6 +1,15 @@
 CacheTool - Manage your caches through the CLI
 ==============================================
 
+CacheTool allows you to work with `apc` and `opcache` through the cli.
+It will connect to a fastcgi server (like php-fpm) and operate it's cache.
+
+Why is this useful?
+- Maybe you want to clear the bytecode cache without reloading php-fpm or using a web endpoint
+- Maybe you want to have a cron which deals with cache invalidation
+- Maybe you want to see some statistics right from the console
+- And many more...
+
 Installation
 ------------
 

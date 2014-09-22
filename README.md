@@ -5,7 +5,8 @@ Installation
 ------------
 
 ```sh
-$ curl -s http://gordalina.github.com/cachetool/cachetool.phar
+$ curl -sO http://gordalina.github.io/cachetool/downloads/cachetool.phar
+$ chmod +x cachetool.phar
 ```
 
 Usage (as an application)

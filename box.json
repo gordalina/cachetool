@@ -1,0 +1,16 @@
+{
+    "chmod": "0755",
+    "directories": ["src"],
+    "files": ["LICENSE"],
+    "finder": [
+        {
+            "name": "*.php",
+            "exclude": ["Tests"],
+            "in": "vendor"
+        }
+    ],
+    "git-version": "package_version",
+    "main": "bin/cachetool",
+    "output": "cachetool.phar",
+    "stub": true
+}

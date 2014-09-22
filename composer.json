@@ -1,0 +1,20 @@
+{
+    "name": "gordalina/cachetool",
+    "description": "Manage cache through cli",
+    "require": {
+        "symfony/console": "~2.5",
+        "symfony/yaml": "~2.5",
+        "symfony/process": "~2.5",
+        "ebernhardson/fastcgi": "dev-master"
+    },
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "gordalina",
+            "email": "samuel.gordalina@gmail.com"
+        }
+    ],
+    "autoload": {
+        "psr-0": { "CacheTool": "src/" }
+    }
+}

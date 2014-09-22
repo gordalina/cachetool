@@ -2,12 +2,10 @@
     "name": "gordalina/cachetool",
     "description": "Manage your caches through the cli",
     "require": {
-        "symfony/console": "~2.5",
-        "symfony/yaml": "~2.5",
-        "symfony/process": "~2.5",
+        "symfony/console": ">=2.3",
+        "symfony/yaml": ">=2.0",
         "ebernhardson/fastcgi": "dev-master"
     },
-    "minimum-stability": "stable",
     "license": "MIT",
     "authors": [
         {

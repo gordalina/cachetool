@@ -22,7 +22,9 @@ box build
 git checkout gh-pages
 
 cp cachetool.phar downloads/cachetool-${TAG}.phar
+cp cachetool.phar downloads/cachetool.phar
 git add downloads/cachetool-${TAG}.phar
+git add downloads/cachetool.phar
 
 SHA1=$(openssl sha1 cachetool.phar)
 

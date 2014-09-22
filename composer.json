@@ -1,6 +1,6 @@
 {
     "name": "gordalina/cachetool",
-    "description": "Manage cache through cli",
+    "description": "Manage your caches through the cli",
     "require": {
         "symfony/console": "~2.5",
         "symfony/yaml": "~2.5",

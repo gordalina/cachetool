@@ -3,11 +3,11 @@
     "description": "Manage your caches through the cli",
     "keywords": ["cache", "opcache", "apc"],
     "require": {
-        "symfony/console": ">=2.3",
-        "symfony/dependency-injection": ">=2.3",
-        "symfony/yaml": ">=2.1",
-        "ebernhardson/fastcgi": "dev-master",
-        "symfony/process": ">=2.1"
+        "symfony/console": "~2.3",
+        "symfony/dependency-injection": "~2.3",
+        "symfony/process": "~2.1",
+        "symfony/yaml": "~2.1",
+        "ebernhardson/fastcgi": "dev-master"
     },
     "license": "MIT",
     "authors": [

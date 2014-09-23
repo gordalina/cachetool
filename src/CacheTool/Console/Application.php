@@ -41,6 +41,8 @@ class Application extends BaseApplication implements ContainerAwareInterface
     protected function getDefaultCommands()
     {
         $commands = parent::getDefaultCommands();
+        $commands[] = new Command\SelfUpdateCommand();
+
         $commands[] = new Command\ApcBinDumpCommand();
         $commands[] = new Command\ApcBinLoadCommand();
         $commands[] = new Command\ApcCacheClearCommand();

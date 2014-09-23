@@ -26,7 +26,11 @@ cp cachetool.phar downloads/cachetool.phar
 git add downloads/cachetool-${TAG}.phar
 git add downloads/cachetool.phar
 
-SHA1=$(openssl sha1 cachetool.phar)
+if [ "$(uname)" == "Darwin" ]; then
+    SHA1=$(shasum cachetool.phar | awk '{print $1}')
+elif [ "$(expr substr $(uname -s) 1 5)" == "Linux" ]; then
+    SHA1=$(openssl sha1 cachetool.phar)
+fi
 
 JSON='name:"cachetool.phar"'
 JSON="${JSON},sha1:\"${SHA1}\""

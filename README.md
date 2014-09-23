@@ -35,7 +35,7 @@ $ php cachetool.phar opcache:status --fcgi=/var/run/php5-fpm.sock
 
 3. You have some useful commands that you can you
 
-```
+```sh
 apc
   apc:bin:dump             Get a binary dump of files and user variables
   apc:bin:load             Load a binary dump into the APC file and user variables
@@ -67,14 +67,14 @@ An example of what this file might look like is:
 
 1. Will connect to fastcgi at 127.0.0.1:9000
 
-```yaml
-adapter: fastcig
+```yml
+adapter: fastcgi
 fastcgi: 127.0.0.1:9000
 ```
 
 2. Will connect to cli (disregarding fastcgi configuration)
 
-```yaml
+```yml
 adapter: cli
 fastcgi: /var/run/php5-fpm.sock
 ```
@@ -108,8 +108,8 @@ $cache->opcache_reset();
 Proxies
 -------
 
-CacheTool depends on [Proxies]() to provide functionality, by default when creating a CacheTool instance from the factory
-all proxies are enabled [ApcProxy]() [OpcacheProxy]() and [PhpProxy](), you can customize it or extend to your will like the example below:
+CacheTool depends on `Proxies` to provide functionality, by default when creating a CacheTool instance from the factory
+all proxies are enabled [`ApcProxy`](https://github.com/gordalina/cachetool/blob/master/src/CacheTool/Proxy/ApcProxy.php), [`OpcacheProxy`](https://github.com/gordalina/cachetool/blob/master/src/CacheTool/Proxy/OpcacheProxy.php) and [`PhpProxy`](https://github.com/gordalina/cachetool/blob/master/src/CacheTool/Proxy/PhpProxy.php), you can customize it or extend to your will like the example below:
 
 ```php
 use CacheTool\Adapter\FastCGI;

@@ -110,7 +110,7 @@ class Application extends BaseApplication implements ContainerAwareInterface
         }
 
         $container = new Container();
-        $container->set('cache_tool', CacheTool::factory($adapter));
+        $container->set('cachetool', CacheTool::factory($adapter));
 
         return $this->container = $container;
     }

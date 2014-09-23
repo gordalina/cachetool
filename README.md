@@ -1,5 +1,5 @@
-CacheTool - Manage your caches through the CLI
-==============================================
+CacheTool - Manage cache in the CLI
+===================================
 
 CacheTool allows you to work with `apc` and `opcache` through the cli.
 It will connect to a fastcgi server (like php-fpm) and operate it's cache.

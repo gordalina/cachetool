@@ -19,11 +19,6 @@ class Code
         $this->code[] = $statement;
     }
 
-    public function execute()
-    {
-        return eval($this->getCode());
-    }
-
     public function getCode()
     {
         return implode(PHP_EOL, $this->code);

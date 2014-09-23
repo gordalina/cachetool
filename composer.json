@@ -1,6 +1,7 @@
 {
     "name": "gordalina/cachetool",
     "description": "Manage your caches through the cli",
+    "keywords": ["cache", "opcache", "apc"],
     "require": {
         "symfony/console": ">=2.3",
         "symfony/dependency-injection": ">=2.3",

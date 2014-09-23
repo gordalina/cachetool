@@ -1,5 +1,14 @@
 <?php
 
+/*
+ * This file is part of CacheTool.
+ *
+ * (c) Samuel Gordalina <samuel.gordalina@gmail.com>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
 namespace CacheTool;
 
 class Code
@@ -31,12 +40,39 @@ class Code
 
     protected function getCodeExecutable()
     {
-        return <<<EOF
-function cachetool_exec() {
-    {$this->getCode()}
+        $template =<<<'EOF'
+$errors = array();
+
+function cachetool_error_handler($errno, $errstr, $errfile, $errline) {
+    global $errors;
+
+    $errors[] = array(
+        'no' => $errno,
+        'str' => $errstr,
+    );
 }
 
-echo serialize(cachetool_exec());
+function cachetool_exec() {
+    global $errors;
+
+    try {
+        %s
+    } catch (Exception $e) {
+        $errors[] = array(
+            'no' => $e->getCode(),
+            'str' => $e->getMessage(),
+        );
+    }
+}
+
+set_error_handler('cachetool_error_handler');
+
+echo serialize(array(
+    'result' => cachetool_exec(),
+    'errors' => $errors
+));
 EOF;
+
+        return sprintf($template, $this->getCode());
     }
 }

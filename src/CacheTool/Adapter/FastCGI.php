@@ -1,15 +1,30 @@
 <?php
 
+/*
+ * This file is part of CacheTool.
+ *
+ * (c) Samuel Gordalina <samuel.gordalina@gmail.com>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
 namespace CacheTool\Adapter;
 
 use CacheTool\Code;
 use EBernhardson\FastCGI\Client;
 use EBernhardson\FastCGI\CommunicationException;
 
-class FastCGI implements AdapterInterface
+class FastCGI extends AbstractAdapter
 {
+    /**
+     * @var Client
+     */
     protected $client;
 
+    /**
+     * @param string $host 127.0.0.1:9000 or /var/run/php5-fpm.sock
+     */
     public function __construct($host)
     {
         if (false !== strpos($host, ':')) {
@@ -21,22 +36,23 @@ class FastCGI implements AdapterInterface
         }
     }
 
-    public function run(Code $code)
+    /**
+     * {@inheritdoc}
+     */
+    protected function doRun(Code $code)
     {
         $response = $this->request($code);
 
         if ($response['statusCode'] !== 200) {
             throw new \RuntimeException($response['stderr']);
         } else {
-            return unserialize($response['body']);
+            return $response['body'];
         }
     }
 
     protected function request(Code $code)
     {
-        $file = sprintf("%s/cachetool-%s.php", sys_get_temp_dir(), uniqid());
-        touch($file);
-        chmod($file, 0666);
+        $file = $this->createTemporaryFile();
 
         try {
             $code->writeTo($file);

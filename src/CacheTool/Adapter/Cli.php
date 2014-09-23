@@ -1,19 +1,27 @@
 <?php
 
+/*
+ * This file is part of CacheTool.
+ *
+ * (c) Samuel Gordalina <samuel.gordalina@gmail.com>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
 namespace CacheTool\Adapter;
 
 use CacheTool\Code;
 use Symfony\Component\Process\Process;
 
-class Cli implements AdapterInterface
+class Cli extends AbstractAdapter
 {
-    public function run(Code $code)
+    /**
+     * {@inheritdoc}
+     */
+    protected function doRun(Code $code)
     {
-        $file = sprintf("%s/cachetool-%s.php", sys_get_temp_dir(), uniqid());
-
-        touch($file);
-        chmod($file, 0666);
-
+        $file = $this->createTemporaryFile();
         $code->writeTo($file);
 
         $process = new Process("php $file");
@@ -21,6 +29,6 @@ class Cli implements AdapterInterface
 
         @unlink($file);
 
-        return unserialize($process->getOutput());
+        return $process->getOutput();
     }
 }

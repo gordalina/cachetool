@@ -1,9 +1,23 @@
 <?php
 
+/*
+ * This file is part of CacheTool.
+ *
+ * (c) Samuel Gordalina <samuel.gordalina@gmail.com>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
 namespace CacheTool\Util;
 
 class Formatter
 {
+    /**
+     * @param  integer  $bytes
+     * @param  integer $precision
+     * @return string
+     */
     public static function bytes($bytes, $precision = 2)
     {
         $units = array('b', 'KiB', 'MiB', 'GiB', 'TiB');
@@ -19,6 +33,11 @@ class Formatter
         return round($bytes, $precision) . ' ' . $units[$pow];
     }
 
+    /**
+     * @param  mixed  $date
+     * @param  string $format
+     * @return string
+     */
     public static function date($date, $format = null)
     {
         if (false === $date instanceof \DateTime) {

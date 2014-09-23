@@ -1,5 +1,14 @@
 <?php
 
+/*
+ * This file is part of CacheTool.
+ *
+ * (c) Samuel Gordalina <samuel.gordalina@gmail.com>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
 namespace CacheTool\Command;
 
 use Symfony\Component\Console\Input\InputArgument;
@@ -9,7 +18,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 class ApcKeyDeleteCommand extends AbstractCommand
 {
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     protected function configure()
     {
@@ -21,7 +30,7 @@ class ApcKeyDeleteCommand extends AbstractCommand
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {

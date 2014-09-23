@@ -22,7 +22,7 @@ class CacheTool
     /**
      * @var array
      */
-    protected $functions = null;
+    protected $functions = array();
 
     /**
      * @param  AdapterInterface $adapter
@@ -84,8 +84,6 @@ class CacheTool
     protected function getFunction($name)
     {
         if (empty($this->functions)) {
-            $this->functions = array();
-
             foreach ($this->proxies as $proxy) {
                 // lazily set adapter
                 $proxy->setAdapter($this->adapter);

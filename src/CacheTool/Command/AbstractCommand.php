@@ -10,7 +10,7 @@ abstract class AbstractCommand extends Command
 {
     protected function getCacheTool()
     {
-        return $this->getApplication()->getCacheTool();
+        return $this->getApplication()->getContainer()->get('cache_tool');
     }
 
     protected function ensureExtensionLoaded($extension)

@@ -11,11 +11,14 @@ use Symfony\Component\Console\Application as BaseApplication;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
+use Symfony\Component\DependencyInjection\ContainerAwareInterface;
+use Symfony\Component\DependencyInjection\Container;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\Yaml\Yaml;
 
-class Application extends BaseApplication
+class Application extends BaseApplication implements ContainerAwareInterface
 {
-    protected $cacheTool;
+    protected $container;
     protected $input;
 
     public function __construct()
@@ -60,9 +63,6 @@ class Application extends BaseApplication
         return $definition;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public function doRun(InputInterface $input, OutputInterface $output)
     {
         $this->input = $input;
@@ -70,12 +70,12 @@ class Application extends BaseApplication
     }
 
     /**
-     * @return CacheTool
+     * {@inheritDoc}
      */
-    public function getCacheTool()
+    public function getContainer()
     {
-        if ($this->cacheTool) {
-            return $this->cacheTool;
+        if ($this->container) {
+            return $this->container;
         }
 
         $config = $this->loadConfiguration();
@@ -100,9 +100,10 @@ class Application extends BaseApplication
                 throw new \RuntimeException("Adapter `{$config['adapter']}` is not one of cli or fastcgi");
         }
 
-        $this->cacheTool = CacheTool::factory($adapter);
+        $container = new Container();
+        $container->set('cache_tool', CacheTool::factory($adapter));
 
-        return $this->cacheTool;
+        return $this->container = $container;
     }
 
     /**
@@ -123,5 +124,13 @@ class Application extends BaseApplication
             $previous = $path;
             $path .= '/../';
         }
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setContainer(ContainerInterface $container = null)
+    {
+        $this->container = $container;
     }
 }

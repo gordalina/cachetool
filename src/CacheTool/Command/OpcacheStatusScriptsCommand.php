@@ -36,8 +36,12 @@ class OpcacheStatusScriptsCommand extends AbstractCommand
         $this->ensureExtensionLoaded('Zend OPcache');
 
         $info = $this->getCacheTool()->opcache_get_status(true);
-        $scripts = $info['scripts'];
 
+        if ($info === false) {
+            throw new \RuntimeException('Opcache returned false, is opcache enabled?');
+        }
+
+        $scripts = $info['scripts'];
 
         $table = $this->getHelper('table');
         $table

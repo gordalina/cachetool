@@ -36,6 +36,9 @@ class OpcacheResetCommand extends AbstractCommand
 
         $success = $this->getCacheTool()->opcache_reset();
 
-        return $success ? 0 : 1;
+        if (!$success) {
+            $output->writeln('<error>Opcache returned false, is opcache enabled?</error>');
+            return 1;
+        }
     }
 }

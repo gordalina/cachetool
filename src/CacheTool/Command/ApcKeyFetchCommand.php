@@ -38,10 +38,10 @@ class ApcKeyFetchCommand extends AbstractCommand
 
         $key = $input->getArgument('key');
 
-        $success = false;
-        $result = $this->getCacheTool()->apc_fetch($key, $success);
+        $success = new \stdClass();
+        $value = $this->getCacheTool()->apc_fetch($key, $success);
 
-        if ($success) {
+        if ($success->success) {
             $output->writeln("<comment>APC key <info>{$key}</info> has value=<info>{$value}</info></comment>");
         } else {
             $output->writeln("<comment>APC key <info>{$key}</info> does not exist.</comment>");

@@ -290,12 +290,12 @@ class ApcProxy implements ProxyInterface
      * Decrease a stored number
      *
      * @since  3.1.1
-     * @param  string  $key     The key of the value being decreased.
-     * @param  int     $step    The step, or value to decrease.
-     * @param  boolean $success Optionally pass the success or fail boolean value to this referenced variable.
+     * @param  string    $key   The key of the value being decreased.
+     * @param  int       $step  The step, or value to decrease.
+     * @param  \stdClass $ref   success is set to TRUE in success and FALSE in failure
      * @return mixed            Returns the current value of key's value on success, or FALSE on failure
      */
-    public function apc_dec($key, $step = 1, &$success = false)
+    public function apc_dec($key, $step = 1, $ref = false)
     {
         $code = new Code();
         $code->addStatement('$success = false;');
@@ -308,6 +308,10 @@ class ApcProxy implements ProxyInterface
         $code->addStatement('return array($result, $success);');
 
         list($result, $success) = $this->adapter->run($code);
+
+        if (is_object($ref)) {
+            $ref->success = $success;
+        }
 
         return $result;
     }
@@ -402,11 +406,11 @@ class ApcProxy implements ProxyInterface
      * Fetch a stored variable from the cache
      *
      * @since  3.0.0
-     * @param  mixed   $key     The key used to store the value (with apc_store()). If an array is passed then each element is fetched and returned.
-     * @param  boolean $success Set to TRUE in success and FALSE in failure
-     * @return mixed            The stored variable or array of variables on success; FALSE on failure
+     * @param  mixed     $key The key used to store the value (with apc_store()). If an array is passed then each element is fetched and returned.
+     * @param  \stdClass $ref success is set to TRUE in success and FALSE in failure
+     * @return mixed          The stored variable or array of variables on success; FALSE on failure
      */
-    public function apc_fetch($key, &$success = false)
+    public function apc_fetch($key, $ref = false)
     {
         $code = new Code();
         $code->addStatement('$success = false;');
@@ -415,6 +419,10 @@ class ApcProxy implements ProxyInterface
 
         list($var, $success) = $this->adapter->run($code);
 
+        if (is_object($ref)) {
+            $ref->success = $success;
+        }
+
         return $var;
     }
 
@@ -422,12 +430,12 @@ class ApcProxy implements ProxyInterface
      * Increase a stored number
      *
      * @since  3.1.1
-     * @param  string  $key     The key of the value being increased.
-     * @param  int     $step    The step, or value to increased.
-     * @param  boolean $success Optionally pass the success or fail boolean value to this referenced variable.
-     * @return mixed            Returns the current value of key's value on success, or FALSE on failure
+     * @param  string    $key  The key of the value being increased.
+     * @param  int       $step The step, or value to increased.
+     * @param  \stdClass $ref  success is set to TRUE in success and FALSE in failure
+     * @return mixed           Returns the current value of key's value on success, or FALSE on failure
      */
-    public function apc_inc($key, $step = 1, &$success = false)
+    public function apc_inc($key, $step = 1, $ref = false)
     {
         $code = new Code();
         $code->addStatement('$success = false;');
@@ -440,6 +448,10 @@ class ApcProxy implements ProxyInterface
         $code->addStatement('return array($result, $success);');
 
         list($result, $success) = $this->adapter->run($code);
+
+        if (is_object($ref)) {
+            $ref->success = $success;
+        }
 
         return $result;
     }

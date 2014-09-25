@@ -25,7 +25,7 @@ class ApcBinDumpCommand extends AbstractCommand
         $this
             ->setName('apc:bin:dump')
             ->setDescription('Get a binary dump of files and user variables')
-            ->addOption('file', InputArgument::REQUIRED)
+            ->addArgument('file', InputArgument::REQUIRED)
             ->setHelp('');
     }
 

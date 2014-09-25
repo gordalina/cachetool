@@ -37,7 +37,7 @@ class ApcBinDumpCommand extends AbstractCommand
         $this->ensureExtensionLoaded('apc');
 
         $file = $input->getArgument('file');
-        $result = $this->getCacheTool()->apc_bin_dumpfile(null, null, $file);
+        $result = $this->getCacheTool()->apc_bin_dumpfile(array(), array(), $file);
 
         if ($result === false) {
             throw new \InvalidArgumentException(sprintf("Could not write to file `%s` or apc is disabled", $file));

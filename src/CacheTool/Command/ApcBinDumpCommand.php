@@ -25,7 +25,7 @@ class ApcBinDumpCommand extends AbstractCommand
         $this
             ->setName('apc:bin:dump')
             ->setDescription('Get a binary dump of files and user variables')
-            ->addOption('--file', '-f', InputOption::VALUE_OPTIONAL)
+            ->addOption('--file', '-f', InputOption::VALUE_REQUIRED)
             ->setHelp('');
     }
 
@@ -39,10 +39,10 @@ class ApcBinDumpCommand extends AbstractCommand
         $file = $input->getOption('file');
         $dump = $this->getCacheTool()->apc_bin_dump(null, null);
 
-        if ($file) {
-            file_put_contents($file, $dump);
-        } else {
-            echo $dump;
+        if (!is_file($file) || !is_writeable($file)) {
+            throw new \InvalidArgumentException(sprintf("Could not write to file: %s", $file));
         }
+
+        file_put_contents($file, $dump);
     }
 }

@@ -31,7 +31,7 @@ abstract class AbstractAdapter
         $result = @unserialize($this->doRun($code));
 
         if (!is_array($result)) {
-            throw new \RuntimeException('Could not unserialize output');
+            throw new \RuntimeException('Could not unserialize data from adapter.');
         }
 
         if (empty($result['errors'])) {

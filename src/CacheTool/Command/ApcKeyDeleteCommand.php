@@ -37,7 +37,7 @@ class ApcKeyDeleteCommand extends AbstractCommand
         $this->ensureExtensionLoaded('apc');
 
         $key = $input->getArgument('key');
-        $success = $this->getCacheTool()->apc_delete('{$key}');
+        $success = $this->getCacheTool()->apc_delete($key);
 
         if ($output->isVerbose()) {
             if ($success) {

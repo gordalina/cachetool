@@ -38,7 +38,7 @@ class OpcacheStatusScriptsCommand extends AbstractCommand
         $info = $this->getCacheTool()->opcache_get_status(true);
 
         if ($info === false) {
-            throw new \RuntimeException('Operation failed, is opcache enabled?');
+            throw new \RuntimeException('opcache_get_status(): No Opcache status info available.  Perhaps Opcache is disabled via opcache.enable or opcache.enable_cli?');
         }
 
         $scripts = $info['scripts'];

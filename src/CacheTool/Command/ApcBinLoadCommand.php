@@ -11,7 +11,6 @@
 
 namespace CacheTool\Command;
 
-use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -26,7 +25,7 @@ class ApcBinLoadCommand extends AbstractCommand
         $this
             ->setName('apc:bin:load')
             ->setDescription('Load a binary dump into the APC file and user variables')
-            ->addArgument('file', InputArgument::REQUIRED, "File to read binary data from")
+            ->addOption('--file', '-f', InputOption::VALUE_OPTIONAL, "File to read binary data from")
             ->addOption('--no-verification', '-a', InputOption::VALUE_NONE, "Don't perform MD5 & CRC32 verification before loading data")
             ->setHelp('');
     }
@@ -38,24 +37,32 @@ class ApcBinLoadCommand extends AbstractCommand
     {
         $this->ensureExtensionLoaded('apc');
 
-        $file = $input->getArgument('file');
+        $file = $input->getOption('file');
         $noVerification = $input->getOption('no-verification');
 
-        if (!is_file($file) || !is_readable($file)) {
-            throw new \InvalidArgumentException(sprintf("Could not read from file: %s", $file));
+        if (!$file) {
+            $file = 'php://stdin';
+        } else {
+            if (!is_file($file) || !is_readable($file)) {
+                throw new \InvalidArgumentException(sprintf("Could not read from file: %s", $file));
+            }
         }
+
+        $dump = file_get_contents($file);
 
         if (!$noVerification) {
             $flags = APC_BIN_VERIFY_MD5 | APC_BIN_VERIFY_CRC32;
         }
 
-        $success = $this->getCacheTool()->apc_bin_loadfile($file, null, $flags);
+        $success = $this->getCacheTool()->apc_bin_load($dump, $flags);
 
-        if ($success && $output->isVerbose()) {
-            $output->writeln("<comment>Load was successful</comment>");
+        if ($output->isVerbose()) {
+            if ($success) {
+                $output->writeln("<comment>Load was successful</comment>");
+            } else {
+                $output->writeln("<comment>Load was unsuccessful</comment>");
+            }
         }
-
-        $output->writeln("<error>Load was unsuccessful</error>");
 
         return $success ? 0 : 1;
     }

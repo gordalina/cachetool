@@ -11,7 +11,7 @@
 
 namespace CacheTool\Command;
 
-use Symfony\Component\Console\Input\InputOption;
+use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
@@ -25,7 +25,7 @@ class ApcBinDumpCommand extends AbstractCommand
         $this
             ->setName('apc:bin:dump')
             ->setDescription('Get a binary dump of files and user variables')
-            ->addOption('--file', '-f', InputOption::VALUE_REQUIRED)
+            ->addOption('file', InputArgument::REQUIRED)
             ->setHelp('');
     }
 
@@ -36,13 +36,12 @@ class ApcBinDumpCommand extends AbstractCommand
     {
         $this->ensureExtensionLoaded('apc');
 
-        $file = $input->getOption('file');
-        $dump = $this->getCacheTool()->apc_bin_dump(null, null);
+        $file = $input->getArgument('file');
 
         if (!is_file($file) || !is_writeable($file)) {
             throw new \InvalidArgumentException(sprintf("Could not write to file: %s", $file));
         }
 
-        file_put_contents($file, $dump);
+        $this->getCacheTool()->apc_bin_dumpfile(null, null, $file);
     }
 }

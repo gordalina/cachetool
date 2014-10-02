@@ -51,6 +51,11 @@ It will connect to a fastcgi server (like php-fpm) and operate it's cache.</p>
 <a name="usage-as-an-application" class="anchor" href="#usage-as-an-application"><span class="octicon octicon-link"></span></a>Usage (as an application)</h2>
 
 <ol>
+<li>You can connect to a automatically guessed fastcgi server (if <code>/var/run/php5-fpm.sock</code> is a file or <code>127.0.0.1:9000</code>)</li>
+</ol><div class="highlight highlight-sh"><pre><span class="nv">$ </span>php cachetool.phar apc:cache:info --fcgi
+</pre></div>
+
+<ol>
 <li>You can connect to a fastcgi server through ip</li>
 </ol><div class="highlight highlight-sh"><pre><span class="nv">$ </span>php cachetool.phar apc:cache:info --fcgi<span class="o">=</span>127.0.0.1:9000
 </pre></div>
@@ -58,6 +63,11 @@ It will connect to a fastcgi server (like php-fpm) and operate it's cache.</p>
 <ol>
 <li>Or by socket</li>
 </ol><div class="highlight highlight-sh"><pre><span class="nv">$ </span>php cachetool.phar opcache:status --fcgi<span class="o">=</span>/var/run/php5-fpm.sock
+</pre></div>
+
+<ol>
+<li>Or to the cli</li>
+</ol><div class="highlight highlight-sh"><pre><span class="nv">$ </span>php cachetool.phar opcache:status --cli
 </pre></div>
 
 <ol>

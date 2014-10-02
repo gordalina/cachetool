@@ -29,7 +29,7 @@ class FastCGI extends AbstractAdapter
     {
         // try to guess where it is
         if ($host === null) {
-            if (is_file('/var/run/php5-fpm.sock')) {
+            if (file_exists('/var/run/php5-fpm.sock')) {
                 $host = '/var/run/php5-fpm.sock';
             } else {
                 $host = '127.0.0.1:9000';

@@ -25,8 +25,17 @@ class FastCGI extends AbstractAdapter
     /**
      * @param string $host 127.0.0.1:9000 or /var/run/php5-fpm.sock
      */
-    public function __construct($host)
+    public function __construct($host = null)
     {
+        // try to guess where it is
+        if ($host === null) {
+            if (is_file('/var/run/php5-fpm.sock')) {
+                $host = '/var/run/php5-fpm.sock';
+            } else {
+                $host = '127.0.0.1:9000';
+            }
+        }
+
         if (false !== strpos($host, ':')) {
             list($host, $port) = explode(':', $host);
             $this->client = new Client($host, $port);

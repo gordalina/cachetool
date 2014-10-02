@@ -21,19 +21,31 @@ $ chmod +x cachetool.phar
 Usage (as an application)
 -------------------------
 
-1. You can connect to a fastcgi server through ip
+1. You can connect to a automatically guessed fastcgi server (if `/var/run/php5-fpm.sock` is a file or `127.0.0.1:9000`)
+
+```sh
+$ php cachetool.phar apc:cache:info --fcgi
+```
+
+2. You can connect to a fastcgi server through ip
 
 ```sh
 $ php cachetool.phar apc:cache:info --fcgi=127.0.0.1:9000
 ```
 
-2. Or by socket
+3. Or by socket
 
 ```sh
 $ php cachetool.phar opcache:status --fcgi=/var/run/php5-fpm.sock
 ```
 
-3. You have some useful commands that you can you
+4. Or to the cli
+
+```sh
+$ php cachetool.phar opcache:status --cli
+```
+
+5. You have some useful commands that you can you
 
 ```sh
 apc

@@ -68,7 +68,7 @@ class Application extends BaseApplication implements ContainerAwareInterface
     protected function getDefaultInputDefinition()
     {
         $definition = parent::getDefaultInputDefinition();
-        $definition->addOption(new InputOption('--fcgi', '-c', InputOption::VALUE_REQUIRED, 'If specified, used as a connection string to FastCGI server.'));
+        $definition->addOption(new InputOption('--fcgi', null, InputOption::VALUE_OPTIONAL, 'If specified, used as a connection string to FastCGI server.'));
         $definition->addOption(new InputOption('--cli', null, InputOption::VALUE_NONE, 'If specified, forces adapter to cli'));
 
         return $definition;
@@ -93,7 +93,7 @@ class Application extends BaseApplication implements ContainerAwareInterface
 
         if ($this->input->getOption('cli')) {
             $config['adapter'] = 'cli';
-        } else if ($this->input->getOption('fcgi')) {
+        } else if ($this->input->hasOption('fcgi')) {
             $config['adapter'] = 'fastcgi';
             $config['fastcgi'] = $this->input->getOption('fcgi');
         }
@@ -135,6 +135,8 @@ class Application extends BaseApplication implements ContainerAwareInterface
             $previous = $path;
             $path .= '/../';
         }
+
+        return array();
     }
 
     /**

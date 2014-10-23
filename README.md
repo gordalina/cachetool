@@ -21,31 +21,31 @@ $ chmod +x cachetool.phar
 Usage (as an application)
 -------------------------
 
-1. You can connect to a automatically guessed fastcgi server (if `/var/run/php5-fpm.sock` is a file or `127.0.0.1:9000`)
+You can connect to a automatically guessed fastcgi server (if `/var/run/php5-fpm.sock` is a file or `127.0.0.1:9000`)
 
 ```sh
 $ php cachetool.phar apc:cache:info --fcgi
 ```
 
-2. You can connect to a fastcgi server through ip
+You can connect to a fastcgi server through ip
 
 ```sh
 $ php cachetool.phar apc:cache:info --fcgi=127.0.0.1:9000
 ```
 
-3. Or by socket
+Or by socket
 
 ```sh
 $ php cachetool.phar opcache:status --fcgi=/var/run/php5-fpm.sock
 ```
 
-4. Or to the cli
+Or to the cli
 
 ```sh
 $ php cachetool.phar opcache:status --cli
 ```
 
-5. You have some useful commands that you can you
+You have some useful commands that you can you
 
 ```sh
 apc
@@ -78,14 +78,14 @@ If the paths above fail it will try to load `/etc/cachetool.yml` configuration f
 
 An example of what this file might look like is:
 
-1. Will connect to fastcgi at 127.0.0.1:9000
+Will connect to fastcgi at 127.0.0.1:9000
 
 ```yml
 adapter: fastcgi
 fastcgi: 127.0.0.1:9000
 ```
 
-2. Will connect to cli (disregarding fastcgi configuration)
+Will connect to cli (disregarding fastcgi configuration)
 
 ```yml
 adapter: cli
@@ -95,13 +95,13 @@ fastcgi: /var/run/php5-fpm.sock
 Usage (as a library)
 --------------------
 
-1. Add it as a dependency
+Add it as a dependency
 
 ```sh
 $ composer require gordalina/cachetool=~1.0
 ```
 
-2. Create instance
+Create instance
 
 ```php
 use CacheTool\Adapter\FastCGI;
@@ -111,7 +111,7 @@ $adapter = new FastCGI('127.0.0.1:9000');
 $cache = CacheTool::factory($adapter);
 ```
 
-3. You can use `apc` and `opcache` functions
+You can use `apc` and `opcache` functions
 
 ```php
 $cache->apc_clear_cache('both');

@@ -46,7 +46,7 @@ class SelfUpdateCommand extends Command
         $update = $manifest->findRecent($currentVersion, true);
 
         if (false === $update instanceof Update) {
-            $output->writeln(sprintf('You are already using the latest version: <info>%s</info>', $update->getVersion()));
+            $output->writeln(sprintf('You are already using the latest version: <info>%s</info>', $currentVersion));
 
             return 0;
         }

@@ -124,16 +124,20 @@ class Application extends BaseApplication implements ContainerAwareInterface
     {
         $previous = null;
         $path = getcwd();
+        $paths = array();
 
         while (($path = realpath($path)) && $path !== $previous) {
-            $file = "{$path}/.cachetool.yml";
-
-            if (is_file($file)) {
-                return new Config(Yaml::parse($file));
-            }
-
+            $paths[] = "{$path}/.cachetool.yml";
             $previous = $path;
             $path .= '/../';
+        }
+
+        $paths[] = '/etc/cachetool.yml';
+
+        foreach ($paths as $path) {
+            if (is_file($path)) {
+                return new Config(Yaml::parse($path));
+            }
         }
 
         return array();

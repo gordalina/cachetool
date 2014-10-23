@@ -74,6 +74,7 @@ call CacheTool withouth `--fcgi` or `--cli` option.
 
 The file must be named `.cachetool.yml`. CacheTool will look for this file on the
 current directory and in any parent directory until it finds one.
+If the paths above fail it will try to load `/etc/cachetool.yml` configuration file.
 
 An example of what this file might look like is:
 

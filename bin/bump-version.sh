@@ -57,6 +57,7 @@ git commit -m "Bump version ${TAG}"
 #
 git checkout master
 
-echo "New version created. Now you should run:"
-echo "git push origin gh-pages"
-echo "git push ${TAG}"
+git push origin gh-pages
+git push --tags
+
+echo "New version created: {$TAG}."

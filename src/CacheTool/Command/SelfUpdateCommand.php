@@ -13,6 +13,7 @@ namespace CacheTool\Command;
 
 use Herrera\Phar\Update\Manager;
 use Herrera\Phar\Update\Manifest;
+use Herrera\Version\Parser;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -38,7 +39,22 @@ class SelfUpdateCommand extends Command
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $manager = new Manager(Manifest::loadFile(self::MANIFEST_FILE));
+        $manifest = Manifest::loadFile(self::MANIFEST_FILE);
+
+        $currentVersion = Parser::toVersion($this->getApplication()->getVersion());
+        $update = $manifest->findRecent($currentVersion, true);
+
+        if (!$update->isNewer($currentVersion)) {
+            $output->writeln(sprintf('You are already using the latest version: <info>%s</info>', $update->getVersion()));
+
+            return 0;
+        }
+
+        $output->writeln(sprintf('Updating to version <info>%s</info>', $update->getVersion()));
+
+        $manager = new Manager($manifest);
         $manager->update($this->getApplication()->getVersion(), true);
+
+        $output->writeln(sprintf('SHA1 verified <info>%s</info>', $update->getSha1()));
     }
 }

@@ -60,4 +60,4 @@ git checkout master
 git push origin gh-pages
 git push --tags
 
-echo "New version created: {$TAG}."
+echo "New version created: ${TAG}."

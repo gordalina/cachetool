@@ -13,6 +13,7 @@ namespace CacheTool\Command;
 
 use Herrera\Phar\Update\Manager;
 use Herrera\Phar\Update\Manifest;
+use Herrera\Phar\Update\Update;
 use Herrera\Version\Parser;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
@@ -44,7 +45,7 @@ class SelfUpdateCommand extends Command
         $currentVersion = Parser::toVersion($this->getApplication()->getVersion());
         $update = $manifest->findRecent($currentVersion, true);
 
-        if (!$update->isNewer($currentVersion)) {
+        if (false === $update instanceof Update) {
             $output->writeln(sprintf('You are already using the latest version: <info>%s</info>', $update->getVersion()));
 
             return 0;

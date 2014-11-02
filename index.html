@@ -40,7 +40,9 @@ It will connect to a fastcgi server (like php-fpm) and operate it's cache.</p>
 <li>Maybe you want to have a cron which deals with cache invalidation</li>
 <li>Maybe you want to see some statistics right from the console</li>
 <li>And many more...</li>
-</ul><h2>
+</ul>
+
+<h2>
 <a name="installation" class="anchor" href="#installation"><span class="octicon octicon-link"></span></a>Installation</h2>
 
 <div class="highlight highlight-sh"><pre><span class="nv">$ </span>curl -sO http://gordalina.github.io/cachetool/downloads/cachetool.phar
@@ -50,29 +52,29 @@ It will connect to a fastcgi server (like php-fpm) and operate it's cache.</p>
 <h2>
 <a name="usage-as-an-application" class="anchor" href="#usage-as-an-application"><span class="octicon octicon-link"></span></a>Usage (as an application)</h2>
 
-<ol>
-<li>You can connect to a automatically guessed fastcgi server (if <code>/var/run/php5-fpm.sock</code> is a file or <code>127.0.0.1:9000</code>)</li>
-</ol><div class="highlight highlight-sh"><pre><span class="nv">$ </span>php cachetool.phar apc:cache:info --fcgi
+<p>You can connect to a automatically guessed fastcgi server (if <code>/var/run/php5-fpm.sock</code> is a file or <code>127.0.0.1:9000</code>)</p>
+
+<div class="highlight highlight-sh"><pre><span class="nv">$ </span>php cachetool.phar apc:cache:info --fcgi
 </pre></div>
 
-<ol>
-<li>You can connect to a fastcgi server through ip</li>
-</ol><div class="highlight highlight-sh"><pre><span class="nv">$ </span>php cachetool.phar apc:cache:info --fcgi<span class="o">=</span>127.0.0.1:9000
+<p>You can connect to a fastcgi server through ip</p>
+
+<div class="highlight highlight-sh"><pre><span class="nv">$ </span>php cachetool.phar apc:cache:info --fcgi<span class="o">=</span>127.0.0.1:9000
 </pre></div>
 
-<ol>
-<li>Or by socket</li>
-</ol><div class="highlight highlight-sh"><pre><span class="nv">$ </span>php cachetool.phar opcache:status --fcgi<span class="o">=</span>/var/run/php5-fpm.sock
+<p>Or by socket</p>
+
+<div class="highlight highlight-sh"><pre><span class="nv">$ </span>php cachetool.phar opcache:status --fcgi<span class="o">=</span>/var/run/php5-fpm.sock
 </pre></div>
 
-<ol>
-<li>Or to the cli</li>
-</ol><div class="highlight highlight-sh"><pre><span class="nv">$ </span>php cachetool.phar opcache:status --cli
+<p>Or to the cli</p>
+
+<div class="highlight highlight-sh"><pre><span class="nv">$ </span>php cachetool.phar opcache:status --cli
 </pre></div>
 
-<ol>
-<li>You have some useful commands that you can you</li>
-</ol><div class="highlight highlight-sh"><pre>apc
+<p>You have some useful commands that you can you</p>
+
+<div class="highlight highlight-sh"><pre>apc
   apc:bin:dump             Get a binary dump of files and user variables
   apc:bin:load             Load a binary dump into the APC file and user variables
   apc:cache:clear          Clears APC cache <span class="o">(</span>user, system or all<span class="o">)</span>
@@ -97,42 +99,43 @@ opcache
 call CacheTool withouth <code>--fcgi</code> or <code>--cli</code> option.</p>
 
 <p>The file must be named <code>.cachetool.yml</code>. CacheTool will look for this file on the
-current directory and in any parent directory until it finds one.</p>
+current directory and in any parent directory until it finds one.
+If the paths above fail it will try to load <code>/etc/cachetool.yml</code> configuration file.</p>
 
 <p>An example of what this file might look like is:</p>
 
-<ol>
-<li>Will connect to fastcgi at 127.0.0.1:9000</li>
-</ol><div class="highlight highlight-yml"><pre><span class="l-Scalar-Plain">adapter</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">fastcgi</span>
+<p>Will connect to fastcgi at 127.0.0.1:9000</p>
+
+<div class="highlight highlight-yml"><pre><span class="l-Scalar-Plain">adapter</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">fastcgi</span>
 <span class="l-Scalar-Plain">fastcgi</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">127.0.0.1:9000</span>
 </pre></div>
 
-<ol>
-<li>Will connect to cli (disregarding fastcgi configuration)</li>
-</ol><div class="highlight highlight-yml"><pre><span class="l-Scalar-Plain">adapter</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">cli</span>
+<p>Will connect to cli (disregarding fastcgi configuration)</p>
+
+<div class="highlight highlight-yml"><pre><span class="l-Scalar-Plain">adapter</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">cli</span>
 <span class="l-Scalar-Plain">fastcgi</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">/var/run/php5-fpm.sock</span>
 </pre></div>
 
 <h2>
 <a name="usage-as-a-library" class="anchor" href="#usage-as-a-library"><span class="octicon octicon-link"></span></a>Usage (as a library)</h2>
 
-<ol>
-<li>Add it as a dependency</li>
-</ol><div class="highlight highlight-sh"><pre><span class="nv">$ </span>composer require gordalina/cachetool<span class="o">=</span>~1.0
+<p>Add it as a dependency</p>
+
+<div class="highlight highlight-sh"><pre><span class="nv">$ </span>composer require gordalina/cachetool<span class="o">=</span>~1.0
 </pre></div>
 
-<ol>
-<li>Create instance</li>
-</ol><div class="highlight highlight-php"><pre><span class="k">use</span> <span class="nx">CacheTool\Adapter\FastCGI</span><span class="p">;</span>
+<p>Create instance</p>
+
+<div class="highlight highlight-php"><pre><span class="k">use</span> <span class="nx">CacheTool\Adapter\FastCGI</span><span class="p">;</span>
 <span class="k">use</span> <span class="nx">CacheTool\CacheTool</span><span class="p">;</span>
 
 <span class="nv">$adapter</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">FastCGI</span><span class="p">(</span><span class="s1">'127.0.0.1:9000'</span><span class="p">);</span>
 <span class="nv">$cache</span> <span class="o">=</span> <span class="nx">CacheTool</span><span class="o">::</span><span class="na">factory</span><span class="p">(</span><span class="nv">$adapter</span><span class="p">);</span>
 </pre></div>
 
-<ol>
-<li>You can use <code>apc</code> and <code>opcache</code> functions</li>
-</ol><div class="highlight highlight-php"><pre><span class="nv">$cache</span><span class="o">-&gt;</span><span class="na">apc_clear_cache</span><span class="p">(</span><span class="s1">'both'</span><span class="p">);</span>
+<p>You can use <code>apc</code> and <code>opcache</code> functions</p>
+
+<div class="highlight highlight-php"><pre><span class="nv">$cache</span><span class="o">-&gt;</span><span class="na">apc_clear_cache</span><span class="p">(</span><span class="s1">'both'</span><span class="p">);</span>
 <span class="nv">$cache</span><span class="o">-&gt;</span><span class="na">opcache_reset</span><span class="p">();</span>
 </pre></div>
 
@@ -174,6 +177,16 @@ all proxies are enabled <a href="https://github.com/gordalina/cachetool/blob/mas
       <p>Hosted on GitHub Pages &mdash; Theme by <a href="https://github.com/orderedlist">orderedlist</a></p>
     </footer>
     <!--[if !IE]><script>fixScale(document);</script><![endif]-->
-    
+              <script type="text/javascript">
+            var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+            document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+          </script>
+          <script type="text/javascript">
+            try {
+              var pageTracker = _gat._getTracker("UA-56319856-1");
+            pageTracker._trackPageview();
+            } catch(err) {}
+          </script>
+
   </body>
 </html>

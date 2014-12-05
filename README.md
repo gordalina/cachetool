@@ -1,6 +1,11 @@
 CacheTool - Manage cache in the CLI
 ===================================
 
+[![Build Status](https://travis-ci.org/gordalina/cachetool.png?branch=master)](https://travis-ci.org/gordalina/cachetool)
+[![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/gordalina/cachetool/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/gordalina/cachetool/?branch=master)
+[![Code Coverage](https://scrutinizer-ci.com/g/gordalina/cachetool/badges/coverage.png?b=master)](https://scrutinizer-ci.com/g/gordalina/cachetool/?branch=master)
+[![Codacy Badge](https://www.codacy.com/project/badge/2d4176f2526d4251a51b691249c4d3e1)](https://www.codacy.com)
+
 CacheTool allows you to work with `apc` and `opcache` through the cli.
 It will connect to a fastcgi server (like php-fpm) and operate it's cache.
 

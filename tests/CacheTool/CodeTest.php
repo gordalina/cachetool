@@ -97,21 +97,6 @@ class CodeTest extends \PHPUnit_Framework_TestCase
         $this->assertSame("strlen() expects parameter 1 to be string, array given", $result['errors'][0]['str']);
     }
 
-    /**
-     * @RunsInSeperateProcess
-     */
-    public function testDeprecated()
-    {
-        error_reporting(E_ALL);
-
-        $result = $this->getCodeResult('class A { function foo() { return true; } } return A::foo();');
-
-        $this->assertTrue($result['result']);
-        $this->assertCount(1, $result['errors']);
-        $this->assertSame(E_DEPRECATED, $result['errors'][0]['no']);
-        $this->assertContains("Non-static method", $result['errors'][0]['str']);
-    }
-
     public function testUserErrors()
     {
         $errors = array(

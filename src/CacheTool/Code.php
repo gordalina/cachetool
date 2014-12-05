@@ -13,8 +13,15 @@ namespace CacheTool;
 
 class Code
 {
+    /**
+     * @var array
+     */
     protected $code = array();
 
+    /**
+     * @param  string $statement
+     * @return Code
+     */
     public static function fromString($statement)
     {
         $code = new static();
@@ -23,56 +30,69 @@ class Code
         return $code;
     }
 
+    /**
+     * @param string $statement
+     */
     public function addStatement($statement)
     {
         $this->code[] = $statement;
     }
 
+    /**
+     * @return string
+     */
     public function getCode()
     {
         return implode(PHP_EOL, $this->code);
     }
 
+    /**
+     * @param  string $file
+     * @return boolean
+     */
     public function writeTo($file)
     {
-        file_put_contents($file, '<?php' . PHP_EOL . $this->getCodeExecutable());
+        return false !== file_put_contents($file, '<?php' . PHP_EOL . $this->getCodeExecutable());
     }
 
-    protected function getCodeExecutable()
+    /**
+     * @return string
+     */
+    public function getCodeExecutable()
     {
         $template =<<<'EOF'
 $errors = array();
 
-function cachetool_error_handler($errno, $errstr, $errfile, $errline) {
-    global $errors;
-
+$cachetool_error_handler_%s = function($errno, $errstr, $errfile, $errline) use (&$errors) {
     $errors[] = array(
         'no' => $errno,
         'str' => $errstr,
     );
-}
+};
 
-function cachetool_exec() {
-    global $errors;
-
+$cachetool_exec_%s = function() use (&$errors) {
     try {
         %s
-    } catch (Exception $e) {
+    } catch (\Exception $e) {
         $errors[] = array(
             'no' => $e->getCode(),
             'str' => $e->getMessage(),
         );
     }
-}
+};
 
-set_error_handler('cachetool_error_handler');
+set_error_handler($cachetool_error_handler_%s);
+
+$result = $cachetool_exec_%s();
 
 echo serialize(array(
-    'result' => cachetool_exec(),
+    'result' => $result,
     'errors' => $errors
 ));
 EOF;
 
-        return sprintf($template, $this->getCode());
+        $uniq = uniqid();
+
+        return sprintf($template, $uniq, $uniq, $this->getCode(), $uniq, $uniq);
     }
 }

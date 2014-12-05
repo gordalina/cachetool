@@ -120,13 +120,13 @@ class PhpProxy implements ProxyInterface
     /**
      * Evaluate a string as PHP code
      *
-     * @param  string $code Evaluates the given code as PHPEvaluates the given code as PHPEvaluates the given code as PHPEvaluates the given code as PHP
+     * @param  string $expression Evaluates the given code as PHP
      * @return mixed
      */
-    public function _eval($php)
+    public function _eval($expression)
     {
         $code = new Code();
-        $code->addStatement($php);
+        $code->addStatement($expression);
 
         return $this->adapter->run($code);
     }

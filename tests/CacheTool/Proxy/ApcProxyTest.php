@@ -11,6 +11,24 @@ class ApcProxyTest extends ProxyTest
         $this->assertCount(20, $this->createProxyInstance()->getFunctions());
     }
 
+    /**
+     * @expectedException InvalidArgumentException
+     */
+    public function testApcAddException()
+    {
+        $proxy = $this->createProxyInstance();
+        $proxy->apc_add(array(), null);
+    }
+
+    /**
+     * @expectedException InvalidArgumentException
+     */
+    public function testApcStoreException()
+    {
+        $proxy = $this->createProxyInstance();
+        $proxy->apc_store(array(), null);
+    }
+
     public function testFunctions()
     {
         $this->assertProxyCode("return apc_add('key', 'var', 0);", 'apc_add', array('key', 'var', 0));
@@ -34,9 +52,9 @@ class ApcProxyTest extends ProxyTest
 
     public function testFunctionsArray()
     {
-        $this->assertProxyCodeArray("\$success = false;\n\$result = apc_dec('key', 'step', \$success);\nreturn array(\$result, \$success);", 'apc_dec', array('key', 'step', false));
-        $this->assertProxyCodeArray("\$success = false;\n\$result = apc_fetch('key', \$success);\nreturn array(\$result, \$success);", 'apc_fetch', array('key', false));
-        $this->assertProxyCodeArray("\$success = false;\n\$result = apc_inc('key', 'step', \$success);\nreturn array(\$result, \$success);", 'apc_inc', array('key', 'step', false));
+        $this->assertProxyCodeArray("\$success = false;\n\$result = apc_dec('key', 'step', \$success);\nreturn array(\$result, \$success);", 'apc_dec', array('key', 'step', new \stdClass));
+        $this->assertProxyCodeArray("\$success = false;\n\$result = apc_fetch('key', \$success);\nreturn array(\$result, \$success);", 'apc_fetch', array('key', new \stdClass));
+        $this->assertProxyCodeArray("\$success = false;\n\$result = apc_inc('key', 'step', \$success);\nreturn array(\$result, \$success);", 'apc_inc', array('key', 'step', new \stdClass));
     }
 
     protected function createProxyInstance()

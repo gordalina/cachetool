@@ -9,11 +9,10 @@
  * file that was distributed with this source code.
  */
 
-namespace CacheTool\Handler;
+namespace CacheTool\Monolog;
 
 use Monolog\Handler\AbstractProcessingHandler;
 use Monolog\Logger;
-use Symfony\Bridge\Monolog\Formatter\ConsoleFormatter;
 use Symfony\Component\Console\Output\ConsoleOutputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 

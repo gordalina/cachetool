@@ -51,10 +51,8 @@ abstract class AbstractAdapter
             return $result['result'];
         }
 
-        $msgs = array();
-
         foreach ($result['errors'] as $error) {
-            $this->logger->crit("{$error['str']} (error code: {$error['no']})");
+            $this->logger->critical("{$error['str']} (error code: {$error['no']})");
         }
 
         throw new \RuntimeException('An error ocurred during execution.');

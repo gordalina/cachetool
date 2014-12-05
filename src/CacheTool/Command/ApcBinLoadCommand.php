@@ -49,6 +49,7 @@ class ApcBinLoadCommand extends AbstractCommand
         }
 
         $dump = file_get_contents($file);
+        $flags = 0;
 
         if (!$noVerification) {
             $flags = APC_BIN_VERIFY_MD5 | APC_BIN_VERIFY_CRC32;

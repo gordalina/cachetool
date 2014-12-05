@@ -302,8 +302,7 @@ class ApcProxy implements ProxyInterface
         $code->addStatement(sprintf(
             '$result = apc_dec(%s, %s, $success);',
             var_export($key, true),
-            var_export($step, true),
-            var_export($success, true)
+            var_export($step, true)
         ));
         $code->addStatement('return array($result, $success);');
 
@@ -442,8 +441,7 @@ class ApcProxy implements ProxyInterface
         $code->addStatement(sprintf(
             '$result = apc_inc(%s, %s, $success);',
             var_export($key, true),
-            var_export($step, true),
-            var_export($success, true)
+            var_export($step, true)
         ));
         $code->addStatement('return array($result, $success);');
 

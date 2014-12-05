@@ -121,7 +121,7 @@ class CacheTool
     {
         $this->logger = $logger;
 
-        if ($this->adapter instanceof AdapterInterface) {
+        if ($this->adapter instanceof AbstractAdapter) {
             $this->adapter->setLogger($logger);
         }
 

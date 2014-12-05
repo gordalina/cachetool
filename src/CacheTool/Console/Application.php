@@ -39,6 +39,11 @@ class Application extends BaseApplication implements ContainerAwareInterface
      */
     protected $input;
 
+    /**
+     * @var LoggerInterface
+     */
+    protected $logger;
+
     public function __construct()
     {
         parent::__construct('phpcache', CacheTool::VERSION);
@@ -47,7 +52,7 @@ class Application extends BaseApplication implements ContainerAwareInterface
     }
 
     /**
-     * Initializes all the composer commands
+     * {@inheritdoc}
      */
     protected function getDefaultCommands()
     {
@@ -154,7 +159,7 @@ class Application extends BaseApplication implements ContainerAwareInterface
             }
         }
 
-        return array();
+        return new Config();
     }
 
     /**

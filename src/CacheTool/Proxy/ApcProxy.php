@@ -177,13 +177,13 @@ class ApcProxy implements ProxyInterface
      * Load a binary dump from a file into the APC file/user cache
      *
      * @since  3.1.4
-     * @param  string   $data    The file name containing the dump, likely from apc_bin_dumpfile().
-     * @param  resource $context The files context.
-     * @param  integer  $flags   Either APC_BIN_VERIFY_CRC32, APC_BIN_VERIFY_MD5, or both.
-     * @return boolean           Returns TRUE on success, otherwise FALSE Reasons it may return FALSE include APC is not
-     *                           enabled, filename is an invalid file name or empty, filename can't be opened, the file
-     *                           dump can't be completed, or if the data is not a valid APC binary dump (e.g.,
-     *                           unexpected size).
+     * @param  string   $filename The file name containing the dump, likely from apc_bin_dumpfile().
+     * @param  resource $context  The files context.
+     * @param  integer  $flags    Either APC_BIN_VERIFY_CRC32, APC_BIN_VERIFY_MD5, or both.
+     * @return boolean            Returns TRUE on success, otherwise FALSE Reasons it may return FALSE include APC is not
+     *                            enabled, filename is an invalid file name or empty, filename can't be opened, the file
+     *                            dump can't be completed, or if the data is not a valid APC binary dump (e.g.,
+     *                            unexpected size).
      */
     public function apc_bin_loadfile($filename, $context = null, $flags = 0)
     {

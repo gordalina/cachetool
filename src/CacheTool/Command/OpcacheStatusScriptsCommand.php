@@ -41,8 +41,6 @@ class OpcacheStatusScriptsCommand extends AbstractCommand
             throw new \RuntimeException('opcache_get_status(): No Opcache status info available.  Perhaps Opcache is disabled via opcache.enable or opcache.enable_cli?');
         }
 
-        $scripts = $info['scripts'];
-
         $table = $this->getHelper('table');
         $table
             ->setHeaders(array(

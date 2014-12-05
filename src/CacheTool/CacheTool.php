@@ -156,7 +156,7 @@ class CacheTool
      * Initializes functions and return callable
      *
      * @param  string $name
-     * @return array
+     * @return callable
      */
     protected function getFunction($name)
     {

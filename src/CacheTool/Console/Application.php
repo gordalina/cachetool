@@ -16,7 +16,6 @@ use CacheTool\Adapter\Cli;
 use CacheTool\CacheTool;
 use CacheTool\Command;
 use CacheTool\Handler\ConsoleHandler;
-use CacheTool\Proxy;
 use Monolog\Logger;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\Console\Application as BaseApplication;

@@ -12,8 +12,6 @@
 namespace CacheTool\Command;
 
 use CacheTool\Util\Formatter;
-use Symfony\Component\Console\Helper\TableSeparator;
-use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 

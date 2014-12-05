@@ -102,15 +102,15 @@ class PhpProxy implements ProxyInterface
     /**
      * Returns a string containing the version of the currently running PHP parser or extension.
      *
-     * @param  string $what An optional extension name
+     * @param  string $extension An optional extension name
      * @return string
      */
-    public function phpversion($expression = null)
+    public function phpversion($extension = null)
     {
         $code = new Code();
         $code->addStatement(sprintf(
             "return phpversion(%s);",
-            var_export($expression, true)
+            var_export($extension, true)
         ));
 
         return $this->adapter->run($code);

@@ -16,7 +16,7 @@ use CacheTool\Adapter\AbstractAdapter;
 interface ProxyInterface
 {
     /**
-     * @return array
+     * @return string[]
      */
     public function getFunctions();
 

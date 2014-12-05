@@ -231,7 +231,7 @@ class ApcProxy implements ProxyInterface
      *                             at compile time using --enable-filehits .
      *                             If an invalid or no cache_type is specified, information about the system cache
      *                             (cached files) will be returned.
-     * @param  boolean $limieted   If limited is TRUE, the return value will exclude the individual list of cache
+     * @param  boolean $limited    If limited is TRUE, the return value will exclude the individual list of cache
      *                             entries. This is useful when trying to optimize calls for statistics gathering.
      * @return boolean             Array of cached data (and meta-data) or FALSE on failure
      */
@@ -458,7 +458,7 @@ class ApcProxy implements ProxyInterface
      * Loads a set of constants from the cache
      *
      * @since  3.0.0
-     * @param  mixed   $keys           The name of the constant set (that was stored with apc_define_constants()) to be
+     * @param  mixed   $key            The name of the constant set (that was stored with apc_define_constants()) to be
      *                                 retrieved.
      * @param  boolean $case_sensitive The default behaviour for constants is to be declared case-sensitive; i.e.
      *                                 CONSTANT and Constant represent different values. If this parameter evaluates to

@@ -14,9 +14,6 @@ namespace CacheTool\Handler;
 use Monolog\Handler\AbstractProcessingHandler;
 use Monolog\Logger;
 use Symfony\Bridge\Monolog\Formatter\ConsoleFormatter;
-use Symfony\Component\Console\ConsoleEvents;
-use Symfony\Component\Console\Event\ConsoleCommandEvent;
-use Symfony\Component\Console\Event\ConsoleTerminateEvent;
 use Symfony\Component\Console\Output\ConsoleOutputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 

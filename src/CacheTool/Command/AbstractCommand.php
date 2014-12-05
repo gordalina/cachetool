@@ -11,9 +11,7 @@
 
 namespace CacheTool\Command;
 
-use CacheTool\Code;
 use Symfony\Component\Console\Command\Command;
-use Symfony\Component\Console\Output\OutputInterface;
 
 abstract class AbstractCommand extends Command
 {
@@ -22,6 +20,9 @@ abstract class AbstractCommand extends Command
         return $this->getApplication()->getContainer()->get('cachetool');
     }
 
+    /**
+     * @param  string $extension
+     */
     protected function ensureExtensionLoaded($extension)
     {
         if (!$this->getCacheTool()->extension_loaded($extension)) {

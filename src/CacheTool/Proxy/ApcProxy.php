@@ -279,7 +279,7 @@ class ApcProxy implements ProxyInterface
         $code = new Code();
         $code->addStatement(sprintf(
             'return apc_compile_file(%s, %s);',
-            var_export($cache_type, true),
+            var_export($filename, true),
             var_export($atomic, true)
         ));
 
@@ -539,8 +539,7 @@ class ApcProxy implements ProxyInterface
     public function apc_version()
     {
         $code = new Code();
-        $code->addStatement('$ext = new \ReflectionExtension("apc");');
-        $code->addStatement('return $ext->getVersion();');
+        $code->addStatement('return phpversion("apc");');
 
         return $this->adapter->run($code);
     }

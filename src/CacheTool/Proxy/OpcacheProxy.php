@@ -145,8 +145,9 @@ class OpcacheProxy implements ProxyInterface
      */
     public function opcache_version()
     {
-        $conf = $this->opcache_get_configuration();
+        $code = new Code();
+        $code->addStatement('return phpversion("Zend OPcache");');
 
-        return $conf['version']['version'];
+        return $this->adapter->run($code);
     }
 }

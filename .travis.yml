@@ -8,7 +8,8 @@ php:
     - hhvm
 
 install:
-    - composer install --dev
+    - composer self-update
+    - composer install
 
 before_script:
     - sudo apt-get install php5-fpm

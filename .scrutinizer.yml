@@ -5,7 +5,15 @@ filter:
     excluded_paths: [vendor/*, tests/*]
 
 tools:
+    external_code_coverage: true
+
+    php_analyzer: true
+    php_changetracking: true
+    php_code_sniffer: true
     php_cpd: true
+    php_cs_fixer: true
+    php_mess_detector: true
     php_pdepend:
         excluded_dirs: [vendor, tests/*]
-    external_code_coverage: true
+    php_sim: true
+    sensiolabs_security_checker: true

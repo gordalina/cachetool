@@ -15,7 +15,9 @@ use CacheTool\Adapter\FastCGI;
 use CacheTool\Adapter\Cli;
 use CacheTool\CacheTool;
 use CacheTool\Command;
+use CacheTool\Handler\ConsoleHandler;
 use CacheTool\Proxy;
+use Monolog\Logger;
 use Symfony\Component\Console\Application as BaseApplication;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Input\InputInterface;
@@ -27,12 +29,21 @@ use Symfony\Component\Yaml\Yaml;
 
 class Application extends BaseApplication implements ContainerAwareInterface
 {
+    /**
+     * @var ContainerInterface
+     */
     protected $container;
+
+    /**
+     * @var InputInterface
+     */
     protected $input;
 
     public function __construct()
     {
         parent::__construct('phpcache', CacheTool::VERSION);
+
+        $this->logger = new Logger('cachetool');
     }
 
     /**
@@ -77,6 +88,8 @@ class Application extends BaseApplication implements ContainerAwareInterface
     public function doRun(InputInterface $input, OutputInterface $output)
     {
         $this->input = $input;
+        $this->logger->pushHandler(new ConsoleHandler($output));
+
         return parent::doRun($input, $output);
     }
 
@@ -112,7 +125,8 @@ class Application extends BaseApplication implements ContainerAwareInterface
         }
 
         $container = new Container();
-        $container->set('cachetool', CacheTool::factory($adapter));
+        $container->set('cachetool', CacheTool::factory($adapter, $this->logger));
+        $container->set('logger', $this->logger);
 
         return $this->container = $container;
     }

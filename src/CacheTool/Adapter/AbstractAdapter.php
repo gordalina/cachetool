@@ -12,9 +12,15 @@
 namespace CacheTool\Adapter;
 
 use CacheTool\Code;
+use Psr\Log\LoggerInterface;
 
 abstract class AbstractAdapter
 {
+    /**
+     * @var LoggerInterface
+     */
+    protected $logger;
+
     /**
      * @param  Code   $code
      * @return string
@@ -28,11 +34,18 @@ abstract class AbstractAdapter
      */
     public function run(Code $code)
     {
-        $result = @unserialize($this->doRun($code));
+        $this->logger->debug(sprintf('Executing code: %s', $code->getCode()));
+        $data = $this->doRun($code);
+
+        $result = @unserialize($data);
 
         if (!is_array($result)) {
+            $this->logger->debug(sprintf('Return serialized: %s', $data));
             throw new \RuntimeException('Could not unserialize data from adapter.');
         }
+
+        $this->logger->debug(sprintf('Return errors: %s', json_encode($result['errors'])));
+        $this->logger->debug(sprintf('Return result: %s', json_encode($result['result'])));
 
         if (empty($result['errors'])) {
             return $result['result'];
@@ -41,10 +54,21 @@ abstract class AbstractAdapter
         $msgs = array();
 
         foreach ($result['errors'] as $error) {
-            $msgs[] = "{$error['str']} (error code: {$error['no']})";
+            $this->logger->crit("{$error['str']} (error code: {$error['no']})");
         }
 
-        throw new \RuntimeException(implode(PHP_EOL, $msgs));
+        throw new \RuntimeException('An error ocurred during execution.');
+    }
+
+    /**
+     * @param  LoggerInterface $logger
+     * @return AbstractAdapter
+     */
+    public function setLogger(LoggerInterface $logger)
+    {
+        $this->logger = $logger;
+
+        return $this;
     }
 
     /**

@@ -63,6 +63,8 @@ class FastCGI extends AbstractAdapter
     {
         $file = $this->createTemporaryFile();
 
+        $this->logger->info(sprintf('FastCGI: Dumped code to file: %s', $file));
+
         try {
             $code->writeTo($file);
 
@@ -74,6 +76,7 @@ class FastCGI extends AbstractAdapter
 
             $this->client->request($environment, '');
             $response = $this->client->response();
+            $this->logger->debug(sprintf('FastCGI: Response: %s', json_encode($response)));
 
             // lets close every request
             $this->client->close();
@@ -85,8 +88,7 @@ class FastCGI extends AbstractAdapter
 
             throw new \RuntimeException(
                 sprintf('Could not connect to FastCGI server: %s', $e->getMessage()),
-                $e->getCode(),
-                $e
+                $e->getCode()
             );
         }
     }

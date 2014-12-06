@@ -1,7 +1,7 @@
 CacheTool - Manage cache in the CLI
 ===================================
 
-[![Build Status](https://travis-ci.org/gordalina/cachetool.png?branch=master)](https://travis-ci.org/gordalina/cachetool)
+[![Build Status](https://travis-ci.org/gordalina/cachetool.svg?branch=master)](https://travis-ci.org/gordalina/cachetool)
 [![HHVM Status](http://hhvm.h4cc.de/badge/gordalina/cachetool.svg)](http://hhvm.h4cc.de/package/gordalina/cachetool)
 [![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/gordalina/cachetool/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/gordalina/cachetool/?branch=master)
 [![Code Coverage](https://scrutinizer-ci.com/g/gordalina/cachetool/badges/coverage.png?b=master)](https://scrutinizer-ci.com/g/gordalina/cachetool/?branch=master)

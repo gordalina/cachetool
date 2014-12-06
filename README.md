@@ -4,6 +4,7 @@ CacheTool - Manage cache in the CLI
 [![Build Status](https://travis-ci.org/gordalina/cachetool.png?branch=master)](https://travis-ci.org/gordalina/cachetool)
 [![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/gordalina/cachetool/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/gordalina/cachetool/?branch=master)
 [![Code Coverage](https://scrutinizer-ci.com/g/gordalina/cachetool/badges/coverage.png?b=master)](https://scrutinizer-ci.com/g/gordalina/cachetool/?branch=master)
+[![SensioLabsInsight](https://insight.sensiolabs.com/projects/595c9feb-3f4d-473a-a575-81c7e97eb672/mini.png)](https://insight.sensiolabs.com/projects/595c9feb-3f4d-473a-a575-81c7e97eb672)
 [![Codacy Badge](https://www.codacy.com/project/badge/2d4176f2526d4251a51b691249c4d3e1)](https://www.codacy.com)
 
 CacheTool allows you to work with `apc` and `opcache` through the cli.

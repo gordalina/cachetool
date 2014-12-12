@@ -51,11 +51,13 @@ abstract class AbstractAdapter
             return $result['result'];
         }
 
+        $errors = array();
+
         foreach ($result['errors'] as $error) {
-            $this->logger->critical("{$error['str']} (error code: {$error['no']})");
+            $errors[] = "{$error['str']} (error code: {$error['no']})";
         }
 
-        throw new \RuntimeException('An error ocurred during execution.');
+        throw new \RuntimeException(implode("\n", $errors));
     }
 
     /**

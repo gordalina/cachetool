@@ -14,39 +14,41 @@ namespace CacheTool\Console;
 use CacheTool\Adapter\FastCGI;
 use CacheTool\Adapter\Cli;
 use CacheTool\CacheTool;
-use CacheTool\Command;
+use CacheTool\Command as CacheToolCommand;
 use CacheTool\Monolog\ConsoleHandler;
 use Monolog\Logger;
+use Psr\Log\LoggerInterface;
 use Symfony\Component\Console\Application as BaseApplication;
+use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\DependencyInjection\ContainerAwareInterface;
 use Symfony\Component\DependencyInjection\Container;
 use Symfony\Component\DependencyInjection\ContainerInterface;
-use Symfony\Component\Yaml\Yaml;
 
-class Application extends BaseApplication implements ContainerAwareInterface
+class Application extends BaseApplication
 {
-    /**
-     * @var ContainerInterface
-     */
-    protected $container;
+    const VERSION = '@package_version@';
 
     /**
-     * @var InputInterface
+     * @var Config
      */
-    protected $input;
+    protected $config;
 
     /**
      * @var Logger
      */
     protected $logger;
 
-    public function __construct()
+    /**
+     * @param Config $config
+     */
+    public function __construct(Config $config)
     {
-        parent::__construct('CacheTool', CacheTool::VERSION);
+        parent::__construct('CacheTool', self::VERSION);
 
+        $this->config = $config;
         $this->logger = new Logger('cachetool');
     }
 
@@ -56,23 +58,23 @@ class Application extends BaseApplication implements ContainerAwareInterface
     protected function getDefaultCommands()
     {
         $commands = parent::getDefaultCommands();
-        $commands[] = new Command\SelfUpdateCommand();
+        $commands[] = new CacheToolCommand\SelfUpdateCommand();
 
-        $commands[] = new Command\ApcBinDumpCommand();
-        $commands[] = new Command\ApcBinLoadCommand();
-        $commands[] = new Command\ApcCacheClearCommand();
-        $commands[] = new Command\ApcCacheInfoCommand();
-        $commands[] = new Command\ApcCacheInfoFileCommand();
-        $commands[] = new Command\ApcKeyDeleteCommand();
-        $commands[] = new Command\ApcKeyExistsCommand();
-        $commands[] = new Command\ApcKeyFetchCommand();
-        $commands[] = new Command\ApcKeyStoreCommand();
-        $commands[] = new Command\ApcSmaInfoCommand();
+        $commands[] = new CacheToolCommand\ApcBinDumpCommand();
+        $commands[] = new CacheToolCommand\ApcBinLoadCommand();
+        $commands[] = new CacheToolCommand\ApcCacheClearCommand();
+        $commands[] = new CacheToolCommand\ApcCacheInfoCommand();
+        $commands[] = new CacheToolCommand\ApcCacheInfoFileCommand();
+        $commands[] = new CacheToolCommand\ApcKeyDeleteCommand();
+        $commands[] = new CacheToolCommand\ApcKeyExistsCommand();
+        $commands[] = new CacheToolCommand\ApcKeyFetchCommand();
+        $commands[] = new CacheToolCommand\ApcKeyStoreCommand();
+        $commands[] = new CacheToolCommand\ApcSmaInfoCommand();
 
-        $commands[] = new Command\OpcacheConfigurationCommand();
-        $commands[] = new Command\OpcacheResetCommand();
-        $commands[] = new Command\OpcacheStatusCommand();
-        $commands[] = new Command\OpcacheStatusScriptsCommand();
+        $commands[] = new CacheToolCommand\OpcacheConfigurationCommand();
+        $commands[] = new CacheToolCommand\OpcacheResetCommand();
+        $commands[] = new CacheToolCommand\OpcacheStatusCommand();
+        $commands[] = new CacheToolCommand\OpcacheStatusScriptsCommand();
 
         return $commands;
     }
@@ -89,9 +91,11 @@ class Application extends BaseApplication implements ContainerAwareInterface
         return $definition;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public function doRun(InputInterface $input, OutputInterface $output)
     {
-        $this->input = $input;
         $this->logger->pushHandler(new ConsoleHandler($output));
 
         return parent::doRun($input, $output);
@@ -100,72 +104,46 @@ class Application extends BaseApplication implements ContainerAwareInterface
     /**
      * {@inheritDoc}
      */
-    public function getContainer()
+    public function doRunCommand(Command $command, InputInterface $input, OutputInterface $output)
     {
-        if ($this->container) {
-            return $this->container;
+        if ($command instanceof ContainerAwareInterface) {
+            $container = $this->buildContainer($input);
+            $command->setContainer($container);
         }
 
-        $config = $this->loadConfiguration();
+        return parent::doRunCommand($command, $input, $output);
+    }
 
-        if ($this->input->getOption('cli')) {
-            $config['adapter'] = 'cli';
-        } else if ($this->input->hasOption('fcgi')) {
-            $config['adapter'] = 'fastcgi';
-            $config['fastcgi'] = $this->input->getOption('fcgi');
+    /**
+     * @param  InputInterface     $input
+     * @return ContainerInterface
+     */
+    public function buildContainer(InputInterface $input)
+    {
+        if ($input->hasOption('cli')) {
+            $this->config['adapter'] = 'cli';
+        } else if ($input->hasOption('fcgi')) {
+            $this->config['adapter'] = 'fastcgi';
+            $this->config['fastcgi'] = $input->getOption('fcgi');
         }
 
-        switch ($config['adapter']) {
+        switch ($this->config['adapter']) {
             case 'cli':
                 $adapter = new Cli();
                 break;
 
             case 'fastcgi':
-                $adapter = new FastCGI($config['fastcgi']);
+                $adapter = new FastCGI($this->config['fastcgi']);
                 break;
 
             default:
-                throw new \RuntimeException("Adapter `{$config['adapter']}` is not one of cli or fastcgi");
+                throw new \RuntimeException("Adapter `{$this->config['adapter']}` is not one of cli or fastcgi");
         }
 
         $container = new Container();
         $container->set('cachetool', CacheTool::factory($adapter, $this->logger));
         $container->set('logger', $this->logger);
 
-        return $this->container = $container;
-    }
-
-    /**
-     * @return Config
-     */
-    protected function loadConfiguration()
-    {
-        $previous = null;
-        $path = getcwd();
-        $paths = array();
-
-        while (($path = realpath($path)) && $path !== $previous) {
-            $paths[] = "{$path}/.cachetool.yml";
-            $previous = $path;
-            $path .= '/../';
-        }
-
-        $paths[] = '/etc/cachetool.yml';
-
-        foreach ($paths as $path) {
-            if (is_file($path)) {
-                return new Config(Yaml::parse($path));
-            }
-        }
-
-        return new Config();
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function setContainer(ContainerInterface $container = null)
-    {
-        $this->container = $container;
+        return $container;
     }
 }

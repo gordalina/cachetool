@@ -4,8 +4,31 @@
 require __DIR__.'/../vendor/autoload.php';
 
 use CacheTool\Console\Application;
+use CacheTool\Console\Config;
+use Symfony\Component\Yaml\Yaml;
 
-// error_reporting(-1);
+function loadConfig() {
+    $previous = null;
+    $path = getcwd();
+    $paths = array();
 
-$application = new Application();
+    while (($path = realpath($path)) && $path !== $previous) {
+        $paths[] = "{$path}/.cachetool.yml";
+        $previous = $path;
+        $path .= '/../';
+    }
+
+    $paths[] = '/etc/cachetool.yml';
+
+    foreach ($paths as $path) {
+        if (is_file($path)) {
+            return new Config(Yaml::parse($path));
+        }
+    }
+
+    return new Config();
+}
+
+$config = loadConfig();
+$application = new Application($config);
 $application->run();

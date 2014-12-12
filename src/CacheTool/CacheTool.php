@@ -18,8 +18,6 @@ use Monolog\Logger;
 
 class CacheTool
 {
-    const VERSION = '@package_version@';
-
     /**
      * @var AbstractAdapter
      */

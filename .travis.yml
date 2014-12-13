@@ -13,9 +13,6 @@ install:
 
 before_script:
     - sudo apt-get install php5-fpm
-    - pecl config-set preferred_state beta
-    - printf "yes\n" | pecl install apcu
-    - phpenv config-add tests/travis/php.ini
 
 script:
     - phpunit --coverage-clover=coverage.clover

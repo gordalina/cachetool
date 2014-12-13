@@ -17,4 +17,16 @@ class CliTest extends \PHPUnit_Framework_TestCase
 
         $this->assertTrue($result);
     }
+
+    /**
+     * @expectedException RuntimeException
+     */
+    public function testException()
+    {
+        $cli = new Cli();
+        $cli->setLogger($this->getMockBuilder('Monolog\Logger')->disableOriginalConstructor()->getMock());
+
+        $code = Code::fromString('throw new \Exception("test");');
+        $result = $cli->run($code);
+    }
 }

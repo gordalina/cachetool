@@ -51,13 +51,11 @@ abstract class AbstractAdapter
             return $result['result'];
         }
 
-        $errors = array();
+        $errors = array_reduce($result['errors'], function ($carry, $error) {
+            return $carry .= "{$error['str']} (error code: {$error['no']})\n";
+        });
 
-        foreach ($result['errors'] as $error) {
-            $errors[] = "{$error['str']} (error code: {$error['no']})";
-        }
-
-        throw new \RuntimeException(implode("\n", $errors));
+        throw new \RuntimeException($errors);
     }
 
     /**

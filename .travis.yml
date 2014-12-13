@@ -13,6 +13,7 @@ install:
 
 before_script:
     - sudo apt-get install php5-fpm
+    - phpenv config-add tests/travis/php.ini
 
 script:
     - phpunit --coverage-clover=coverage.clover

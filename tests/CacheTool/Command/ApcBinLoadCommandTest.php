@@ -7,6 +7,7 @@ class ApcBinLoadCommandTest extends CommandTest
     public function testCommand()
     {
         $this->assertHasApc();
+        $this->assertNoHHVM();
 
         $file = tempnam(sys_get_temp_dir(), 'cachetool');
 
@@ -17,7 +18,7 @@ class ApcBinLoadCommandTest extends CommandTest
 
         $result = $this->runCommand("apc:bin:load -f {$file} -v");
 
-        $this->assertContains('apc_bin_load(, 3)', $result);
+        $this->assertContains('apc_bin_load(', $result);
         $this->assertContains('Load was successful', $result);
 
         unlink($file);

@@ -35,4 +35,11 @@ abstract class CommandTest extends \PHPUnit_Framework_TestCase
             $this->markTestSkipped('OPcache extension is not loaded.');
         }
     }
+
+    protected function assertNoHHVM()
+    {
+        if (defined('HHVM_VERSION')) {
+            $this->markTestSkipped('Not supported in HHVM');
+        }
+    }
 }

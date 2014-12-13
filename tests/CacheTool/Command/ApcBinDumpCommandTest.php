@@ -7,6 +7,7 @@ class ApcBinDumpCommandTest extends CommandTest
     public function testCommand()
     {
         $this->assertHasApc();
+        $this->assertNoHHVM();
 
         ob_start();
         $result = $this->runCommand('apc:bin:dump -v');
@@ -18,6 +19,7 @@ class ApcBinDumpCommandTest extends CommandTest
     public function testCommandWithFile()
     {
         $this->assertHasApc();
+        $this->assertNoHHVM();
 
         $file = tempnam(sys_get_temp_dir(), 'cachetool');
 

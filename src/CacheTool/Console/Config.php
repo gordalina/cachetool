@@ -30,13 +30,11 @@ class Config implements \ArrayAccess
         return isset($this->config[$offset]);
     }
 
-    public function offsetGet($offset, $default = null)
+    public function offsetGet($offset)
     {
         if ($this->offsetExists($offset)) {
             return $this->config[$offset];
         }
-
-        return $default;
     }
 
     public function offsetSet($offset, $value)

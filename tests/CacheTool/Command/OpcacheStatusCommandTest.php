@@ -2,14 +2,12 @@
 
 namespace CacheTool\Command;
 
-use CacheTool\Console\Application;
-use Symfony\Component\Console\Input\StringInput;
-use Symfony\Component\Console\Output\StreamOutput;
-
 class OpcacheStatusCommandTest extends CommandTest
 {
     public function testCommand()
     {
+        $this->assertHasOpcache();
+
         $result = $this->runCommand('opcache:status -v');
 
         $this->assertContains('opcache_get_status(false)', $result);

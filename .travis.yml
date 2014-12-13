@@ -13,7 +13,7 @@ install:
 
 before_script:
     - sudo apt-get install php5-fpm
-    - sh .travis/bin/install-apcu.sh
+    - echo yes | sudo pecl install channel://pecl.php.net/apcu-4.0.7
     - phpenv config-add .travis/php/$TRAVIS_PHP_VERSION.ini
     - phpenv config-add .travis/ext/apc.ini
     - phpenv config-add .travis/ext/opcache.ini

@@ -20,5 +20,5 @@ script:
     - phpunit --coverage-clover=coverage.clover
 
 after_script:
-    - sh -c "if [[ `php-config --vernum` -ge 50600 ]] ; then ; wget https://scrutinizer-ci.com/ocular.phar ; php ocular.phar code-coverage:upload --format=php-clover coverage.clover ;fi"
+    - sh -c "if [[ $TRAVIS_PHP_VERSION != 'hhvm' && `php-config --vernum` -ge 50600 ]] ; then wget https://scrutinizer-ci.com/ocular.phar ; php ocular.phar code-coverage:upload --format=php-clover coverage.clover ;fi"
 

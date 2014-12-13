@@ -13,9 +13,8 @@ install:
 
 before_script:
     - sudo apt-get install php5-fpm
-    - sh -c "if [[ $TRAVIS_PHP_VERSION != 'hhvm' && `php-config --vernum` -ge 50500 ]] ; then pecl config-set preferred_state beta; printf "yes\n" | pecl install apcu ; else echo 'extension="apc.so"' >> ./tests/travis/php.ini ;fi
-    - phpenv config-add .travis/ext/apc.ini
-    - phpenv config-add .travis/ext/opcache.ini
+    - sh -c "if [[ $TRAVIS_PHP_VERSION != 'hhvm' && `php-config --vernum` -ge 50500 ]] ; then pecl config-set preferred_state beta; printf "yes\n" | pecl install apcu ; else echo 'extension="apc.so"' >> ./tests/travis/php.ini ;fi"
+    - phpenv config-add tests/travis/php.ini
 
 script:
     - phpunit --coverage-clover=coverage.clover

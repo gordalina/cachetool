@@ -1,6 +1,6 @@
 #!/bin/bash
 
-if [ "$TRAVIS_PHP_VERSION" == "5.3" ]
+if [ "$TRAVIS_PHP_VERSION" == "5.5" ] || [ "$TRAVIS_PHP_VERSION" == "5.6" ]
 then
     exit 0
 fi

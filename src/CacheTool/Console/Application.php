@@ -17,7 +17,6 @@ use CacheTool\CacheTool;
 use CacheTool\Command as CacheToolCommand;
 use CacheTool\Monolog\ConsoleHandler;
 use Monolog\Logger;
-use Psr\Log\LoggerInterface;
 use Symfony\Component\Console\Application as BaseApplication;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputOption;

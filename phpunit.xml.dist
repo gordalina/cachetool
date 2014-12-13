@@ -6,10 +6,4 @@
             <directory>tests/CacheTool/</directory>
         </testsuite>
     </testsuites>
-
-    <filter>
-        <whitelist>
-            <directory suffix=".php">src/CacheTool/</directory>
-        </whitelist>
-    </filter>
 </phpunit>

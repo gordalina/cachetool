@@ -96,9 +96,15 @@ class Application extends BaseApplication
      */
     public function doRun(InputInterface $input, OutputInterface $output)
     {
-        $this->logger->pushHandler(new ConsoleHandler($output));
+        $handler = new ConsoleHandler();
+        $handler->setOutput($output);
+        $this->logger->pushHandler($handler);
 
-        return parent::doRun($input, $output);
+        $exitCode = parent::doRun($input, $output);
+
+        $handler->close();
+
+        return $exitCode;
     }
 
     /**
@@ -118,11 +124,14 @@ class Application extends BaseApplication
      * @param  InputInterface     $input
      * @return ContainerInterface
      */
-    public function buildContainer(InputInterface $input)
+    public function buildContainer(InputInterface $rawInput)
     {
-        if ($input->hasOption('cli')) {
+        $input = clone $rawInput;
+        $input->bind($this->getDefaultInputDefinition());
+
+        if ($input->getOption('cli')) {
             $this->config['adapter'] = 'cli';
-        } else if ($input->hasOption('fcgi')) {
+        } else if ($input->getOption('fcgi')) {
             $this->config['adapter'] = 'fastcgi';
             $this->config['fastcgi'] = $input->getOption('fcgi');
         }

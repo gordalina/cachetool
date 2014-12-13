@@ -172,6 +172,10 @@ class CacheTool
             }
         }
 
-        return $this->functions[$name];
+        if (isset($this->functions[$name])) {
+            return $this->functions[$name];
+        }
+
+        throw new \InvalidArgumentException("Function with name: {$name} is not provided by any Proxy.");
     }
 }

@@ -10,7 +10,7 @@ class CacheToolTest extends \PHPUnit_Framework_TestCase
 {
     public function testConstruct()
     {
-        $cachetool = new CacheTool($this->getLogger());
+        $cachetool = new CacheTool();
     }
 
     public function testFactory()
@@ -39,6 +39,31 @@ class CacheToolTest extends \PHPUnit_Framework_TestCase
         $this->assertCount(3, $cachetool->getProxies());
         $this->assertSame($adapter, $cachetool->getAdapter());
         $this->assertSame($logger, $cachetool->getLogger());
+    }
+
+    public function testLoggerWithAdapter()
+    {
+        $cachetool = new CacheTool($this->getLogger());
+        $cachetool->setAdapter(new Adapter\Cli);
+        $cachetool->setLogger($this->getLogger());
+    }
+
+    /**
+     * @expectedException \InvalidArgumentException
+     */
+    public function testInexistentFunction()
+    {
+        $cachetool = new CacheTool($this->getLogger());
+        $cachetool->doesNotExist();
+    }
+
+    /**
+     * @expectedException \InvalidArgumentException
+     */
+    public function testInexistentWithMagicCallFunction()
+    {
+        $cachetool = new CacheTool($this->getLogger());
+        $cachetool->__call('doesNotExist', array());
     }
 
     protected function getLogger()

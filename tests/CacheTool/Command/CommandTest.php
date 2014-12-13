@@ -21,4 +21,18 @@ abstract class CommandTest extends \PHPUnit_Framework_TestCase
 
         return $output->fetch();
     }
+
+    protected function assertHasApc()
+    {
+        if (!extension_loaded('apc')) {
+            $this->markTestSkipped('APC extension is not loaded.');
+        }
+    }
+
+    protected function assertHasOpcache()
+    {
+        if (!extension_loaded('Zend OPcache')) {
+            $this->markTestSkipped('OPcache extension is not loaded.');
+        }
+    }
 }

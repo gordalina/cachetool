@@ -13,7 +13,7 @@ install:
 
 before_script:
     - sudo apt-get install php5-fpm
-    - ./travis/bin/install-apcu.sh
+    - ./.travis/bin/install-apcu.sh
     - phpenv config-add .travis/php/$TRAVIS_PHP_VERSION.ini
     - phpenv config-add .travis/ext/apc.ini
     - phpenv config-add .travis/ext/opcache.ini
@@ -22,4 +22,4 @@ script:
     - phpunit --coverage-clover=coverage.clover
 
 after_script:
-    - ./travis/bin/code-coverage.sh
+    - ./.travis/bin/code-coverage.sh

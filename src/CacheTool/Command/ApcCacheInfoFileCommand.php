@@ -15,7 +15,7 @@ use CacheTool\Util\Formatter;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
-class ApcCacheInfoFileCommand extends AbstractCommand
+class ApcCacheInfoFileCommand extends ApcCacheInfoCommand
 {
     /**
      * {@inheritdoc}
@@ -36,6 +36,7 @@ class ApcCacheInfoFileCommand extends AbstractCommand
         $this->ensureExtensionLoaded('apc');
 
         $info = $this->getCacheTool()->apc_cache_info('system');
+        $this->normalize($info);
 
         if (!$info) {
             throw new \RuntimeException("Could not fetch info from APC");

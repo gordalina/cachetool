@@ -17,6 +17,24 @@ use Symfony\Component\Console\Output\OutputInterface;
 
 class ApcCacheInfoCommand extends AbstractCommand
 {
+    protected static $apcFix = array(
+        'stime' => "start_time",
+        'atime' => "access_time",
+        'mtime' => "modification_time",
+        'ctime' => "creation_time",
+        'dtime' => "deletion_time",
+
+        'nslots' => "num_slots",
+        'nhits' => "num_hits",
+        'nmisses' => "num_misses",
+        'ninserts' => "num_inserts",
+        'nentries' => "num_entries",
+        'nexpunges' => "expunges",
+        "num_expunges" => "expunges",
+
+        'key' => "info",
+    );
+
     /**
      * {@inheritdoc}
      */
@@ -38,6 +56,9 @@ class ApcCacheInfoCommand extends AbstractCommand
         $user = $this->getCacheTool()->apc_cache_info('user');
         $system = $this->getCacheTool()->apc_cache_info('system');
 
+        $this->normalize($user);
+        $this->normalize($system);
+
         if (!$user || !$system) {
             throw new \RuntimeException("Could not fetch info from APC");
         }
@@ -58,10 +79,25 @@ class ApcCacheInfoCommand extends AbstractCommand
                 array('Entries', number_format($user['num_entries']), number_format($system['num_entries'])),
                 array('File upload progress', $user['file_upload_progress'] ? 'Yes' : 'No', $system['file_upload_progress'] ? 'Yes' : 'No'),
                 array('Memory type', $user['memory_type'], $system['memory_type']),
-                array('Locking type', $user['locking_type'], $system['locking_type']),
+                array('Locking type', (isset($user['locking_type']) ? $user['locking_type'] : 'Not Supported'), (isset($system['locking_type']) ? $system['locking_type'] : 'Not Supported')),
             ))
         ;
 
         $table->render($output);
+    }
+
+    /**
+     * Fix inconsistencies between APC and APCu
+     *
+     * @param  array  &$array
+     */
+    protected function normalize(array &$array)
+    {
+        foreach ($array as $key => $value) {
+            if (array_key_exists($key, self::$apcFix)) {
+                unset($array[$key]);
+                $array[self::$apcFix[$key]] = $value;
+            }
+        }
     }
 }

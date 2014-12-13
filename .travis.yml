@@ -13,12 +13,12 @@ install:
 
 before_script:
     - sudo apt-get install php5-fpm
-    - sh -c "if [[ $TRAVIS_PHP_VERSION != 'hhvm' && `php-config --vernum` -ge 50500 ]] ; then pecl config-set preferred_state beta; printf "yes\n" | pecl install apcu ; else echo 'extension="apc.so"' >> ./tests/travis/php.ini ;fi"
+    - sh -c "if [[ $TRAVIS_PHP_VERSION != 'hhvm' ]] && [[ `php-config --vernum` -ge 50500 ]] ; then pecl config-set preferred_state beta; printf "yes\n" | pecl install apcu ; else echo 'extension="apc.so"' >> ./tests/travis/php.ini ;fi"
     - phpenv config-add tests/travis/php.ini
 
 script:
     - phpunit --coverage-clover=coverage.clover
 
 after_script:
-    - sh -c "if [[ $TRAVIS_PHP_VERSION != 'hhvm' && `php-config --vernum` -ge 50600 ]] ; then wget https://scrutinizer-ci.com/ocular.phar ; php ocular.phar code-coverage:upload --format=php-clover coverage.clover ;fi"
+    - sh -c "if [[ $TRAVIS_PHP_VERSION != 'hhvm' ]] && [[ `php-config --vernum` -ge 50600 ]] ; then wget https://scrutinizer-ci.com/ocular.phar ; php ocular.phar code-coverage:upload --format=php-clover coverage.clover ;fi"
 

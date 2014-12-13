@@ -13,8 +13,7 @@ install:
 
 before_script:
     - sudo apt-get install php5-fpm
-    - echo yes | pecl install channel://pecl.php.net/apcu-4.0.7
-    - phpenv config-add .travis/php/$TRAVIS_PHP_VERSION.ini
+    - sh -c "if [[ $TRAVIS_PHP_VERSION != 'hhvm' && `php-config --vernum` -ge 50500 ]] ; then pecl config-set preferred_state beta; printf "yes\n" | pecl install apcu ; else echo 'extension="apc.so"' >> ./tests/travis/php.ini ;fi
     - phpenv config-add .travis/ext/apc.ini
     - phpenv config-add .travis/ext/opcache.ini
 
@@ -22,4 +21,5 @@ script:
     - phpunit --coverage-clover=coverage.clover
 
 after_script:
-    - sh .travis/bin/code-coverage.sh
+    - sh -c "if [[ `php-config --vernum` -ge 50600 ]] ; then ; wget https://scrutinizer-ci.com/ocular.phar ; php ocular.phar code-coverage:upload --format=php-clover coverage.clover ;fi"
+

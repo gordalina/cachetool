@@ -12,7 +12,6 @@ class OpcacheStatusCommandTest extends CommandTest
 
         $this->assertContains('opcache_get_status(false)', $result);
         $this->assertContains('Enabled', $result);
-        $this->assertContains('Number of strings', $result);
         $this->assertContains('Opcache hit rate', $result);
     }
 }

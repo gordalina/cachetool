@@ -13,15 +13,13 @@ install:
 
 before_script:
     - sudo apt-get install php5-fpm
-    - mkdir -p /home/travis/.phpenv/versions/$(phpenv version-name)/etc/conf.d
-    - echo "extension = apc.so" >> ~/.phpenv/versions/$(phpenv version-name)/etc/php.ini
-    - echo 'opcache.enable_cli = On' >> ~/.phpenv/versions/$(phpenv version-name)/etc/conf.d/travis.ini
-    - echo 'apc.enabled = On' >> ~/.phpenv/versions/$(phpenv version-name)/etc/conf.d/travis.ini
-    - echo 'apc.enable_cli = On' >> ~/.phpenv/versions/$(phpenv version-name)/etc/conf.d/travis.ini
+    - ./travis/bin/install-apcu.sh
+    - phpenv config-add .travis/php/$TRAVIS_PHP_VERSION.ini
+    - phpenv config-add .travis/ext/apc.ini
+    - phpenv config-add .travis/ext/opcache.ini
 
 script:
     - phpunit --coverage-clover=coverage.clover
 
 after_script:
-    - wget https://scrutinizer-ci.com/ocular.phar
-    - php ocular.phar code-coverage:upload --format=php-clover coverage.clover
+    - ./travis/bin/code-coverage.sh

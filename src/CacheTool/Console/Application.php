@@ -124,16 +124,13 @@ class Application extends BaseApplication
      * @param  InputInterface     $input
      * @return ContainerInterface
      */
-    public function buildContainer(InputInterface $rawInput)
+    public function buildContainer(InputInterface $input)
     {
-        $input = clone $rawInput;
-        $input->bind($this->getDefaultInputDefinition());
-
-        if ($input->getOption('cli')) {
+        if ($input->hasParameterOption('--cli')) {
             $this->config['adapter'] = 'cli';
-        } else if ($input->getOption('fcgi')) {
+        } else if ($input->hasParameterOption('--fcgi')) {
             $this->config['adapter'] = 'fastcgi';
-            $this->config['fastcgi'] = $input->getOption('fcgi');
+            $this->config['fastcgi'] = $input->getParameterOption('--fcgi');
         }
 
         switch ($this->config['adapter']) {

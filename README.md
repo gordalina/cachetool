@@ -156,4 +156,4 @@ PHP 5.3.3
 License
 -------
 
-CacheTool is licensed under the MIT License - see the [LICENSE]() for details
+CacheTool is licensed under the MIT License - see the [LICENSE](LICENSE) for details

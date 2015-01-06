@@ -105,7 +105,7 @@ Usage (as a library)
 Add it as a dependency
 
 ```sh
-$ composer require gordalina/cachetool=~1.0
+$ composer require gordalina/cachetool
 ```
 
 Create instance

@@ -11,6 +11,7 @@ class CacheToolTest extends \PHPUnit_Framework_TestCase
     public function testConstruct()
     {
         $cachetool = new CacheTool();
+        $this->assertInstanceOf('CacheTool\CacheTool', $cachetool);
     }
 
     public function testFactory()

@@ -56,5 +56,7 @@ class ApplicationTest extends CommandTest
 
         $output = new BufferedOutput();
         $code = $app->run(new StringInput("dummy -vvv"), $output);
+
+        $this->assertSame(42, $code);
     }
 }

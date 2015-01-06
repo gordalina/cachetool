@@ -55,7 +55,22 @@ class OpcacheStatusCommand extends AbstractCommand
      */
     protected function getRows($info, $stats)
     {
-        $rows = array(
+        $rows = $this->getGeneralRows($info);
+
+        if (isset($info['interned_strings_usage'])) {
+            $rows = array_merge($rows, $this->getStringsRows($info));
+        }
+
+        return array_merge($rows, $this->getOpcacheStatsRows($stats));
+    }
+
+    /**
+     * @param  array $info
+     * @return array
+     */
+    protected function getGeneralRows($info)
+    {
+        return array(
             array('Enabled', $info['opcache_enabled'] ? 'Yes' : 'No'),
             array('Cache full', $info['cache_full'] ? 'Yes' : 'No'),
             array('Restart pending', $info['restart_pending'] ? 'Yes' : 'No'),
@@ -64,17 +79,29 @@ class OpcacheStatusCommand extends AbstractCommand
             array('Memory free', Formatter::bytes($info['memory_usage']['free_memory'])),
             array('Memory wasted (%)', sprintf("%s (%s%%)", Formatter::bytes($info['memory_usage']['wasted_memory']), $info['memory_usage']['current_wasted_percentage'])),
         );
+    }
 
-        if (isset($info['interned_strings_usage'])) {
-            $rows = array_merge($rows, array(
-                array('Strings buffer size', Formatter::bytes($info['interned_strings_usage']['buffer_size'])),
-                array('Strings memory used', Formatter::bytes($info['interned_strings_usage']['used_memory'])),
-                array('Strings memory free', Formatter::bytes($info['interned_strings_usage']['free_memory'])),
-                array('Number of strings', $info['interned_strings_usage']['number_of_strings']),
-            ));
-        }
+    /**
+     * @param  array $info
+     * @return array
+     */
+    protected function getStringsRows($info)
+    {
+        return array(
+            array('Strings buffer size', Formatter::bytes($info['interned_strings_usage']['buffer_size'])),
+            array('Strings memory used', Formatter::bytes($info['interned_strings_usage']['used_memory'])),
+            array('Strings memory free', Formatter::bytes($info['interned_strings_usage']['free_memory'])),
+            array('Number of strings', $info['interned_strings_usage']['number_of_strings']),
+        );
+    }
 
-        return array_merge($rows, array(
+    /**
+     * @param  array $stats
+     * @return array
+     */
+    protected function getOpcacheStatsRows($stats)
+    {
+        return array(
             new TableSeparator(),
             array('Cached scripts', $stats['num_cached_scripts']),
             array('Cached keys', $stats['num_cached_keys']),
@@ -88,6 +115,6 @@ class OpcacheStatusCommand extends AbstractCommand
             array('Misses', $stats['misses']),
             array('Blacklist misses (%)', sprintf('%s (%s%%)', $stats['blacklist_misses'], $stats['blacklist_miss_ratio'])),
             array('Opcache hit rate', $stats['opcache_hit_rate']),
-        ));
+        );
     }
 }

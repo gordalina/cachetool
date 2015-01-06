@@ -48,6 +48,11 @@ class OpcacheStatusCommand extends AbstractCommand
         $table->render($output);
     }
 
+    /**
+     * @param  array $info
+     * @param  array $stats
+     * @return array
+     */
     protected function getRows($info, $stats)
     {
         $rows = array(

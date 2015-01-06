@@ -63,27 +63,34 @@ class ApcCacheInfoCommand extends AbstractCommand
             throw new \RuntimeException("Could not fetch info from APC");
         }
 
-        // missing: cache_list, deleted_list, slot_distribution
         $table = $this->getHelper('table');
-        $table
-            ->setHeaders(array('Name', 'User', 'System'))
-            ->setRows(array(
-                array('Slots', $user['num_slots'], $system['num_slots']),
-                array('TTL', $user['ttl'], $system['ttl']),
-                array('Hits', number_format($user['num_hits']), number_format($system['num_hits'])),
-                array('Misses', number_format($user['num_misses']), number_format($system['num_misses'])),
-                array('Inserts', number_format($user['num_inserts']), number_format($system['num_inserts'])),
-                array('Expunges', number_format($user['expunges']), number_format($system['expunges'])),
-                array('Start time', Formatter::date($user['start_time'], 'U'), Formatter::date($system['start_time'], 'U')),
-                array('Memory size', Formatter::bytes($user['mem_size']), Formatter::bytes($system['mem_size'])),
-                array('Entries', number_format($user['num_entries']), number_format($system['num_entries'])),
-                array('File upload progress', $user['file_upload_progress'] ? 'Yes' : 'No', $system['file_upload_progress'] ? 'Yes' : 'No'),
-                array('Memory type', $user['memory_type'], $system['memory_type']),
-                array('Locking type', (isset($user['locking_type']) ? $user['locking_type'] : 'Not Supported'), (isset($system['locking_type']) ? $system['locking_type'] : 'Not Supported')),
-            ))
-        ;
-
+        $table->setHeaders(array('Name', 'User', 'System'));
+        $table->setRows($this->getRows($user, $system));
         $table->render($output);
+    }
+
+    /**
+     * @param  array $user
+     * @param  array $system
+     * @return array
+     */
+    protected function getRows($user, $system)
+    {
+        // missing: cache_list, deleted_list, slot_distribution
+        return array(
+            array('Slots', $user['num_slots'], $system['num_slots']),
+            array('TTL', $user['ttl'], $system['ttl']),
+            array('Hits', number_format($user['num_hits']), number_format($system['num_hits'])),
+            array('Misses', number_format($user['num_misses']), number_format($system['num_misses'])),
+            array('Inserts', number_format($user['num_inserts']), number_format($system['num_inserts'])),
+            array('Expunges', number_format($user['expunges']), number_format($system['expunges'])),
+            array('Start time', Formatter::date($user['start_time'], 'U'), Formatter::date($system['start_time'], 'U')),
+            array('Memory size', Formatter::bytes($user['mem_size']), Formatter::bytes($system['mem_size'])),
+            array('Entries', number_format($user['num_entries']), number_format($system['num_entries'])),
+            array('File upload progress', $user['file_upload_progress'] ? 'Yes' : 'No', $system['file_upload_progress'] ? 'Yes' : 'No'),
+            array('Memory type', $user['memory_type'], $system['memory_type']),
+            array('Locking type', (isset($user['locking_type']) ? $user['locking_type'] : 'Not Supported'), (isset($system['locking_type']) ? $system['locking_type'] : 'Not Supported')),
+        );
     }
 
     /**

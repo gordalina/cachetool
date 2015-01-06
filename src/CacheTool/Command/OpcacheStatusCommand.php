@@ -42,8 +42,14 @@ class OpcacheStatusCommand extends AbstractCommand
             throw new \RuntimeException('opcache_get_status(): No Opcache status info available.  Perhaps Opcache is disabled via opcache.enable or opcache.enable_cli?');
         }
 
-        $stats = $info['opcache_statistics'];
+        $table = $this->getHelper('table');
+        $table->setHeaders(array('Name', 'Value'));
+        $table->setRows($this->getRows($info, $info['opcache_statistics']));
+        $table->render($output);
+    }
 
+    protected function getRows($info, $stats)
+    {
         $rows = array(
             array('Enabled', $info['opcache_enabled'] ? 'Yes' : 'No'),
             array('Cache full', $info['cache_full'] ? 'Yes' : 'No'),
@@ -63,7 +69,7 @@ class OpcacheStatusCommand extends AbstractCommand
             ));
         }
 
-        $rows = array_merge($rows, array(
+        return array_merge($rows, array(
             new TableSeparator(),
             array('Cached scripts', $stats['num_cached_scripts']),
             array('Cached keys', $stats['num_cached_keys']),
@@ -78,13 +84,5 @@ class OpcacheStatusCommand extends AbstractCommand
             array('Blacklist misses (%)', sprintf('%s (%s%%)', $stats['blacklist_misses'], $stats['blacklist_miss_ratio'])),
             array('Opcache hit rate', $stats['opcache_hit_rate']),
         ));
-
-        $table = $this->getHelper('table');
-        $table
-            ->setHeaders(array('Name', 'Value'))
-            ->setRows($rows)
-        ;
-
-        $table->render($output);
     }
 }

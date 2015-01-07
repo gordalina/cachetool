@@ -40,6 +40,10 @@ class CodeTest extends \PHPUnit_Framework_TestCase
      */
     public function testWriteToWrongFolder()
     {
+        if (defined('HHVM_VERSION')) {
+            $this->markTestSkipped('HHVM does not support php://filter stream wrapper');
+        }
+
         $file = '/non-existant-folder/file.php';
 
         $code = Code::fromString('$a = 10; return $a;');

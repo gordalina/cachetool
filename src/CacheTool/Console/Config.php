@@ -16,12 +16,17 @@ class Config implements \ArrayAccess
     private $config = array(
         'adapter' => 'fastcgi',
         'fastcgi' => '127.0.0.1:9000',
+        'temp_dir' => null
     );
 
     public function __construct(array $config = array())
     {
         if (!empty($config)) {
             $this->config = $config;
+
+            if (!isset($this->config['temp_dir'])) {
+                $this->config['temp_dir'] = sys_get_temp_dir();
+            }
         }
     }
 

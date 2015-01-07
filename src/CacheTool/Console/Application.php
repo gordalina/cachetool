@@ -86,6 +86,7 @@ class Application extends BaseApplication
         $definition = parent::getDefaultInputDefinition();
         $definition->addOption(new InputOption('--fcgi', null, InputOption::VALUE_OPTIONAL, 'If specified, used as a connection string to FastCGI server.'));
         $definition->addOption(new InputOption('--cli', null, InputOption::VALUE_NONE, 'If specified, forces adapter to cli'));
+        $definition->addOption(new InputOption('--tmp-dir', '-t', InputOption::VALUE_REQUIRED, 'Temporary directory to write files to'));
 
         return $definition;
     }
@@ -132,13 +133,17 @@ class Application extends BaseApplication
             $this->config['fastcgi'] = $input->getParameterOption('--fcgi');
         }
 
+        if ($input->hasParameterOption('--tmp-dir') || $input->hasParameterOption('-t')) {
+            $this->config['temp_dir'] = $input->getParameterOption('--tmp-dir') ?: $input->getParameterOption('-t');
+        }
+
         switch ($this->config['adapter']) {
             case 'cli':
-                $adapter = new Cli();
+                $adapter = new Cli($this->config['temp_dir']);
                 break;
 
             case 'fastcgi':
-                $adapter = new FastCGI($this->config['fastcgi']);
+                $adapter = new FastCGI($this->config['fastcgi'], $this->config['temp_dir']);
                 break;
 
             default:

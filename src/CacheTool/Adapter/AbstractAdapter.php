@@ -22,6 +22,16 @@ abstract class AbstractAdapter
     protected $logger;
 
     /**
+     * @var string
+     */
+    protected $tempDir;
+
+    public function __construct($tempDir = null)
+    {
+        $this->tempDir = $tempDir ?: sys_get_temp_dir();
+    }
+
+    /**
      * @param  Code   $code
      * @return string
      */
@@ -74,7 +84,7 @@ abstract class AbstractAdapter
      */
     protected function createTemporaryFile()
     {
-        $file = sprintf("%s/cachetool-%s.php", sys_get_temp_dir(), uniqid());
+        $file = sprintf("%s/cachetool-%s.php", $this->tempDir, uniqid());
 
         touch($file);
         chmod($file, 0666);

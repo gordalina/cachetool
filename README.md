@@ -2,7 +2,6 @@ CacheTool - Manage cache in the CLI
 ===================================
 
 [![Build Status](https://travis-ci.org/gordalina/cachetool.svg?branch=master)](https://travis-ci.org/gordalina/cachetool)
-[![HHVM Status](http://hhvm.h4cc.de/badge/gordalina/cachetool.svg)](http://hhvm.h4cc.de/package/gordalina/cachetool)
 [![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/gordalina/cachetool/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/gordalina/cachetool/?branch=master)
 [![Code Coverage](https://scrutinizer-ci.com/g/gordalina/cachetool/badges/coverage.png?b=master)](https://scrutinizer-ci.com/g/gordalina/cachetool/?branch=master)
 [![SensioLabsInsight](https://insight.sensiolabs.com/projects/595c9feb-3f4d-473a-a575-81c7e97eb672/mini.png)](https://insight.sensiolabs.com/projects/595c9feb-3f4d-473a-a575-81c7e97eb672)
@@ -99,6 +98,16 @@ adapter: cli
 fastcgi: /var/run/php5-fpm.sock
 ```
 
+CacheTool writes files to the system temporary directory (given by `sys_get_temp_dir()`)
+but if you want to change this, for example, if your fastcgi service is run with PrivateTemp
+you can set it on the config file:
+
+```yml
+adapter: fastcgi
+fastcgi: /var/run/php5-fpm.sock
+temp_dir: /dev/shm/cachetool
+```
+
 Usage (as a library)
 --------------------
 
@@ -114,7 +123,7 @@ Create instance
 use CacheTool\Adapter\FastCGI;
 use CacheTool\CacheTool;
 
-$adapter = new FastCGI('127.0.0.1:9000');
+$adapter = new FastCGI('127.0.0.1:9000', $tempDir = '/tmp');
 $cache = CacheTool::factory($adapter);
 ```
 

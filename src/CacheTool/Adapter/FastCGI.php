@@ -54,9 +54,9 @@ class FastCGI extends AbstractAdapter
         $response = $this->request($code);
 
         if ($response['statusCode'] === 200) {
-            throw new \RuntimeException(sprintf("%s: %s", $response['stderr'], $response['body']));
-        } else {
             return $response['body'];
+        } else {
+            throw new \RuntimeException(sprintf("%s: %s", $response['stderr'], $response['body']));
         }
     }
 

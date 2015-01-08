@@ -17,6 +17,11 @@ use Psr\Log\LoggerInterface;
 abstract class AbstractAdapter
 {
     /**
+     * @var string
+     */
+    protected $tempDir;
+
+    /**
      * @var LoggerInterface
      */
     protected $logger;
@@ -59,6 +64,24 @@ abstract class AbstractAdapter
     }
 
     /**
+     * @return string
+     */
+    public function getTempDir()
+    {
+        return $this->tempDir;
+    }
+
+    /**
+     * @param string $tempDir
+     */
+    public function setTempDir($tempDir)
+    {
+        $this->tempDir = $tempDir;
+
+        return $this;
+    }
+
+    /**
      * @param  LoggerInterface $logger
      * @return AbstractAdapter
      */
@@ -74,7 +97,7 @@ abstract class AbstractAdapter
      */
     protected function createTemporaryFile()
     {
-        $file = sprintf("%s/cachetool-%s.php", sys_get_temp_dir(), uniqid());
+        $file = sprintf("%s/cachetool-%s.php", $this->tempDir, uniqid());
 
         touch($file);
         chmod($file, 0666);

@@ -24,8 +24,9 @@ class FastCGI extends AbstractAdapter
 
     /**
      * @param string $host 127.0.0.1:9000 or /var/run/php5-fpm.sock
+     * @param string $tempDir
      */
-    public function __construct($host = null)
+    public function __construct($host = null, $tempDir = null)
     {
         // try to guess where it is
         if ($host === null) {
@@ -52,10 +53,10 @@ class FastCGI extends AbstractAdapter
     {
         $response = $this->request($code);
 
-        if ($response['statusCode'] !== 200) {
-            throw new \RuntimeException($response['stderr']);
-        } else {
+        if ($response['statusCode'] === 200) {
             return $response['body'];
+        } else {
+            throw new \RuntimeException(sprintf("%s: %s", $response['stderr'], $response['body']));
         }
     }
 

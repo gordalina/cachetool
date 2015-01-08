@@ -16,7 +16,7 @@ class CacheToolTest extends \PHPUnit_Framework_TestCase
 
     public function testFactory()
     {
-        $cachetool = CacheTool::factory(null, $this->getLogger());
+        $cachetool = CacheTool::factory(null, null, $this->getLogger());
 
         $this->assertCount(3, $cachetool->getProxies());
         $this->assertNull($cachetool->getAdapter());
@@ -25,7 +25,7 @@ class CacheToolTest extends \PHPUnit_Framework_TestCase
     public function testFactoryWithAdapter()
     {
         $adapter = new Adapter\FastCGI();
-        $cachetool = CacheTool::factory($adapter, $this->getLogger());
+        $cachetool = CacheTool::factory($adapter, null, $this->getLogger());
 
         $this->assertCount(3, $cachetool->getProxies());
         $this->assertSame($adapter, $cachetool->getAdapter());
@@ -35,7 +35,7 @@ class CacheToolTest extends \PHPUnit_Framework_TestCase
     {
         $adapter = new Adapter\FastCGI();
         $logger = $this->getLogger();
-        $cachetool = CacheTool::factory($adapter, $logger);
+        $cachetool = CacheTool::factory($adapter, null, $logger);
 
         $this->assertCount(3, $cachetool->getProxies());
         $this->assertSame($adapter, $cachetool->getAdapter());
@@ -44,7 +44,7 @@ class CacheToolTest extends \PHPUnit_Framework_TestCase
 
     public function testLoggerWithAdapter()
     {
-        $cachetool = new CacheTool($this->getLogger());
+        $cachetool = new CacheTool(null, $this->getLogger());
         $cachetool->setAdapter(new Adapter\Cli);
         $cachetool->setLogger($this->getLogger());
     }
@@ -54,7 +54,7 @@ class CacheToolTest extends \PHPUnit_Framework_TestCase
      */
     public function testInexistentFunction()
     {
-        $cachetool = new CacheTool($this->getLogger());
+        $cachetool = new CacheTool(null, $this->getLogger());
         $cachetool->doesNotExist();
     }
 
@@ -63,7 +63,7 @@ class CacheToolTest extends \PHPUnit_Framework_TestCase
      */
     public function testInexistentWithMagicCallFunction()
     {
-        $cachetool = new CacheTool($this->getLogger());
+        $cachetool = new CacheTool(null, $this->getLogger());
         $cachetool->__call('doesNotExist', array());
     }
 

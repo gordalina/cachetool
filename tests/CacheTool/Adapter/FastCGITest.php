@@ -8,13 +8,14 @@ class FastCGITest extends \PHPUnit_Framework_TestCase
 {
     public function testRun()
     {
-        $cli = new FastCGI();
-        $cli->setLogger($this->getMockBuilder('Monolog\Logger')->disableOriginalConstructor()->getMock());
+        $fcgi = new FastCGI();
+        $fcgi->setTempDir(sys_get_temp_dir());
+        $fcgi->setLogger($this->getMockBuilder('Monolog\Logger')->disableOriginalConstructor()->getMock());
 
         $code = Code::fromString('return true;');
 
         try {
-            $result = $cli->run($code);
+            $result = $fcgi->run($code);
         } catch (\RuntimeException $e) {
             $this->markTestSkipped($e->getMessage());
         }

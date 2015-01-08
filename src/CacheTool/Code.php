@@ -48,11 +48,20 @@ class Code
 
     /**
      * @param  string $file
-     * @return boolean
+     * @return null
      */
     public function writeTo($file)
     {
-        return false !== file_put_contents($file, '<?php' . PHP_EOL . $this->getCodeExecutable());
+        $code = '<?php' . PHP_EOL . $this->getCodeExecutable();
+        $chksum = md5($code);
+
+        if (false === @file_put_contents($file, $code)) {
+            throw new \RuntimeException("Could not write to `{$file}`: No such file or directory.");
+        }
+
+        if ($chksum !== md5_file($file)) {
+            throw new \RuntimeException("Aborted due to security constraints: After writing to `{$file}` the contents were not the same.");
+        }
     }
 
     /**

@@ -150,9 +150,7 @@ class Application extends BaseApplication
                 throw new \RuntimeException("Adapter `{$this->config['adapter']}` is not one of cli or fastcgi");
         }
 
-        $cacheTool = CacheTool::factory($adapter, $this->logger);
-        $cacheTool->setTempDir($this->config['temp_dir']);
-
+        $cacheTool = CacheTool::factory($adapter, $this->config['temp_dir'], $this->logger);
         $container = new Container();
         $container->set('cachetool', $cacheTool);
         $container->set('logger', $this->logger);

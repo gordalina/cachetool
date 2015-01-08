@@ -44,16 +44,17 @@ class CacheTool
     protected $logger;
 
     /**
+     * @param string          $tempDir
      * @param LoggerInterface $logger
      */
-    public function __construct(LoggerInterface $logger = null)
+    public function __construct($tempDir = null, LoggerInterface $logger = null)
     {
         $this->logger = $logger ?: new Logger('cachetool');
 
-        $tempDirs = array('/dev/shm', '/var/run', sys_get_temp_dir());
+        $tempDirs = array($tempDir, '/dev/shm', '/var/run', sys_get_temp_dir());
 
         foreach ($tempDirs as $tempDir) {
-            if (is_writable($tempDir)) {
+            if (is_dir($tempDir) && is_writable($tempDir)) {
                 $this->tempDir = $tempDir;
                 break;
             }
@@ -62,12 +63,13 @@ class CacheTool
 
     /**
      * @param  AbstractAdapter $adapter
+     * @param  string          $tempDir
      * @param  LoggerInterface $logger
      * @return CacheTool
      */
-    public static function factory(AbstractAdapter $adapter = null, LoggerInterface $logger = null)
+    public static function factory(AbstractAdapter $adapter = null, $tempDir = null, LoggerInterface $logger = null)
     {
-        $cacheTool = new static($logger);
+        $cacheTool = new static($tempDir, $logger);
         $cacheTool->addProxy(new Proxy\ApcProxy());
         $cacheTool->addProxy(new Proxy\PhpProxy());
         $cacheTool->addProxy(new Proxy\OpcacheProxy());
@@ -124,28 +126,6 @@ class CacheTool
     public function getProxies()
     {
         return $this->proxies;
-    }
-
-    /**
-     * @return string
-     */
-    public function getTempDir()
-    {
-        return $this->tempDir;
-    }
-
-    /**
-     * @param string $tempDir
-     */
-    public function setTempDir($tempDir)
-    {
-        $this->tempDir = $tempDir;
-
-        if ($this->adapter instanceof AbstractAdapter) {
-            $this->adapter->setTempDir($tempDir);
-        }
-
-        return $this;
     }
 
     /**

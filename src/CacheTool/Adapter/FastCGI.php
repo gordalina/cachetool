@@ -28,8 +28,6 @@ class FastCGI extends AbstractAdapter
      */
     public function __construct($host = null, $tempDir = null)
     {
-        parent::__construct($tempDir);
-
         // try to guess where it is
         if ($host === null) {
             if (file_exists('/var/run/php5-fpm.sock')) {

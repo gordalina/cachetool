@@ -139,19 +139,22 @@ class Application extends BaseApplication
 
         switch ($this->config['adapter']) {
             case 'cli':
-                $adapter = new Cli($this->config['temp_dir']);
+                $adapter = new Cli();
                 break;
 
             case 'fastcgi':
-                $adapter = new FastCGI($this->config['fastcgi'], $this->config['temp_dir']);
+                $adapter = new FastCGI($this->config['fastcgi']);
                 break;
 
             default:
                 throw new \RuntimeException("Adapter `{$this->config['adapter']}` is not one of cli or fastcgi");
         }
 
+        $cacheTool = CacheTool::factory($adapter, $this->logger);
+        $cacheTool->setTempDir($this->config['temp_dir']);
+
         $container = new Container();
-        $container->set('cachetool', CacheTool::factory($adapter, $this->logger));
+        $container->set('cachetool', $cacheTool);
         $container->set('logger', $this->logger);
 
         return $container;

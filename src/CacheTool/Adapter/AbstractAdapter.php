@@ -17,19 +17,14 @@ use Psr\Log\LoggerInterface;
 abstract class AbstractAdapter
 {
     /**
-     * @var LoggerInterface
-     */
-    protected $logger;
-
-    /**
      * @var string
      */
     protected $tempDir;
 
-    public function __construct($tempDir = null)
-    {
-        $this->tempDir = $tempDir ?: sys_get_temp_dir();
-    }
+    /**
+     * @var LoggerInterface
+     */
+    protected $logger;
 
     /**
      * @param  Code   $code
@@ -66,6 +61,24 @@ abstract class AbstractAdapter
         });
 
         throw new \RuntimeException($errors);
+    }
+
+    /**
+     * @return string
+     */
+    public function getTempDir()
+    {
+        return $this->tempDir;
+    }
+
+    /**
+     * @param string $tempDir
+     */
+    public function setTempDir($tempDir)
+    {
+        $this->tempDir = $tempDir;
+
+        return $this;
     }
 
     /**

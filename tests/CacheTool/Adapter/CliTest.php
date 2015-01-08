@@ -9,6 +9,7 @@ class CliTest extends \PHPUnit_Framework_TestCase
     public function testRun()
     {
         $cli = new Cli();
+        $cli->setTempDir(sys_get_temp_dir());
         $cli->setLogger($this->getMockBuilder('Monolog\Logger')->disableOriginalConstructor()->getMock());
 
         $code = Code::fromString('return true;');
@@ -24,6 +25,7 @@ class CliTest extends \PHPUnit_Framework_TestCase
     public function testException()
     {
         $cli = new Cli();
+        $cli->setTempDir(sys_get_temp_dir());
         $cli->setLogger($this->getMockBuilder('Monolog\Logger')->disableOriginalConstructor()->getMock());
 
         $code = Code::fromString('throw new \Exception("test");');

@@ -34,6 +34,11 @@ class CacheTool
     protected $functions = array();
 
     /**
+     * @var string
+     */
+    protected $tempDir;
+
+    /**
      * @var LoggerInterface
      */
     protected $logger;
@@ -44,6 +49,15 @@ class CacheTool
     public function __construct(LoggerInterface $logger = null)
     {
         $this->logger = $logger ?: new Logger('cachetool');
+
+        $tempDirs = array('/dev/shm', '/var/run', sys_get_temp_dir());
+
+        foreach ($tempDirs as $tempDir) {
+            if (is_writable($tempDir)) {
+                $this->tempDir = $tempDir;
+                break;
+            }
+        }
     }
 
     /**
@@ -75,6 +89,7 @@ class CacheTool
 
         $this->adapter = $adapter;
         $this->adapter->setLogger($this->logger);
+        $this->adapter->setTempDir($this->tempDir);
 
         return $this;
     }
@@ -109,6 +124,28 @@ class CacheTool
     public function getProxies()
     {
         return $this->proxies;
+    }
+
+    /**
+     * @return string
+     */
+    public function getTempDir()
+    {
+        return $this->tempDir;
+    }
+
+    /**
+     * @param string $tempDir
+     */
+    public function setTempDir($tempDir)
+    {
+        $this->tempDir = $tempDir;
+
+        if ($this->adapter instanceof AbstractAdapter) {
+            $this->adapter->setTempDir($tempDir);
+        }
+
+        return $this;
     }
 
     /**

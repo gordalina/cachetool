@@ -1,14 +1,13 @@
 {
     "name": "gordalina/cachetool",
-    "description": "Manage your caches through the cli",
-    "keywords": ["cache", "opcache", "apc"],
+    "description": "Manage your opcode & apc through the cli",
+    "keywords": ["cache", "opcache", "apc", "fastcgi", "opcode"],
     "require": {
         "php": ">=5.3.3",
         "symfony/console": "~2.3",
         "symfony/dependency-injection": "~2.3",
         "symfony/process": "~2.1",
         "symfony/yaml": "~2.1",
-        "ebernhardson/fastcgi": "dev-master",
         "psr/log": "~1.0",
         "monolog/monolog": "~1.11"
     },

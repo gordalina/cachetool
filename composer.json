@@ -9,7 +9,8 @@
         "symfony/process": "~2.1",
         "symfony/yaml": "~2.1",
         "psr/log": "~1.0",
-        "monolog/monolog": "~1.1"
+        "monolog/monolog": "~1.1",
+        "ebernhardson/fastcgi": "0.1.*"
     },
     "license": "MIT",
     "authors": [

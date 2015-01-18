@@ -12,8 +12,8 @@
 namespace CacheTool\Adapter;
 
 use CacheTool\Code;
-use CacheTool\FastCGI\Client;
-use CacheTool\FastCGI\CommunicationException;
+use EBernhardson\FastCGI\Client;
+use EBernhardson\FastCGI\CommunicationException;
 
 class FastCGI extends AbstractAdapter
 {

@@ -11,8 +11,8 @@ install:
     - composer self-update
     - composer install --prefer-source
 
-before_script:
-    - sudo apt-get install php5-fpm
+#before_script:
+    #- sudo apt-get install php5-fpm
 
 script:
     - phpunit --coverage-clover=coverage.clover

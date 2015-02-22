@@ -1,11 +1,11 @@
 CacheTool - Manage cache in the CLI
 ===================================
 
-[![Build Status](https://travis-ci.org/gordalina/cachetool.svg?branch=master)](https://travis-ci.org/gordalina/cachetool)
-[![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/gordalina/cachetool/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/gordalina/cachetool/?branch=master)
-[![Code Coverage](https://scrutinizer-ci.com/g/gordalina/cachetool/badges/coverage.png?b=master)](https://scrutinizer-ci.com/g/gordalina/cachetool/?branch=master)
-[![SensioLabsInsight](https://insight.sensiolabs.com/projects/595c9feb-3f4d-473a-a575-81c7e97eb672/mini.png)](https://insight.sensiolabs.com/projects/595c9feb-3f4d-473a-a575-81c7e97eb672)
-[![Codacy Badge](https://www.codacy.com/project/badge/2d4176f2526d4251a51b691249c4d3e1)](https://www.codacy.com)
+[![Build Status](https://img.shields.io/travis/gordalina/cachetool.svg)](https://travis-ci.org/gordalina/cachetool)
+[![Scrutinizer Code Quality](https://img.shields.io/scrutinizer/g/gordalina/cachetool.svg)](https://scrutinizer-ci.com/g/gordalina/cachetool/?branch=master)
+[![Code Coverage](https://scrutinizer-ci.com/g/gordalina/cachetool/badges/coverage.png?b=master)](https://img.shields.io/scrutinizer/coverage/g/gordalina/cachetool.svg)
+[![SensioLabsInsight](https://img.shields.io/sensiolabs/i/595c9feb-3f4d-473a-a575-81c7e97eb672.svg)](https://insight.sensiolabs.com/projects/595c9feb-3f4d-473a-a575-81c7e97eb672)
+[![Codacy Badge](https://img.shields.io/codacy/2d4176f2526d4251a51b691249c4d3e1.svg)](https://www.codacy.com)
 
 CacheTool allows you to work with `apc` and `opcache` through the cli.
 It will connect to a fastcgi server (like php-fpm) and operate it's cache.

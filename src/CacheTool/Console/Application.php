@@ -69,6 +69,7 @@ class Application extends BaseApplication
         $commands[] = new CacheToolCommand\ApcKeyFetchCommand();
         $commands[] = new CacheToolCommand\ApcKeyStoreCommand();
         $commands[] = new CacheToolCommand\ApcSmaInfoCommand();
+        $commands[] = new CacheToolCommand\ApcRegexpDeleteCommand();
 
         $commands[] = new CacheToolCommand\OpcacheConfigurationCommand();
         $commands[] = new CacheToolCommand\OpcacheResetCommand();

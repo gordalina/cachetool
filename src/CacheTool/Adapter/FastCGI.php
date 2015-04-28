@@ -12,8 +12,8 @@
 namespace CacheTool\Adapter;
 
 use CacheTool\Code;
-use EBernhardson\FastCGI\Client;
-use EBernhardson\FastCGI\CommunicationException;
+use Adoy\FastCGI\Client;
+use Adoy\FastCGI\ForbiddenException as CommunicationException;
 
 class FastCGI extends AbstractAdapter
 {
@@ -42,8 +42,11 @@ class FastCGI extends AbstractAdapter
             $this->client = new Client($host, $port);
         } else {
             // socket
-            $this->client = new Client($host);
+            $this->client = new Client('unix://' . $host, -1);
         }
+        $this->client->setReadWriteTimeout(60 * 1000);
+        $this->client->setPersistentSocket(false);
+        $this->client->setKeepAlive(true);
     }
 
     /**
@@ -75,12 +78,13 @@ class FastCGI extends AbstractAdapter
                 'SCRIPT_FILENAME' => $file,
             );
 
-            $this->client->request($environment, '');
-            $response = $this->client->response();
+            try {
+                $response = $this->client->request($environment, '');
+            } catch (CommunicationException $e) {
+                $this->client->close();
+                $response = $this->client->request($environment, '');
+            }
             $this->logger->debug(sprintf('FastCGI: Response: %s', json_encode($response)));
-
-            // lets close every request
-            $this->client->close();
 
             @unlink($file);
             return $response;

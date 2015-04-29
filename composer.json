@@ -10,8 +10,12 @@
         "symfony/yaml": "~2.1",
         "psr/log": "~1.0",
         "monolog/monolog": "~1.1",
-        "adoy/fastcgi-client": "dev-master"
+        "adoy/fastcgi-client": "dev-master#c332dfc8d3f96e47022170f169de73cf8d8d4f0a"
     },
+    "require-dev": {
+        "herrera-io/phar-update": "~2.0"
+    },
+    "minimum-stability": "dev",
     "license": "MIT",
     "authors": [
         {
@@ -22,8 +26,11 @@
     "autoload": {
         "psr-0": { "CacheTool": "src/" }
     },
-    "require-dev": {
-        "herrera-io/phar-update": "~2.0"
-    },
+    "repositories": [
+        {
+            "type": "vcs",
+            "url": "https://github.com/adoy/PHP-FastCGI-Client.git"
+        }
+    ],
     "bin": ["bin/cachetool"]
 }

@@ -13,7 +13,6 @@ namespace CacheTool\Adapter;
 
 use CacheTool\Code;
 use Adoy\FastCGI\Client;
-use Adoy\FastCGI\ForbiddenException as CommunicationException;
 
 class FastCGI extends AbstractAdapter
 {
@@ -44,6 +43,7 @@ class FastCGI extends AbstractAdapter
             // socket
             $this->client = new Client('unix://' . $host, -1);
         }
+
         $this->client->setReadWriteTimeout(60 * 1000);
         $this->client->setPersistentSocket(false);
         $this->client->setKeepAlive(true);
@@ -55,12 +55,17 @@ class FastCGI extends AbstractAdapter
     protected function doRun(Code $code)
     {
         $response = $this->request($code);
+        $parts = explode("\r\n\r\n", $response);
 
-        if ($response['statusCode'] === 200) {
-            return $response['body'];
-        } else {
-            throw new \RuntimeException(sprintf("%s: %s", $response['stderr'], $response['body']));
+        // remove headers
+        array_shift($parts);
+        $body = implode("\r\n\r\n", $parts);
+
+        if (@unserialize($body) === false) {
+            throw new \RuntimeException(sprintf("Error: %s", $response));
         }
+
+        return $body;
     }
 
     protected function request(Code $code)
@@ -78,21 +83,16 @@ class FastCGI extends AbstractAdapter
                 'SCRIPT_FILENAME' => $file,
             );
 
-            try {
-                $response = $this->client->request($environment, '');
-            } catch (CommunicationException $e) {
-                $this->client->close();
-                $response = $this->client->request($environment, '');
-            }
+            $response = $this->client->request($environment, '');
             $this->logger->debug(sprintf('FastCGI: Response: %s', json_encode($response)));
 
             @unlink($file);
             return $response;
-        } catch (CommunicationException $e) {
+        } catch (\Exception $e) {
             @unlink($file);
 
             throw new \RuntimeException(
-                sprintf('Could not connect to FastCGI server: %s', $e->getMessage()),
+                sprintf('FastCGI error: %s', $e->getMessage()),
                 $e->getCode()
             );
         }

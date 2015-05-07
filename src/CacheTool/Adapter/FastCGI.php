@@ -22,6 +22,11 @@ class FastCGI extends AbstractAdapter
     protected $client;
 
     /**
+     * @var string
+     */
+    protected $host;
+
+    /**
      * @param string $host 127.0.0.1:9000 or /var/run/php5-fpm.sock
      * @param string $tempDir
      */
@@ -35,6 +40,8 @@ class FastCGI extends AbstractAdapter
                 $host = '127.0.0.1:9000';
             }
         }
+
+        $this->host = $host;
 
         if (false !== strpos($host, ':')) {
             list($host, $port) = explode(':', $host);
@@ -92,7 +99,7 @@ class FastCGI extends AbstractAdapter
             @unlink($file);
 
             throw new \RuntimeException(
-                sprintf('FastCGI error: %s', $e->getMessage()),
+                sprintf('FastCGI error: %s (%s)', $e->getMessage(), $this->host),
                 $e->getCode()
             );
         }

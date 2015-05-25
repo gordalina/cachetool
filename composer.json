@@ -10,7 +10,7 @@
         "symfony/yaml": "~2.1",
         "psr/log": "~1.0",
         "monolog/monolog": "~1.1",
-        "adoy/fastcgi-client": "dev-master#c332dfc8d3f96e47022170f169de73cf8d8d4f0a"
+        "adoy/fastcgi-client": "~1.0"
     },
     "require-dev": {
         "herrera-io/phar-update": "~2.0"

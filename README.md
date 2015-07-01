@@ -162,6 +162,11 @@ Requirements
 
 PHP 5.3.3
 
+Testing
+-------
+
+After running `composer install`, run `./vendor/bin/phpunit`
+
 License
 -------
 

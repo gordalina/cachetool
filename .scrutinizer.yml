@@ -5,7 +5,9 @@ filter:
     excluded_paths: [vendor/*, tests/*]
 
 tools:
-    external_code_coverage: true
+    external_code_coverage:
+      # 15 minutes
+      timeout: 900
 
     php_analyzer: true
     php_changetracking: true

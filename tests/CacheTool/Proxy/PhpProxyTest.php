@@ -6,7 +6,7 @@ class PhpProxyTest extends ProxyTest
 {
     public function testGetFunctions()
     {
-        $this->assertCount(5, $this->createProxyInstance()->getFunctions());
+        $this->assertCount(8, $this->createProxyInstance()->getFunctions());
     }
 
     public function testFunctions()
@@ -16,6 +16,9 @@ class PhpProxyTest extends ProxyTest
         $this->assertProxyCode("return ini_set('var', 'value');", 'ini_set', array('var', 'value'));
         $this->assertProxyCode("return phpversion('php');", 'phpversion', array('php'));
         $this->assertProxyCode("passthru", '_eval', array('passthru'));
+        $this->assertProxyCode('return realpath_cache_get();', 'stat_realpath_get', array());
+        $this->assertProxyCode('return realpath_cache_size();', 'stat_realpath_size', array());
+        $this->assertProxyCode('return clearstatcache(true);', 'stat_cache_clear', array());
     }
 
     protected function createProxyInstance()

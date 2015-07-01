@@ -7,7 +7,7 @@ CacheTool - Manage cache in the CLI
 [![SensioLabsInsight](https://img.shields.io/sensiolabs/i/595c9feb-3f4d-473a-a575-81c7e97eb672.svg)](https://insight.sensiolabs.com/projects/595c9feb-3f4d-473a-a575-81c7e97eb672)
 [![Codacy Badge](https://img.shields.io/codacy/2d4176f2526d4251a51b691249c4d3e1.svg)](https://www.codacy.com)
 
-CacheTool allows you to work with `apc` and `opcache` through the cli.
+CacheTool allows you to work with `apc`, `opcache`, and the file status cache through the cli.
 It will connect to a fastcgi server (like php-fpm) and operate it's cache.
 
 Why is this useful?
@@ -70,6 +70,10 @@ opcache
   opcache:reset            Resets the contents of the opcode cache
   opcache:status           Show summary information about the opcode cache
   opcache:status:scripts   Show scripts in the opcode cache
+stat
+  stat:clear               Clears the file status cache, including the realpath cache
+  stat:realpath_get        Show summary information of realpath cache entries
+  stat:realpath_size       Display size of realpath cache
 ```
 
 Configuration File

@@ -77,6 +77,10 @@ class Application extends BaseApplication
         $commands[] = new CacheToolCommand\OpcacheStatusScriptsCommand();
         $commands[] = new CacheToolCommand\OpcacheInvalidateScriptsCommand();
 
+        $commands[] = new CacheToolCommand\StatCacheClearCommand();
+        $commands[] = new CacheToolCommand\StatRealpathGetCommand();
+        $commands[] = new CacheToolCommand\StatRealpathSizeCommand();
+
         return $commands;
     }
 

@@ -31,6 +31,9 @@ class PhpProxy implements ProxyInterface
             'ini_get',
             'ini_set',
             'phpversion',
+            'stat_realpath_get',
+            'stat_realpath_size',
+            'stat_cache_clear',
 
             '_eval',
         );
@@ -116,6 +119,48 @@ class PhpProxy implements ProxyInterface
         return $this->adapter->run($code);
     }
 
+    /**
+     * Get contents of the realpath cache
+     *
+     * @since  5.3.2
+     * @return array Returns an array of realpath cache entries. The keys are original path entries, 
+     * and the values are arrays of data items, containing the resolved path, expiration date, and 
+     * other options kept in the cache.
+     */
+    public function stat_realpath_get()
+    {
+        $code = new Code();
+        $code->addStatement('return realpath_cache_get();');
+
+        return $this->adapter->run($code);
+    }
+
+    /**
+     * Returns how much memory realpath cache is using. 
+     *
+     * @since  5.3.2
+     * @return int Memory usage in bytes
+     */
+    public function stat_realpath_size()
+    {
+        $code = new Code();
+        $code->addStatement('return realpath_cache_size();');
+
+        return $this->adapter->run($code);
+    }
+
+    /**
+     * Resets the contents of the file status cache, including the realpath cache
+     *
+     * @return void
+     */
+    public function stat_cache_clear()
+    {
+        $code = new Code();
+        $code->addStatement('return clearstatcache(true);');
+
+        return $this->adapter->run($code);
+    }
 
     /**
      * Evaluate a string as PHP code

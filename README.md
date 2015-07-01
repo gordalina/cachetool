@@ -16,6 +16,8 @@ Why is this useful?
 - Maybe you want to see some statistics right from the console
 - And many more...
 
+Note that, unlike APC and Opcache, the file status cache is per-process rather than stored in shared memory. This means that running `stat:clear` against PHP-FPM will only affect whichever FPM worker responds to the request, not the whole pool. [Julien Pauli has written a post](http://jpauli.github.io/2014/06/30/realpath-cache.html) with more details on the file status cache operates.
+
 Installation
 ------------
 

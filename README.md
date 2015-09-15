@@ -82,7 +82,7 @@ Configuration File
 ------------------
 
 You can have a configuration file with the adapter configuration, allowing you to
-call CacheTool withouth `--fcgi` or `--cli` option.
+call CacheTool without `--fcgi` or `--cli` option.
 
 The file must be named `.cachetool.yml`. CacheTool will look for this file on the
 current directory and in any parent directory until it finds one.

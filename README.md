@@ -123,6 +123,12 @@ Add it as a dependency
 $ composer require gordalina/cachetool
 ```
 
+If you want to use it in a Symfony 2.x project, require the `1.x` version
+
+```sh
+$ composer require gordalina/cachetool:~1.0
+```
+
 Create instance
 
 ```php

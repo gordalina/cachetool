@@ -4,10 +4,10 @@
     "keywords": ["cache", "opcache", "apc", "fastcgi", "opcode"],
     "require": {
         "php": ">=5.3.3",
-        "symfony/console": "~2.3",
-        "symfony/dependency-injection": "~2.3",
-        "symfony/process": "~2.1",
-        "symfony/yaml": "~2.1",
+        "symfony/console": "~3.0",
+        "symfony/dependency-injection": "~3.0",
+        "symfony/process": "~3.0",
+        "symfony/yaml": "~3.0",
         "psr/log": "~1.0",
         "monolog/monolog": "~1.1",
         "adoy/fastcgi-client": "~1.0"

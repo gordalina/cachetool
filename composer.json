@@ -3,7 +3,7 @@
     "description": "Manage your opcode & apc through the cli",
     "keywords": ["cache", "opcache", "apc", "fastcgi", "opcode"],
     "require": {
-        "php": ">=5.3.3",
+        "php": ">=5.5.9",
         "symfony/console": "~3.0",
         "symfony/dependency-injection": "~3.0",
         "symfony/process": "~3.0",

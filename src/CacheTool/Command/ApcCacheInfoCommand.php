@@ -12,6 +12,7 @@
 namespace CacheTool\Command;
 
 use CacheTool\Util\Formatter;
+use Symfony\Component\Console\Helper\Table;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
@@ -63,7 +64,7 @@ class ApcCacheInfoCommand extends AbstractCommand
             throw new \RuntimeException("Could not fetch info from APC");
         }
 
-        $table = $this->getHelper('table');
+        $table = new Table($output);
         $table->setHeaders(array('Name', 'User', 'System'));
         $table->setRows($this->getRows($user, $system));
         $table->render($output);

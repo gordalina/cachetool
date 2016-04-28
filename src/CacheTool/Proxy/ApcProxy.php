@@ -80,7 +80,7 @@ class ApcProxy implements ProxyInterface
      */
     public function apc_add($key, $var = null, $ttl = 0)
     {
-        if (is_array($key) && $var === null) {
+        if (is_string($key) && $var === null) {
             throw new \InvalidArgumentException('When $key is set $var cannot be null');
         }
 
@@ -516,7 +516,7 @@ class ApcProxy implements ProxyInterface
      */
     public function apc_store($key, $var = null, $ttl = 0)
     {
-        if (is_array($key) && $var === null) {
+        if (is_string($key) && $var === null) {
             throw new \InvalidArgumentException('When $key is set $var cannot be null');
         }
 

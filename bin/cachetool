@@ -5,7 +5,7 @@
 
 use CacheTool\Console\Application;
 use CacheTool\Console\Config;
-use Symfony\Component\Yaml\Yaml;
+use Symfony\Component\Yaml\Parser;
 
 function loadConfig() {
     $previous = null;
@@ -22,7 +22,9 @@ function loadConfig() {
 
     foreach ($paths as $path) {
         if (is_file($path)) {
-            return new Config(Yaml::parse($path));
+            $yaml = new Parser();
+            $config = $yaml->parse(file_get_contents($path));
+            return new Config($config);
         }
     }
 

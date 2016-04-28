@@ -11,6 +11,7 @@
 
 namespace CacheTool\Command;
 
+use Symfony\Component\Console\Helper\Table;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -48,7 +49,7 @@ class ApcRegexpDeleteCommand extends AbstractCommand
             }
         }
         $cpt = 0;
-        $table = $this->getHelper('table');
+        $table = new Table($output);
         $table->setHeaders(array('Key', 'TTL', ));
         $table->setRows($keys);
         $table->render($output);

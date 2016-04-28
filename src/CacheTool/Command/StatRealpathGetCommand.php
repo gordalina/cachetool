@@ -12,6 +12,7 @@
 namespace CacheTool\Command;
 
 use CacheTool\Util\Formatter;
+use Symfony\Component\Console\Helper\Table;
 use Symfony\Component\Console\Helper\TableSeparator;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -36,7 +37,7 @@ class StatRealpathGetCommand extends AbstractCommand
     {
         $info = $this->getCacheTool()->stat_realpath_get();
 
-        $table = $this->getHelper('table');
+        $table = new Table($output);
         $table
             ->setHeaders(array(
                 'Path entry',

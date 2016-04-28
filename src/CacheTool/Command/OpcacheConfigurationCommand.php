@@ -11,6 +11,7 @@
 
 namespace CacheTool\Command;
 
+use Symfony\Component\Console\Helper\Table;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
@@ -38,7 +39,7 @@ class OpcacheConfigurationCommand extends AbstractCommand
 
         $output->writeln("<info>{$info['version']['opcache_product_name']}</info> <comment>{$info['version']['version']}</comment>");
 
-        $table = $this->getHelper('table');
+        $table = new Table($output);
         $table
             ->setHeaders(array('Directive', 'Value'))
             ->setRows($this->processDirectives($info['directives']))

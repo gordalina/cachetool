@@ -12,6 +12,7 @@
 namespace CacheTool\Command;
 
 use CacheTool\Util\Formatter;
+use Symfony\Component\Console\Helper\Table;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -44,7 +45,7 @@ class OpcacheInvalidateScriptsCommand extends AbstractCommand
             throw new \RuntimeException('opcache_get_status(): No Opcache status info available.  Perhaps Opcache is disabled via opcache.enable or opcache.enable_cli?');
         }
 
-        $table = $this->getHelper('table');
+        $table = new Table($output);
         $table
             ->setHeaders(array(
                 'Cleaned',

@@ -12,6 +12,7 @@
 namespace CacheTool\Command;
 
 use CacheTool\Util\Formatter;
+use Symfony\Component\Console\Helper\Table;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
@@ -50,7 +51,7 @@ class ApcCacheInfoFileCommand extends ApcCacheInfoCommand
             'Filename',
         );
 
-        $table = $this->getHelper('table');
+        $table = new Table($output);
         $table
             ->setHeaders($header)
             ->setRows($this->processFilelist($info['cache_list']))

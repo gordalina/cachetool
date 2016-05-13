@@ -100,7 +100,8 @@ class FastCGI extends AbstractAdapter
 
             throw new \RuntimeException(
                 sprintf('FastCGI error: %s (%s)', $e->getMessage(), $this->host),
-                $e->getCode()
+                $e->getCode(),
+                $e
             );
         }
     }

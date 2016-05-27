@@ -17,7 +17,7 @@ class ApcProxyTest extends ProxyTest
     public function testApcAddException()
     {
         $proxy = $this->createProxyInstance();
-        $proxy->apc_add(array(), null);
+        $proxy->apc_add('key', null);
     }
 
     /**
@@ -26,7 +26,7 @@ class ApcProxyTest extends ProxyTest
     public function testApcStoreException()
     {
         $proxy = $this->createProxyInstance();
-        $proxy->apc_store(array(), null);
+        $proxy->apc_store('key', null);
     }
 
     public function testFunctions()

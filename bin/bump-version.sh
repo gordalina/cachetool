@@ -8,11 +8,11 @@ if [ $# -ne 1 ]; then
 fi
 
 TAG=$1
+BRANCH=$(git rev-parse --abbrev-ref HEAD)
 
 #
 # Tag & build master branch
 #
-git checkout master
 git tag ${TAG}
 box build
 
@@ -22,9 +22,14 @@ box build
 git checkout gh-pages
 
 cp cachetool.phar downloads/cachetool-${TAG}.phar
-cp cachetool.phar downloads/cachetool.phar
 git add downloads/cachetool-${TAG}.phar
-git add downloads/cachetool.phar
+
+if [ "$BRANCH" == "master" ]; then
+  cp cachetool.phar downloads/cachetool.phar
+  git add downloads/cachetool.phar
+fi
+
+exit
 
 if [ "$(uname)" == "Darwin" ]; then
     SHA1=$(shasum cachetool.phar | awk '{print $1}')

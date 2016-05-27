@@ -32,7 +32,7 @@ class ApcProxyTest extends ProxyTest
     public function testFunctions()
     {
         $this->assertProxyCode("return apc_add('key', 'var', 0);", 'apc_add', array('key', 'var', 0));
-        $this->assertProxyCode("return apc_add(array('array_key' => 'array_var'), NULL, 0);", 'apc_add', array(array('array_key' => 'array_var'), NULL, 0));
+        $this->assertProxyCode("return apc_add(array (\n  'array_key' => 'array_var',\n), NULL, 0);", 'apc_add', array(array('array_key' => 'array_var'), NULL, 0));
         $this->assertProxyCode("return apc_bin_dump(NULL, NULL);", 'apc_bin_dump', array(NULL, NULL));
         $this->assertProxyCode("return apc_bin_dumpfile(array (\n), array (\n), 'filename', 0, NULL);", 'apc_bin_dumpfile', array(array(), array(), 'filename', 0, NULL));
         $this->assertProxyCode("return apc_bin_load('data', 0);", 'apc_bin_load', array('data', 0));
@@ -48,7 +48,7 @@ class ApcProxyTest extends ProxyTest
         $this->assertProxyCode("return apc_load_constants('key', true);", 'apc_load_constants', array('key', true));
         $this->assertProxyCode("return apc_sma_info(false);", 'apc_sma_info', array(false));
         $this->assertProxyCode("return apc_store('key', 'var', 0);", 'apc_store', array('key', 'var', 0));
-        $this->assertProxyCode("return apc_store(array('array_key' => 'array_var'), NULL, 0);", 'apc_store', array(array('array_key' => 'array_var'), NULL, 0));
+        $this->assertProxyCode("return apc_store(array (\n  'array_key' => 'array_var',\n), NULL, 0);", 'apc_store', array(array('array_key' => 'array_var'), NULL, 0));
         $this->assertProxyCode('return phpversion("apc");', 'apc_version', array());
     }
 

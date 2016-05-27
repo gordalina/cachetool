@@ -2,7 +2,7 @@ before_commands:
     - "composer install --prefer-source"
 
 filter:
-    excluded_paths: [vendor/*, tests/*]
+    excluded_paths: [vendor/*, tests/*, bin/*]
 
 tools:
     external_code_coverage:

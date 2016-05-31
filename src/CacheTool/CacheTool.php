@@ -71,6 +71,7 @@ class CacheTool
     {
         $cacheTool = new static($tempDir, $logger);
         $cacheTool->addProxy(new Proxy\ApcProxy());
+        $cacheTool->addProxy(new Proxy\ApcuProxy());
         $cacheTool->addProxy(new Proxy\PhpProxy());
         $cacheTool->addProxy(new Proxy\OpcacheProxy());
 

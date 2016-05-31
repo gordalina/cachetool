@@ -1,0 +1,20 @@
+0 info it worked if it ends with ok
+1 verbose cli [ '/Users/Sam/.nvm/versions/node/v0.12.10/bin/node',
+1 verbose cli   '/Users/Sam/.nvm/versions/node/v0.12.10/bin/npm',
+1 verbose cli   'test' ]
+2 info using npm@2.14.9
+3 info using node@v0.12.10
+4 verbose stack Error: ENOENT, open '/Users/Sam/code/gordalina/cachetool-1/package.json'
+4 verbose stack     at Error (native)
+5 verbose cwd /Users/Sam/code/gordalina/cachetool-1
+6 error Darwin 15.5.0
+7 error argv "/Users/Sam/.nvm/versions/node/v0.12.10/bin/node" "/Users/Sam/.nvm/versions/node/v0.12.10/bin/npm" "test"
+8 error node v0.12.10
+9 error npm  v2.14.9
+10 error path /Users/Sam/code/gordalina/cachetool-1/package.json
+11 error code ENOENT
+12 error errno -2
+13 error enoent ENOENT, open '/Users/Sam/code/gordalina/cachetool-1/package.json'
+13 error enoent This is most likely not a problem with npm itself
+13 error enoent and is related to npm not being able to find a file.
+14 verbose exit [ -2, true ]

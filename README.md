@@ -67,6 +67,16 @@ apc
   apc:key:fetch            Shows the content of an APC key
   apc:key:store            Store an APC key with given value
   apc:sma:info             Show APC shared memory allocation information
+apcu
+  apcu:cache:clear         Clears APCu cache
+  apcu:cache:info          Shows APCu user & system cache information
+  apcu:cache:info:keys     Shows APCu keys cache information
+  apcu:key:delete          Deletes an APCu key
+  apcu:key:exists          Checks if an APCu key exists
+  apcu:key:fetch           Shows the content of an APCu key
+  apcu:key:store           Store an APCu key with given value
+  apcu:regexp:delete       Deletes all APCu key matching a regexp
+  apcu:sma:info            Show APCu shared memory allocation information
 opcache
   opcache:configuration    Get configuration information about the cache
   opcache:reset            Resets the contents of the opcode cache

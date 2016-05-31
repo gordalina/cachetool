@@ -29,6 +29,13 @@ abstract class CommandTest extends \PHPUnit_Framework_TestCase
         }
     }
 
+    protected function assertHasApcu()
+    {
+        if (!extension_loaded('apcu')) {
+            $this->markTestSkipped('APCu extension is not loaded.');
+        }
+    }
+
     protected function assertHasOpcache()
     {
         if (!extension_loaded('Zend OPcache') || !ini_get('opcache.enable_cli')) {

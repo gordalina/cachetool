@@ -71,6 +71,16 @@ class Application extends BaseApplication
         $commands[] = new CacheToolCommand\ApcSmaInfoCommand();
         $commands[] = new CacheToolCommand\ApcRegexpDeleteCommand();
 
+        $commands[] = new CacheToolCommand\ApcuCacheClearCommand();
+        $commands[] = new CacheToolCommand\ApcuCacheInfoCommand();
+        $commands[] = new CacheToolCommand\ApcuCacheInfoKeysCommand();
+        $commands[] = new CacheToolCommand\ApcuKeyDeleteCommand();
+        $commands[] = new CacheToolCommand\ApcuKeyExistsCommand();
+        $commands[] = new CacheToolCommand\ApcuKeyFetchCommand();
+        $commands[] = new CacheToolCommand\ApcuKeyStoreCommand();
+        $commands[] = new CacheToolCommand\ApcuSmaInfoCommand();
+        $commands[] = new CacheToolCommand\ApcuRegexpDeleteCommand();
+
         $commands[] = new CacheToolCommand\OpcacheConfigurationCommand();
         $commands[] = new CacheToolCommand\OpcacheResetCommand();
         $commands[] = new CacheToolCommand\OpcacheStatusCommand();
@@ -134,7 +144,7 @@ class Application extends BaseApplication
     {
         if ($input->hasParameterOption('--cli')) {
             $this->config['adapter'] = 'cli';
-        } else if ($input->hasParameterOption('--fcgi')) {
+        } elseif ($input->hasParameterOption('--fcgi')) {
             $this->config['adapter'] = 'fastcgi';
             $this->config['fastcgi'] = $input->getParameterOption('--fcgi');
         }

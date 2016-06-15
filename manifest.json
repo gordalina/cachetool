@@ -172,5 +172,11 @@
         "sha1": "b3647af7eebb9f0a0840da5249b70b48064a6498",
         "url": "http://gordalina.github.io/cachetool/downloads/cachetool-2.1.0.phar",
         "version": "2.1.0"
+    },
+    {
+        "name": "cachetool.phar",
+        "sha1": "c5c6f559b6a5dad6509b4c95acb92c5b66a7f01b",
+        "url": "http://gordalina.github.io/cachetool/downloads/cachetool-1.11.0.phar",
+        "version": "1.11.0"
     }
 ]

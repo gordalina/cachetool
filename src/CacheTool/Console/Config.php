@@ -15,7 +15,7 @@ class Config implements \ArrayAccess
 {
     private $config = array(
         'adapter' => 'fastcgi',
-        'fastcgi' => '127.0.0.1:9000',
+        'fastcgi' => null,
         'temp_dir' => null
     );
 

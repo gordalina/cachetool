@@ -9,9 +9,9 @@ class ConfigTest extends \PHPUnit_Framework_TestCase
         $config = new Config();
 
         $this->assertTrue(isset($config['adapter']));
-        $this->assertTrue(isset($config['fastcgi']));
+        $this->assertFalse(isset($config['fastcgi']));
         $this->assertSame('fastcgi', $config['adapter']);
-        $this->assertSame('127.0.0.1:9000', $config['fastcgi']);
+        $this->assertNull($config['fastcgi']);
     }
 
     public function testSet()

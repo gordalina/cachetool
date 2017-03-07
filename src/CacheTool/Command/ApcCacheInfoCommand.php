@@ -54,8 +54,8 @@ class ApcCacheInfoCommand extends AbstractCommand
     {
         $this->ensureExtensionLoaded('apc');
 
-        $user = $this->getCacheTool()->apc_cache_info('user');
-        $system = $this->getCacheTool()->apc_cache_info('system');
+        $user = $this->getCacheTool()->apc_cache_info('user') ?: [];
+        $system = $this->getCacheTool()->apc_cache_info('system') ?: [];
 
         $this->normalize($user);
         $this->normalize($system);

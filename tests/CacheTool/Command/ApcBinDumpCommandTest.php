@@ -6,6 +6,9 @@ class ApcBinDumpCommandTest extends CommandTest
 {
     public function testCommand()
     {
+        if (explode('.', PHP_VERSION_ID)[0] >= 7) {
+            $this->markTestSkipped('Skip APC test w/ php7');
+        }
         $this->assertHasApc();
         $this->assertNoHHVM();
 
@@ -18,6 +21,9 @@ class ApcBinDumpCommandTest extends CommandTest
 
     public function testCommandWithFile()
     {
+        if (explode('.', PHP_VERSION_ID)[0] >= 7) {
+            $this->markTestSkipped('Skip APC test w/ php7');
+        }
         $this->assertHasApc();
         $this->assertNoHHVM();
 

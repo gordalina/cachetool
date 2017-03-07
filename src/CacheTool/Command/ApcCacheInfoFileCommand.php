@@ -36,7 +36,7 @@ class ApcCacheInfoFileCommand extends ApcCacheInfoCommand
     {
         $this->ensureExtensionLoaded('apc');
 
-        $info = $this->getCacheTool()->apc_cache_info('system');
+        $info = $this->getCacheTool()->apc_cache_info('system') ?: [];
         $this->normalize($info);
 
         if (!$info) {

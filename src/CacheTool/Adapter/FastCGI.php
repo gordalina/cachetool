@@ -21,9 +21,12 @@ class FastCGI extends AbstractAdapter
      */
     protected $client;
 
+    /**
+     * @var Array of patterns matching php socket files
+     */
     protected $possibleSocketFiles = [
-        '/var/run/php5-fpm.sock',
-        '/var/run/php/php7.0-fpm.sock'
+        '/var/run/php*.sock',
+        '/var/run/php/*.sock'
     ];
 
     /**

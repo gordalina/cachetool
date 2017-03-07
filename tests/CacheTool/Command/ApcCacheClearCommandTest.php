@@ -6,7 +6,7 @@ class ApcCacheClearCommandTest extends CommandTest
 {
     public function testCommand()
     {
-        if (explode('.', PHP_VERSION_ID)[0] >= 7) {
+        if (PHP_VERSION_ID >= 70000) {
             $this->markTestSkipped('Skip APC test w/ php7');
         }
         $this->assertHasApc();
@@ -19,7 +19,7 @@ class ApcCacheClearCommandTest extends CommandTest
 
     public function testCommandUser()
     {
-        if (explode('.', PHP_VERSION_ID)[0] >= 7) {
+        if (PHP_VERSION_ID >= 70000) {
             $this->markTestSkipped('Skip APC test w/ php7');
         }
         $this->assertHasApc();
@@ -31,7 +31,7 @@ class ApcCacheClearCommandTest extends CommandTest
 
     public function testException()
     {
-        if (explode('.', PHP_VERSION_ID)[0] >= 7) {
+        if (PHP_VERSION_ID >= 70000) {
             $this->markTestSkipped('Skip APC test w/ php7');
         }
         $this->assertHasApc();

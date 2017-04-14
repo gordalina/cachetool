@@ -11,7 +11,6 @@
 
 namespace CacheTool\Command;
 
-use Symfony\Component\Console\Helper\Table;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -39,33 +38,14 @@ class ApcuRegexpDeleteCommand extends AbstractCommand
 
         $regexp = $input->getArgument('regexp');
 
-        $user = $this->getCacheTool()->apcu_cache_info('user');
+        $success = $this->getCacheTool()->apcu_regexp_delete($regexp);
 
-        $keys = array();
-        foreach ($user['cache_list'] as $key) {
-            $string = $key['info'];
-            if (preg_match('|' . $regexp . '|', $string)) {
-                $keys[] = $key;
-            }
-        }
-        $cpt = 0;
-        $table = new Table($output);
-        $table->setHeaders(array('Key', 'TTL', ));
-        $table->setRows($keys);
-        $table->render($output);
-        foreach ($keys as $key) {
-            $success = $this->getCacheTool()->apcu_delete($key['info']);
-            if ($output->isVerbose()) {
-                if ($success) {
-                    $output->writeln("<comment>APCu key <info>{$key['info']}</info> was deleted</comment>");
-                } else {
-                    $output->writeln("<comment>APCu key <info>{$key['info']}</info> could not be deleted.</comment>");
-                }
-            }
-            $cpt ++;
-        }
         if ($output->isVerbose()) {
-            $output->writeln("<comment>APCu key <info>{$cpt}</info> keys treated.</comment>");
+            if ($success) {
+                $output->writeln("<comment>APC keys by regexp <info>{$regexp}</info> was deleted</comment>");
+            } else {
+                $output->writeln("<comment>APC keys by regexp <info>{$regexp}</info> could not be deleted.</comment>");
+            }
         }
         return 1;
     }

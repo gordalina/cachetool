@@ -45,7 +45,7 @@ class ApplicationTest extends CommandTest
         $code = $app->run(new StringInput("dummy"), $output);
 
         $this->assertSame(1, $code);
-        $this->assertContains('Adapter `err` is not one of cli or fastcgi', $output->fetch());
+        $this->assertContains('Adapter `err` is not one of cli, fastcgi or web', $output->fetch());
     }
 
     public function testOutput()

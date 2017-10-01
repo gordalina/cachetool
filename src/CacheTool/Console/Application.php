@@ -13,6 +13,8 @@ namespace CacheTool\Console;
 
 use CacheTool\Adapter\FastCGI;
 use CacheTool\Adapter\Cli;
+use CacheTool\Adapter\Http\FileGetContents;
+use CacheTool\Adapter\Web;
 use CacheTool\CacheTool;
 use CacheTool\Command as CacheToolCommand;
 use CacheTool\Monolog\ConsoleHandler;
@@ -102,6 +104,9 @@ class Application extends BaseApplication
         $definition = parent::getDefaultInputDefinition();
         $definition->addOption(new InputOption('--fcgi', null, InputOption::VALUE_OPTIONAL, 'If specified, used as a connection string to FastCGI server.'));
         $definition->addOption(new InputOption('--cli', null, InputOption::VALUE_NONE, 'If specified, forces adapter to cli'));
+        $definition->addOption(new InputOption('--web', null, InputOption::VALUE_NONE, 'If specified, forces adapter to web'));
+        $definition->addOption(new InputOption('--web-path', null, InputOption::VALUE_OPTIONAL, 'If specified, used as a information for web adapter'));
+        $definition->addOption(new InputOption('--web-url', null, InputOption::VALUE_OPTIONAL, 'If specified, used as a information for web adapter'));
         $definition->addOption(new InputOption('--tmp-dir', '-t', InputOption::VALUE_REQUIRED, 'Temporary directory to write files to'));
 
         return $definition;
@@ -146,9 +151,15 @@ class Application extends BaseApplication
             $this->config['adapter'] = 'cli';
         } elseif ($input->hasParameterOption('--fcgi')) {
             $this->config['adapter'] = 'fastcgi';
+          
             if (!is_null($input->getParameterOption('--fcgi'))) {
                 $this->config['fastcgi'] = $input->getParameterOption('--fcgi');
             }
+        } elseif ($input->hasParameterOption('--web')) {
+            $this->config['adapter'] = 'web';
+            $this->config['webPath'] = $input->getParameterOption('--web-path');
+            $this->config['webUrl'] = $input->getParameterOption('--web-url');
+            $this->config['http'] = new FileGetContents($input->getParameterOption('--web-url'));
         }
 
         if ($input->hasParameterOption('--tmp-dir') || $input->hasParameterOption('-t')) {
@@ -164,8 +175,12 @@ class Application extends BaseApplication
                 $adapter = new FastCGI($this->config['fastcgi']);
                 break;
 
+            case 'web':
+                $adapter = new Web($this->config['webPath'], $this->config['http']);
+                break;
+
             default:
-                throw new \RuntimeException("Adapter `{$this->config['adapter']}` is not one of cli or fastcgi");
+                throw new \RuntimeException("Adapter `{$this->config['adapter']}` is not one of cli, fastcgi or web");
         }
 
         $cacheTool = CacheTool::factory($adapter, $this->config['temp_dir'], $this->logger);

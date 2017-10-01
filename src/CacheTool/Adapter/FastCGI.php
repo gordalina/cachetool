@@ -91,7 +91,6 @@ class FastCGI extends AbstractAdapter
     protected function request(Code $code)
     {
         $file = $this->createTemporaryFile();
-
         $this->logger->info(sprintf('FastCGI: Dumped code to file: %s', $file));
 
         try {
@@ -103,6 +102,7 @@ class FastCGI extends AbstractAdapter
                 'SCRIPT_FILENAME' => $file,
             );
 
+            $this->logger->info(sprintf('FastCGI: Requesting FPM using socket: %s', $this->host));
             $response = $this->client->request($environment, '');
             $this->logger->debug(sprintf('FastCGI: Response: %s', json_encode($response)));
 

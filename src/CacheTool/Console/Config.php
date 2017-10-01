@@ -88,7 +88,7 @@ class Config implements \ArrayAccess
      *
      * @return string
      */
-    protected function getUserHomeDir() {
+    protected static function getUserHomeDir() {
         // Cannot use $_SERVER superglobal since that's empty during UnitUnishTestCase
         // getenv('HOME') isn't set on Windows and generates a Notice.
         $home = getenv('HOME');

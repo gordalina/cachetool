@@ -6,7 +6,7 @@ class ApcuProxyTest extends ProxyTest
 {
     public function testGetFunctions()
     {
-        $this->assertCount(12, $this->createProxyInstance()->getFunctions());
+        $this->assertCount(14, $this->createProxyInstance()->getFunctions());
     }
 
     /**

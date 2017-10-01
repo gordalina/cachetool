@@ -20,15 +20,6 @@ class ApcProxyTest extends ProxyTest
         $proxy->apc_add('key', null);
     }
 
-    /**
-     * @expectedException InvalidArgumentException
-     */
-    public function testApcStoreException()
-    {
-        $proxy = $this->createProxyInstance();
-        $proxy->apc_store('key', null);
-    }
-
     public function testFunctions()
     {
         $this->assertProxyCode("return apc_add('key', 'var', 0);", 'apc_add', array('key', 'var', 0));

@@ -18,15 +18,6 @@ class ApcuProxyTest extends ProxyTest
         $proxy->apcu_add('key', null);
     }
 
-    /**
-     * @expectedException InvalidArgumentException
-     */
-    public function testApcStoreException()
-    {
-        $proxy = $this->createProxyInstance();
-        $proxy->apcu_store('key', null);
-    }
-
     public function testFunctions()
     {
         $this->assertProxyCode("return apcu_add('key', 'var', 0);", 'apcu_add', array('key', 'var', 0));

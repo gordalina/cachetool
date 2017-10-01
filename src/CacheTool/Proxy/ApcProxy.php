@@ -516,10 +516,6 @@ class ApcProxy implements ProxyInterface
      */
     public function apc_store($key, $var = null, $ttl = 0)
     {
-        if (is_string($key) && $var === null) {
-            throw new \InvalidArgumentException('When $key is set $var cannot be null');
-        }
-
         $code = new Code();
         $code->addStatement(sprintf(
             'return apc_store(%s, %s, %s);',

@@ -6,6 +6,9 @@ class ApcCacheClearCommandTest extends CommandTest
 {
     public function testCommand()
     {
+        if (PHP_VERSION_ID >= 70000) {
+            $this->markTestSkipped('Skip APC test w/ php7');
+        }
         $this->assertHasApc();
 
         $result = $this->runCommand('apc:cache:clear all -v');
@@ -16,6 +19,9 @@ class ApcCacheClearCommandTest extends CommandTest
 
     public function testCommandUser()
     {
+        if (PHP_VERSION_ID >= 70000) {
+            $this->markTestSkipped('Skip APC test w/ php7');
+        }
         $this->assertHasApc();
 
         $result = $this->runCommand('apc:cache:clear user -v');
@@ -25,6 +31,9 @@ class ApcCacheClearCommandTest extends CommandTest
 
     public function testException()
     {
+        if (PHP_VERSION_ID >= 70000) {
+            $this->markTestSkipped('Skip APC test w/ php7');
+        }
         $this->assertHasApc();
 
         $result = $this->runCommand('apc:cache:clear err -v');

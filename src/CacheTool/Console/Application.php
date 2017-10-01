@@ -151,7 +151,10 @@ class Application extends BaseApplication
             $this->config['adapter'] = 'cli';
         } elseif ($input->hasParameterOption('--fcgi')) {
             $this->config['adapter'] = 'fastcgi';
-            $this->config['fastcgi'] = $input->getParameterOption('--fcgi');
+          
+            if (!is_null($input->getParameterOption('--fcgi'))) {
+                $this->config['fastcgi'] = $input->getParameterOption('--fcgi');
+            }
         } elseif ($input->hasParameterOption('--web')) {
             $this->config['adapter'] = 'web';
             $this->config['webPath'] = $input->getParameterOption('--web-path');

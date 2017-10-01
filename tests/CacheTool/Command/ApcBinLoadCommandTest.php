@@ -6,6 +6,9 @@ class ApcBinLoadCommandTest extends CommandTest
 {
     public function testCommand()
     {
+        if (PHP_VERSION_ID >= 70000) {
+            $this->markTestSkipped('Skip APC test w/ php7');
+        }
         $this->assertHasApc();
         $this->assertNoHHVM();
 

@@ -5,32 +5,7 @@
 
 use CacheTool\Console\Application;
 use CacheTool\Console\Config;
-use Symfony\Component\Yaml\Parser;
 
-function loadConfig() {
-    $previous = null;
-    $path = getcwd();
-    $paths = array();
-
-    while (($path = realpath($path)) && $path !== $previous) {
-        $paths[] = "{$path}/.cachetool.yml";
-        $previous = $path;
-        $path .= '/../';
-    }
-
-    $paths[] = '/etc/cachetool.yml';
-
-    foreach ($paths as $path) {
-        if (is_file($path)) {
-            $yaml = new Parser();
-            $config = $yaml->parse(file_get_contents($path));
-            return new Config($config);
-        }
-    }
-
-    return new Config();
-}
-
-$config = loadConfig();
+$config = Config::factory();
 $application = new Application($config);
 $application->run();

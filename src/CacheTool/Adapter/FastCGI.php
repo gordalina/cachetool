@@ -22,6 +22,14 @@ class FastCGI extends AbstractAdapter
     protected $client;
 
     /**
+     * @var Array of patterns matching php socket files
+     */
+    protected $possibleSocketFilePatterns = [
+        '/var/run/php*.sock',
+        '/var/run/php/*.sock'
+    ];
+
+    /**
      * @var string
      */
     protected $host;
@@ -34,9 +42,14 @@ class FastCGI extends AbstractAdapter
     {
         // try to guess where it is
         if ($host === null) {
-            if (file_exists('/var/run/php5-fpm.sock')) {
-                $host = '/var/run/php5-fpm.sock';
-            } else {
+            foreach ($this->possibleSocketFilePatterns as $possibleSocketFilePattern) {
+                $possibleSocketFile = current(glob($possibleSocketFilePattern));
+                if (file_exists($possibleSocketFile)) {
+                    $host = $possibleSocketFile;
+                    break;
+                }
+            }
+            if ($host === null) {
                 $host = '127.0.0.1:9000';
             }
         }

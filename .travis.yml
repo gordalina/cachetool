@@ -9,7 +9,7 @@ php:
 
 matrix:
   include:
-    - php: 5.2
+    - php: 5.3
       dist: precise
   allow_failures:
     - php: 7.0

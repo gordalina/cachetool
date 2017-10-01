@@ -146,7 +146,9 @@ class Application extends BaseApplication
             $this->config['adapter'] = 'cli';
         } elseif ($input->hasParameterOption('--fcgi')) {
             $this->config['adapter'] = 'fastcgi';
-            $this->config['fastcgi'] = $input->getParameterOption('--fcgi');
+            if (!is_null($input->getParameterOption('--fcgi'))) {
+                $this->config['fastcgi'] = $input->getParameterOption('--fcgi');
+            }
         }
 
         if ($input->hasParameterOption('--tmp-dir') || $input->hasParameterOption('-t')) {

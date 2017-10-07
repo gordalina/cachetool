@@ -11,6 +11,12 @@ TAG=$1
 BRANCH=$(git rev-parse --abbrev-ref HEAD)
 
 #
+# Check for dependencies
+#
+box -V
+jsawk -h
+
+#
 # Tag & build master branch
 #
 git tag ${TAG}

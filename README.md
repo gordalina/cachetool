@@ -198,6 +198,17 @@ Testing
 
 After running `composer install`, run `./vendor/bin/phpunit`
 
+Troubleshooting
+---------------
+
+> [RuntimeException]
+> Error: Unable to open primary script: /dev/shm/cachetool-584743c678dbb.php (No such file or directory)
+> Status: 404 Not Found
+> Content-type: text/html; charset=UTF-8
+> No input file specified.
+
+This means that cachetool could not write to `/dev/shm` provide a directory that cachetool can write to through `php cachetool.phar --tmp-dir=/writable/dir` or configuration.
+
 License
 -------
 

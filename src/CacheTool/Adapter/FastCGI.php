@@ -36,9 +36,8 @@ class FastCGI extends AbstractAdapter
 
     /**
      * @param string $host 127.0.0.1:9000 or /var/run/php5-fpm.sock
-     * @param string $tempDir
      */
-    public function __construct($host = null, $tempDir = null)
+    public function __construct($host = null)
     {
         // try to guess where it is
         if ($host === null) {

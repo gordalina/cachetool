@@ -31,32 +31,36 @@ $ chmod +x cachetool.phar
 Usage (as an application)
 -------------------------
 
-You can connect to a automatically guessed fastcgi server (if `/var/run/php5-fpm.sock` is a file or `127.0.0.1:9000`)
+CacheTool requires an adapter to connect to, it can be `cli`, `fcgi`, and `web`.
+The `fcgi` adapter is the most common, as it connects directly to php-fpm.
+
+You can pass an IP address or a unix socket to the `--fcgi` adapter, or leave it blank and CacheTool will try to find the php-fpm socket for you. If it can't find it, it will default to `127.0.0.1:9000`.
+
+  * You can let CacheTool find the unix socket for you, or default to IP.
 
 ```sh
 $ php cachetool.phar apc:cache:info --fcgi
 ```
 
-You can connect to a fastcgi server through ip
+  * You can connect to a fastcgi server using an IP address
 
 ```sh
 $ php cachetool.phar apc:cache:info --fcgi=127.0.0.1:9000
 ```
 
-Or by socket
+  * You can connect to a fastcgi server using a unix socket
 
 ```sh
 $ php cachetool.phar opcache:status --fcgi=/var/run/php5-fpm.sock
 ```
 
-Or to the cli
+  * Using the CLI
 
 ```sh
 $ php cachetool.phar opcache:status --cli
 ```
-```
 
-Or to the web
+  * Using an HTTP interface
 
 ```sh
 $ php cachetool.phar opcache:status --web --web-path=/path/to/your/document/root --web-url=http://url-to-your-document.root
@@ -103,7 +107,7 @@ Configuration File
 ------------------
 
 You can have a configuration file with the adapter configuration, allowing you to
-call CacheTool without `--fcgi` or `--cli` option.
+call CacheTool without `--fcgi`, `--cli`, or `--web` option.
 
 The file must be named `.cachetool.yml`. CacheTool will look for this file on the
 current directory and in any parent directory until it finds one.

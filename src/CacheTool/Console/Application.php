@@ -147,11 +147,27 @@ class Application extends BaseApplication
      */
     public function buildContainer(InputInterface $input)
     {
+        $this->parseConfiguration($input);
+        $adapter = $this->getAdapter();
+
+        $cacheTool = CacheTool::factory($adapter, $this->config['temp_dir'], $this->logger);
+        $container = new Container();
+        $container->set('cachetool', $cacheTool);
+        $container->set('logger', $this->logger);
+
+        return $container;
+    }
+
+    /**
+     * @param  InputInterface $input
+     */
+    private function parseConfiguration(InputInterface $input)
+    {
         if ($input->hasParameterOption('--cli')) {
             $this->config['adapter'] = 'cli';
         } elseif ($input->hasParameterOption('--fcgi')) {
             $this->config['adapter'] = 'fastcgi';
-          
+
             if (!is_null($input->getParameterOption('--fcgi'))) {
                 $this->config['fastcgi'] = $input->getParameterOption('--fcgi');
             }
@@ -165,29 +181,23 @@ class Application extends BaseApplication
         if ($input->hasParameterOption('--tmp-dir') || $input->hasParameterOption('-t')) {
             $this->config['temp_dir'] = $input->getParameterOption('--tmp-dir') ?: $input->getParameterOption('-t');
         }
+    }
 
+
+    /**
+     * @return AbstractAdapter
+     */
+    private function getAdapter()
+    {
         switch ($this->config['adapter']) {
             case 'cli':
-                $adapter = new Cli();
-                break;
-
+                return new Cli();
             case 'fastcgi':
-                $adapter = new FastCGI($this->config['fastcgi']);
-                break;
-
+                return new FastCGI($this->config['fastcgi']);
             case 'web':
-                $adapter = new Web($this->config['webPath'], $this->config['http']);
-                break;
-
-            default:
-                throw new \RuntimeException("Adapter `{$this->config['adapter']}` is not one of cli, fastcgi or web");
+                return new Web($this->config['webPath'], $this->config['http']);
         }
 
-        $cacheTool = CacheTool::factory($adapter, $this->config['temp_dir'], $this->logger);
-        $container = new Container();
-        $container->set('cachetool', $cacheTool);
-        $container->set('logger', $this->logger);
-
-        return $container;
+        throw new \RuntimeException("Adapter `{$this->config['adapter']}` is not one of cli, fastcgi or web");
     }
 }

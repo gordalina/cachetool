@@ -52,7 +52,7 @@ class OpcacheStatusScriptsCommand extends AbstractCommand
             ->setRows($this->processFilelist($info['scripts']))
         ;
 
-        $table->render($output);
+        $table->render();
     }
 
     protected function processFileList(array $cacheList)

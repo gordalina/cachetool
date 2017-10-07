@@ -47,6 +47,7 @@ class ApcuRegexpDeleteCommand extends AbstractCommand
                 $output->writeln("<comment>APC keys by regexp <info>{$regexp}</info> could not be deleted.</comment>");
             }
         }
+        
         return 1;
     }
 }

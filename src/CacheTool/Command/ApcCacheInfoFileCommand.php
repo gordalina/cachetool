@@ -39,7 +39,7 @@ class ApcCacheInfoFileCommand extends ApcCacheInfoCommand
         $info = $this->getCacheTool()->apc_cache_info('system') ?: [];
         $this->normalize($info);
 
-        if (!$info) {
+        if (empty($info)) {
             throw new \RuntimeException("Could not fetch info from APC");
         }
 

@@ -49,7 +49,7 @@ class StatRealpathGetCommand extends AbstractCommand
             ->setRows($this->processFilelist($info))
         ;
 
-        $table->render($output);
+        $table->render();
     }
 
     protected function processFileList(array $cacheList)

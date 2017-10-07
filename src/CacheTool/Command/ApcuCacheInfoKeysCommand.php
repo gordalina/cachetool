@@ -39,7 +39,7 @@ class ApcuCacheInfoKeysCommand extends ApcuCacheInfoCommand
         $info = $this->getCacheTool()->apcu_cache_info(false);
         $this->normalize($info);
 
-        if (!$info) {
+        if (empty($info)) {
             throw new \RuntimeException("Could not fetch info from APCu");
         }
 
@@ -57,7 +57,7 @@ class ApcuCacheInfoKeysCommand extends ApcuCacheInfoCommand
             ->setRows($this->processFilelist($info['cache_list']))
         ;
 
-        $table->render($output);
+        $table->render();
     }
 
     protected function processFileList(array $cacheList)

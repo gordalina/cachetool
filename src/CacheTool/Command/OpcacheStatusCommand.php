@@ -46,7 +46,7 @@ class OpcacheStatusCommand extends AbstractCommand
         $table = new Table($output);
         $table->setHeaders(array('Name', 'Value'));
         $table->setRows($this->getRows($info, $info['opcache_statistics']));
-        $table->render($output);
+        $table->render();
     }
 
     /**

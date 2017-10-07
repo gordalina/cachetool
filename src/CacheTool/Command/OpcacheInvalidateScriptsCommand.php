@@ -54,7 +54,7 @@ class OpcacheInvalidateScriptsCommand extends AbstractCommand
             ->setRows($this->processFilelist($info['scripts'], $path))
         ;
 
-        $table->render($output);
+        $table->render();
     }
 
     protected function processFileList(array $cacheList, $path)

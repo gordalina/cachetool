@@ -60,14 +60,14 @@ class ApcCacheInfoCommand extends AbstractCommand
         $this->normalize($user);
         $this->normalize($system);
 
-        if (!$user || !$system) {
+        if (empty($user) || empty($system)) {
             throw new \RuntimeException("Could not fetch info from APC");
         }
 
         $table = new Table($output);
         $table->setHeaders(array('Name', 'User', 'System'));
         $table->setRows($this->getRows($user, $system));
-        $table->render($output);
+        $table->render();
     }
 
     /**

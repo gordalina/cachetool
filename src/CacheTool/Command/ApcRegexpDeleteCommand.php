@@ -37,24 +37,26 @@ class ApcRegexpDeleteCommand extends AbstractCommand
     {
         $this->ensureExtensionLoaded('apc');
 
+        $cpt = 0;
         $regexp = $input->getArgument('regexp');
-
         $user = $this->getCacheTool()->apc_cache_info('user');
-
         $keys = array();
+
         foreach ($user['cache_list'] as $key) {
             $string = $key['info'];
             if (preg_match('|' . $regexp . '|', $string)) {
                 $keys[] = $key;
             }
         }
-        $cpt = 0;
+
         $table = new Table($output);
         $table->setHeaders(array('Key', 'TTL', ));
         $table->setRows($keys);
-        $table->render($output);
+        $table->render();
+
         foreach ($keys as $key) {
             $success = $this->getCacheTool()->apc_delete($key['info']);
+
             if ($output->isVerbose()) {
                 if ($success) {
                     $output->writeln("<comment>APC key <info>{$key['info']}</info> was deleted</comment>");
@@ -62,11 +64,14 @@ class ApcRegexpDeleteCommand extends AbstractCommand
                     $output->writeln("<comment>APC key <info>{$key['info']}</info> could not be deleted.</comment>");
                 }
             }
-            $cpt ++;
+
+            $cpt += 1;
         }
+
         if ($output->isVerbose()) {
             $output->writeln("<comment>APC key <info>{$cpt}</info> keys treated.</comment>");
         }
+
         return 1;
     }
 }

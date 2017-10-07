@@ -64,7 +64,7 @@ class ConsoleHandler extends AbstractProcessingHandler
         parent::__construct(Logger::DEBUG, $bubble);
         $this->output = $output;
 
-        if ($verbosityLevelMap) {
+        if (!empty($verbosityLevelMap)) {
             $this->verbosityLevelMap = $verbosityLevelMap;
         }
     }

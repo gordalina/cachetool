@@ -58,7 +58,7 @@ class ApcuCacheInfoCommand extends AbstractCommand
 
         $this->normalize($info);
 
-        if (!$info) {
+        if (empty($info)) {
             throw new \RuntimeException("Could not fetch info from APCu");
         }
 

@@ -45,7 +45,7 @@ class OpcacheConfigurationCommand extends AbstractCommand
             ->setRows($this->processDirectives($info['directives']))
         ;
 
-        $table->render($output);
+        $table->render();
     }
 
     protected function processDirectives(array $directives)

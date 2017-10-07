@@ -27,7 +27,9 @@ class Cli extends AbstractAdapter
         $process = new Process("php $file");
         $process->run();
 
-        @unlink($file);
+        if (!@unlink($file)) {
+            $this->logger->debug(sprintf('CLI: Could not delete file: %s', $file));
+        }
 
         return $process->getOutput();
     }

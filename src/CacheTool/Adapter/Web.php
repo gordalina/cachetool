@@ -36,7 +36,9 @@ class Web extends AbstractAdapter
 
         $content = $this->http->fetch($filename);
 
-        @unlink($file);
+        if (!@unlink($file)) {
+            $this->logger->debug(sprintf('FastCGI: Could not delete file: %s', $file));
+        }
 
         return $content;
     }

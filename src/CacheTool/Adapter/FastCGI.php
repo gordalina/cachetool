@@ -105,10 +105,15 @@ class FastCGI extends AbstractAdapter
             $response = $this->client->request($environment, '');
             $this->logger->debug(sprintf('FastCGI: Response: %s', json_encode($response)));
 
-            @unlink($file);
+            if (!@unlink($file)) {
+                $this->logger->debug(sprintf('FastCGI: Could not delete file: %s', $file));
+            }
+
             return $response;
         } catch (\Exception $e) {
-            @unlink($file);
+            if (!@unlink($file)) {
+                $this->logger->debug(sprintf('FastCGI: Could not delete file: %s', $file));
+            }
 
             throw new \RuntimeException(
                 sprintf('FastCGI error: %s (%s)', $e->getMessage(), $this->host),

@@ -185,7 +185,7 @@ class Application extends BaseApplication
 
 
     /**
-     * @return AbstractAdapter
+     * @return null|\CacheTool\Adapter\AbstractAdapter
      */
     private function getAdapter()
     {

@@ -17,9 +17,21 @@ box -V
 jsawk -h
 
 #
+# Run tests
+#
+
+vendor/bin/phpunit
+
+#
+# Remove dependencies and re-install production composer dependencies
+#
+
+rm -fr vendor
+composer install --no-dev
+
+#
 # Tag & build master branch
 #
-git tag ${TAG}
 box build
 
 #
@@ -66,7 +78,10 @@ git commit -m "Bump version ${TAG}"
 #
 git checkout master
 
+git tag ${TAG}
 git push origin gh-pages
 git push --tags
+
+composer install
 
 echo "New version created: ${TAG}."

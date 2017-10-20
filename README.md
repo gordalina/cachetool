@@ -54,6 +54,12 @@ $ php cachetool.phar apc:cache:info --fcgi=127.0.0.1:9000
 $ php cachetool.phar opcache:status --fcgi=/var/run/php5-fpm.sock
 ```
 
+  * To connect to a chrooted fastcgi server you need to set `--fcgi-chroot` and `--tmp-dir` parameters
+
+```sh
+$ php cachetool.phar opcache:status --fcgi=/var/run/php5-fpm.sock --fcgi-chroot=/path/to/chroot --tmp-dir=/path/to/chroot/tmp
+```
+
   * Using the CLI
 
 ```sh

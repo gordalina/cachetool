@@ -73,7 +73,7 @@ class FastCGI extends AbstractAdapter
         $this->client->setPersistentSocket(false);
         $this->client->setKeepAlive(true);
 
-        if ($chroot) {
+        if ($chroot !== null) {
             $this->chroot = rtrim($chroot, '/');
         }
     }

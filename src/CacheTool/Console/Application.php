@@ -103,6 +103,7 @@ class Application extends BaseApplication
     {
         $definition = parent::getDefaultInputDefinition();
         $definition->addOption(new InputOption('--fcgi', null, InputOption::VALUE_OPTIONAL, 'If specified, used as a connection string to FastCGI server.'));
+        $definition->addOption(new InputOption('--fcgi-chroot', null, InputOption::VALUE_OPTIONAL, 'If specified, used for mapping script path to chrooted FastCGI server. --tmp-dir need to be chrooted too.'));
         $definition->addOption(new InputOption('--cli', null, InputOption::VALUE_NONE, 'If specified, forces adapter to cli'));
         $definition->addOption(new InputOption('--web', null, InputOption::VALUE_NONE, 'If specified, forces adapter to web'));
         $definition->addOption(new InputOption('--web-path', null, InputOption::VALUE_OPTIONAL, 'If specified, used as a information for web adapter'));
@@ -167,6 +168,7 @@ class Application extends BaseApplication
             $this->config['adapter'] = 'cli';
         } elseif ($input->hasParameterOption('--fcgi')) {
             $this->config['adapter'] = 'fastcgi';
+            $this->config['fastcgiChroot'] = $input->getParameterOption('--fcgi-chroot');
 
             if (!is_null($input->getParameterOption('--fcgi'))) {
                 $this->config['fastcgi'] = $input->getParameterOption('--fcgi');
@@ -193,7 +195,7 @@ class Application extends BaseApplication
             case 'cli':
                 return new Cli();
             case 'fastcgi':
-                return new FastCGI($this->config['fastcgi']);
+                return new FastCGI($this->config['fastcgi'], $this->config['fastcgiChroot']);
             case 'web':
                 return new Web($this->config['webPath'], $this->config['http']);
         }

@@ -35,9 +35,15 @@ class FastCGI extends AbstractAdapter
     protected $host;
 
     /**
-     * @param string $host 127.0.0.1:9000 or /var/run/php5-fpm.sock
+     * @var string
      */
-    public function __construct($host = null)
+    protected $chroot;
+
+    /**
+     * @param string $host 127.0.0.1:9000 or /var/run/php5-fpm.sock
+     * @param string $chroot
+     */
+    public function __construct($host = null, $chroot = null)
     {
         // try to guess where it is
         if ($host === null) {
@@ -66,6 +72,10 @@ class FastCGI extends AbstractAdapter
         $this->client->setReadWriteTimeout(60 * 1000);
         $this->client->setPersistentSocket(false);
         $this->client->setKeepAlive(true);
+
+        if ($chroot) {
+            $this->chroot = rtrim($chroot, '/');
+        }
     }
 
     /**
@@ -98,7 +108,7 @@ class FastCGI extends AbstractAdapter
             $environment = array(
                 'REQUEST_METHOD'  => 'POST',
                 'REQUEST_URI'     => '/',
-                'SCRIPT_FILENAME' => $file,
+                'SCRIPT_FILENAME' => $this->getScriptFileName($file),
             );
 
             $this->logger->info(sprintf('FastCGI: Requesting FPM using socket: %s', $this->host));
@@ -121,5 +131,21 @@ class FastCGI extends AbstractAdapter
                 $e
             );
         }
+    }
+
+    /**
+     * @param string $file
+     * @return string
+     * @throws \RuntimeException
+     */
+    protected function getScriptFileName($file)
+    {
+        if ($this->chroot) {
+            if (substr($file, 0, strlen($this->chroot)) === $this->chroot) {
+                return substr($file, strlen($this->chroot));
+            }
+            throw new \RuntimeException('FastCGI configured to be chrooted, but file not in chroot directory.');
+        }
+        return $file;
     }
 }

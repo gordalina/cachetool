@@ -6,6 +6,7 @@
         "php": ">=5.5.9",
         "symfony/console": "~3.0",
         "symfony/dependency-injection": "~3.0",
+        "symfony/finder": "~3.0",
         "symfony/process": "~3.0",
         "symfony/yaml": "~3.0",
         "psr/log": "~1.0",

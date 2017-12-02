@@ -87,6 +87,7 @@ class Application extends BaseApplication
         $commands[] = new CacheToolCommand\OpcacheResetCommand();
         $commands[] = new CacheToolCommand\OpcacheStatusCommand();
         $commands[] = new CacheToolCommand\OpcacheStatusScriptsCommand();
+        $commands[] = new CacheToolCommand\OpcacheCompileScriptsCommand();
         $commands[] = new CacheToolCommand\OpcacheInvalidateScriptsCommand();
 
         $commands[] = new CacheToolCommand\StatCacheClearCommand();

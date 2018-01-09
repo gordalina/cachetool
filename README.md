@@ -66,7 +66,7 @@ $ php cachetool.phar opcache:status --cli
 $ php cachetool.phar opcache:status --web --web-path=/path/to/your/document/root --web-url=http://url-to-your-document.root
 ```
 
-You have some useful commands that you can you
+You have some useful commands that you can use
 
 ```sh
  apc

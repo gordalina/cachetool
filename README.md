@@ -145,6 +145,13 @@ fastcgi: /var/run/php5-fpm.sock
 temp_dir: /dev/shm/cachetool
 ```
 
+You can define the supported extensions in the config file. By default, `apc`, `apcu`, and
+`opcache` are enabled. To disable `apc`, add this to your config file:
+
+```yml
+extensions: [apcu, opcache]
+```
+
 Usage (as a library)
 --------------------
 

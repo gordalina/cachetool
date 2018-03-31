@@ -61,33 +61,39 @@ class Application extends BaseApplication
         $commands = parent::getDefaultCommands();
         $commands[] = new CacheToolCommand\SelfUpdateCommand();
 
-        $commands[] = new CacheToolCommand\ApcBinDumpCommand();
-        $commands[] = new CacheToolCommand\ApcBinLoadCommand();
-        $commands[] = new CacheToolCommand\ApcCacheClearCommand();
-        $commands[] = new CacheToolCommand\ApcCacheInfoCommand();
-        $commands[] = new CacheToolCommand\ApcCacheInfoFileCommand();
-        $commands[] = new CacheToolCommand\ApcKeyDeleteCommand();
-        $commands[] = new CacheToolCommand\ApcKeyExistsCommand();
-        $commands[] = new CacheToolCommand\ApcKeyFetchCommand();
-        $commands[] = new CacheToolCommand\ApcKeyStoreCommand();
-        $commands[] = new CacheToolCommand\ApcSmaInfoCommand();
-        $commands[] = new CacheToolCommand\ApcRegexpDeleteCommand();
+        if (in_array('apc', $this->config['extensions'], true)) {
+            $commands[] = new CacheToolCommand\ApcBinDumpCommand();
+            $commands[] = new CacheToolCommand\ApcBinLoadCommand();
+            $commands[] = new CacheToolCommand\ApcCacheClearCommand();
+            $commands[] = new CacheToolCommand\ApcCacheInfoCommand();
+            $commands[] = new CacheToolCommand\ApcCacheInfoFileCommand();
+            $commands[] = new CacheToolCommand\ApcKeyDeleteCommand();
+            $commands[] = new CacheToolCommand\ApcKeyExistsCommand();
+            $commands[] = new CacheToolCommand\ApcKeyFetchCommand();
+            $commands[] = new CacheToolCommand\ApcKeyStoreCommand();
+            $commands[] = new CacheToolCommand\ApcSmaInfoCommand();
+            $commands[] = new CacheToolCommand\ApcRegexpDeleteCommand();
+        }
 
-        $commands[] = new CacheToolCommand\ApcuCacheClearCommand();
-        $commands[] = new CacheToolCommand\ApcuCacheInfoCommand();
-        $commands[] = new CacheToolCommand\ApcuCacheInfoKeysCommand();
-        $commands[] = new CacheToolCommand\ApcuKeyDeleteCommand();
-        $commands[] = new CacheToolCommand\ApcuKeyExistsCommand();
-        $commands[] = new CacheToolCommand\ApcuKeyFetchCommand();
-        $commands[] = new CacheToolCommand\ApcuKeyStoreCommand();
-        $commands[] = new CacheToolCommand\ApcuSmaInfoCommand();
-        $commands[] = new CacheToolCommand\ApcuRegexpDeleteCommand();
+        if (in_array('apcu', $this->config['extensions'], true)) {
+            $commands[] = new CacheToolCommand\ApcuCacheClearCommand();
+            $commands[] = new CacheToolCommand\ApcuCacheInfoCommand();
+            $commands[] = new CacheToolCommand\ApcuCacheInfoKeysCommand();
+            $commands[] = new CacheToolCommand\ApcuKeyDeleteCommand();
+            $commands[] = new CacheToolCommand\ApcuKeyExistsCommand();
+            $commands[] = new CacheToolCommand\ApcuKeyFetchCommand();
+            $commands[] = new CacheToolCommand\ApcuKeyStoreCommand();
+            $commands[] = new CacheToolCommand\ApcuSmaInfoCommand();
+            $commands[] = new CacheToolCommand\ApcuRegexpDeleteCommand();
+        }
 
-        $commands[] = new CacheToolCommand\OpcacheConfigurationCommand();
-        $commands[] = new CacheToolCommand\OpcacheResetCommand();
-        $commands[] = new CacheToolCommand\OpcacheStatusCommand();
-        $commands[] = new CacheToolCommand\OpcacheStatusScriptsCommand();
-        $commands[] = new CacheToolCommand\OpcacheInvalidateScriptsCommand();
+        if (in_array('opcache', $this->config['extensions'], true)) {
+            $commands[] = new CacheToolCommand\OpcacheConfigurationCommand();
+            $commands[] = new CacheToolCommand\OpcacheResetCommand();
+            $commands[] = new CacheToolCommand\OpcacheStatusCommand();
+            $commands[] = new CacheToolCommand\OpcacheStatusScriptsCommand();
+            $commands[] = new CacheToolCommand\OpcacheInvalidateScriptsCommand();
+        }
 
         $commands[] = new CacheToolCommand\StatCacheClearCommand();
         $commands[] = new CacheToolCommand\StatRealpathGetCommand();

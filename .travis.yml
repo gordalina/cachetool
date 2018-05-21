@@ -12,10 +12,10 @@ php:
 
 before_install:
   - composer config --global github-oauth.github.com "$GITHUB_TOKEN"
-  
+
 install:
     - composer self-update
-    - composer install --prefer-dist
+    - composer install --prefer-source
 
 #before_script:
     #- sudo apt-get install php5-fpm

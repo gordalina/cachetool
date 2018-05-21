@@ -1,3 +1,7 @@
+# 3.1.0
+
+- Test with PHP 7.2
+
 # 3.0.0
 
 - [#57](https://github.com/gordalina/cachetool/pull/57) Web Adapter (@scuben)

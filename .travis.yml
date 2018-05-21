@@ -1,10 +1,17 @@
-language: php
+env:
+  global:
+    secure: "NjbqUJv8rY5GeDdpX5Ygl58f2q+OKZqzzz1EuWdVxa3R/nMspKxFbWuM6L/pJsogzNrZBn6tAX0ke7Ojz6t/RNSe8XYrjis4lPEf9c/KN7/ESZg7fIkrJOegrY/CUYa0KjOqMSxouEcU/6maNjP3jI/4Bdxd7rSJPduriCSdCAI="
 
+language: php
 php:
     - 5.5
     - 5.6
     - 7.0
     - 7.1
+    - 7.2
+
+before_install:
+  - composer config --global github-oauth.github.com "$GITHUB_TOKEN"
 
 install:
     - composer self-update

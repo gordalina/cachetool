@@ -98,6 +98,7 @@ You have some useful commands that you can use
   apcu:regexp:delete          Deletes all APCu key matching a regexp
   apcu:sma:info               Show APCu shared memory allocation information
  opcache
+  opcache:compile:scripts     Compile scripts from path to the opcode cache
   opcache:configuration       Get configuration information about the cache
   opcache:invalidate:scripts  Remove scripts from the opcode cache
   opcache:reset               Resets the contents of the opcode cache

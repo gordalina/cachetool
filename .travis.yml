@@ -9,7 +9,7 @@ php:
 
 install:
     - composer self-update
-    - composer install --prefer-source
+    - composer install
 
 #before_script:
     #- sudo apt-get install php5-fpm

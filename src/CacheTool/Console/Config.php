@@ -17,6 +17,7 @@ class Config implements \ArrayAccess
 {
     private $config = array(
         'adapter' => 'fastcgi',
+        'extensions' => ['apc', 'apcu', 'opcache'],
         'fastcgi' => null,
         'temp_dir' => null
     );
@@ -24,7 +25,7 @@ class Config implements \ArrayAccess
     public function __construct(array $config = array())
     {
         if (!empty($config)) {
-            $this->config = $config;
+            $this->config = array_replace($this->config, $config);
 
             if (!isset($this->config['temp_dir'])) {
                 $this->config['temp_dir'] = sys_get_temp_dir();

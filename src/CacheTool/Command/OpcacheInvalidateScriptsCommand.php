@@ -11,10 +11,10 @@
 
 namespace CacheTool\Command;
 
-use CacheTool\Util\Formatter;
 use Symfony\Component\Console\Helper\Table;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
+use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 
 class OpcacheInvalidateScriptsCommand extends AbstractCommand
@@ -28,6 +28,7 @@ class OpcacheInvalidateScriptsCommand extends AbstractCommand
             ->setName('opcache:invalidate:scripts')
             ->setDescription('Remove scripts from the opcode cache')
             ->addArgument('path', InputArgument::REQUIRED)
+            ->addOption('force', 'f', InputOption::VALUE_NONE, 'Force scripts invalidation')
             ->setHelp('');
     }
 
@@ -38,6 +39,7 @@ class OpcacheInvalidateScriptsCommand extends AbstractCommand
     {
         $this->ensureExtensionLoaded('Zend OPcache');
         $path = $input->getArgument('path');
+        $force = $input->getOption('force');
 
         $info = $this->getCacheTool()->opcache_get_status(true);
 
@@ -51,13 +53,13 @@ class OpcacheInvalidateScriptsCommand extends AbstractCommand
                 'Cleaned',
                 'Filename'
             ))
-            ->setRows($this->processFilelist($info['scripts'], $path))
+            ->setRows($this->processFilelist($info['scripts'], $path, $force))
         ;
 
         $table->render();
     }
 
-    protected function processFileList(array $cacheList, $path)
+    protected function processFileList(array $cacheList, $path, $force)
     {
         $list = array();
 
@@ -67,7 +69,7 @@ class OpcacheInvalidateScriptsCommand extends AbstractCommand
             $filename = $this->processFilename($item['full_path']);
             if (preg_match('|' . $path . '|', $filename)) {
                 $list[] = array(
-                    $this->getCacheTool()->opcache_invalidate($filename),
+                    $this->getCacheTool()->opcache_invalidate($filename, $force),
                     $filename
                 );
             }

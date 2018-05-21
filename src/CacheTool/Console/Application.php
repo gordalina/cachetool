@@ -61,34 +61,40 @@ class Application extends BaseApplication
         $commands = parent::getDefaultCommands();
         $commands[] = new CacheToolCommand\SelfUpdateCommand();
 
-        $commands[] = new CacheToolCommand\ApcBinDumpCommand();
-        $commands[] = new CacheToolCommand\ApcBinLoadCommand();
-        $commands[] = new CacheToolCommand\ApcCacheClearCommand();
-        $commands[] = new CacheToolCommand\ApcCacheInfoCommand();
-        $commands[] = new CacheToolCommand\ApcCacheInfoFileCommand();
-        $commands[] = new CacheToolCommand\ApcKeyDeleteCommand();
-        $commands[] = new CacheToolCommand\ApcKeyExistsCommand();
-        $commands[] = new CacheToolCommand\ApcKeyFetchCommand();
-        $commands[] = new CacheToolCommand\ApcKeyStoreCommand();
-        $commands[] = new CacheToolCommand\ApcSmaInfoCommand();
-        $commands[] = new CacheToolCommand\ApcRegexpDeleteCommand();
+        if (in_array('apc', $this->config['extensions'], true)) {
+            $commands[] = new CacheToolCommand\ApcBinDumpCommand();
+            $commands[] = new CacheToolCommand\ApcBinLoadCommand();
+            $commands[] = new CacheToolCommand\ApcCacheClearCommand();
+            $commands[] = new CacheToolCommand\ApcCacheInfoCommand();
+            $commands[] = new CacheToolCommand\ApcCacheInfoFileCommand();
+            $commands[] = new CacheToolCommand\ApcKeyDeleteCommand();
+            $commands[] = new CacheToolCommand\ApcKeyExistsCommand();
+            $commands[] = new CacheToolCommand\ApcKeyFetchCommand();
+            $commands[] = new CacheToolCommand\ApcKeyStoreCommand();
+            $commands[] = new CacheToolCommand\ApcSmaInfoCommand();
+            $commands[] = new CacheToolCommand\ApcRegexpDeleteCommand();
+        }
 
-        $commands[] = new CacheToolCommand\ApcuCacheClearCommand();
-        $commands[] = new CacheToolCommand\ApcuCacheInfoCommand();
-        $commands[] = new CacheToolCommand\ApcuCacheInfoKeysCommand();
-        $commands[] = new CacheToolCommand\ApcuKeyDeleteCommand();
-        $commands[] = new CacheToolCommand\ApcuKeyExistsCommand();
-        $commands[] = new CacheToolCommand\ApcuKeyFetchCommand();
-        $commands[] = new CacheToolCommand\ApcuKeyStoreCommand();
-        $commands[] = new CacheToolCommand\ApcuSmaInfoCommand();
-        $commands[] = new CacheToolCommand\ApcuRegexpDeleteCommand();
+        if (in_array('apcu', $this->config['extensions'], true)) {
+            $commands[] = new CacheToolCommand\ApcuCacheClearCommand();
+            $commands[] = new CacheToolCommand\ApcuCacheInfoCommand();
+            $commands[] = new CacheToolCommand\ApcuCacheInfoKeysCommand();
+            $commands[] = new CacheToolCommand\ApcuKeyDeleteCommand();
+            $commands[] = new CacheToolCommand\ApcuKeyExistsCommand();
+            $commands[] = new CacheToolCommand\ApcuKeyFetchCommand();
+            $commands[] = new CacheToolCommand\ApcuKeyStoreCommand();
+            $commands[] = new CacheToolCommand\ApcuSmaInfoCommand();
+            $commands[] = new CacheToolCommand\ApcuRegexpDeleteCommand();
+        }
 
-        $commands[] = new CacheToolCommand\OpcacheConfigurationCommand();
-        $commands[] = new CacheToolCommand\OpcacheResetCommand();
-        $commands[] = new CacheToolCommand\OpcacheStatusCommand();
-        $commands[] = new CacheToolCommand\OpcacheStatusScriptsCommand();
-        $commands[] = new CacheToolCommand\OpcacheCompileScriptsCommand();
-        $commands[] = new CacheToolCommand\OpcacheInvalidateScriptsCommand();
+        if (in_array('opcache', $this->config['extensions'], true)) {
+            $commands[] = new CacheToolCommand\OpcacheConfigurationCommand();
+            $commands[] = new CacheToolCommand\OpcacheResetCommand();
+            $commands[] = new CacheToolCommand\OpcacheStatusCommand();
+            $commands[] = new CacheToolCommand\OpcacheStatusScriptsCommand();
+            $commands[] = new CacheToolCommand\OpcacheInvalidateScriptsCommand();
+            $commands[] = new CacheToolCommand\OpcacheInvalidateScriptsCommand();
+        }
 
         $commands[] = new CacheToolCommand\StatCacheClearCommand();
         $commands[] = new CacheToolCommand\StatRealpathGetCommand();
@@ -104,6 +110,7 @@ class Application extends BaseApplication
     {
         $definition = parent::getDefaultInputDefinition();
         $definition->addOption(new InputOption('--fcgi', null, InputOption::VALUE_OPTIONAL, 'If specified, used as a connection string to FastCGI server.'));
+        $definition->addOption(new InputOption('--fcgi-chroot', null, InputOption::VALUE_OPTIONAL, 'If specified, used for mapping script path to chrooted FastCGI server. --tmp-dir need to be chrooted too.'));
         $definition->addOption(new InputOption('--cli', null, InputOption::VALUE_NONE, 'If specified, forces adapter to cli'));
         $definition->addOption(new InputOption('--web', null, InputOption::VALUE_NONE, 'If specified, forces adapter to web'));
         $definition->addOption(new InputOption('--web-path', null, InputOption::VALUE_OPTIONAL, 'If specified, used as a information for web adapter'));
@@ -168,6 +175,7 @@ class Application extends BaseApplication
             $this->config['adapter'] = 'cli';
         } elseif ($input->hasParameterOption('--fcgi')) {
             $this->config['adapter'] = 'fastcgi';
+            $this->config['fastcgiChroot'] = $input->getParameterOption('--fcgi-chroot');
 
             if (!is_null($input->getParameterOption('--fcgi'))) {
                 $this->config['fastcgi'] = $input->getParameterOption('--fcgi');
@@ -194,7 +202,7 @@ class Application extends BaseApplication
             case 'cli':
                 return new Cli();
             case 'fastcgi':
-                return new FastCGI($this->config['fastcgi']);
+                return new FastCGI($this->config['fastcgi'], $this->config['fastcgiChroot']);
             case 'web':
                 return new Web($this->config['webPath'], $this->config['http']);
         }

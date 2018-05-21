@@ -54,6 +54,12 @@ $ php cachetool.phar apc:cache:info --fcgi=127.0.0.1:9000
 $ php cachetool.phar opcache:status --fcgi=/var/run/php5-fpm.sock
 ```
 
+  * To connect to a chrooted fastcgi server you need to set `--fcgi-chroot` and `--tmp-dir` parameters
+
+```sh
+$ php cachetool.phar opcache:status --fcgi=/var/run/php5-fpm.sock --fcgi-chroot=/path/to/chroot --tmp-dir=/path/to/chroot/tmp
+```
+
   * Using the CLI
 
 ```sh
@@ -66,7 +72,7 @@ $ php cachetool.phar opcache:status --cli
 $ php cachetool.phar opcache:status --web --web-path=/path/to/your/document/root --web-url=http://url-to-your-document.root
 ```
 
-You have some useful commands that you can you
+You have some useful commands that you can use
 
 ```sh
  apc
@@ -138,6 +144,13 @@ you can set it on the config file:
 adapter: fastcgi
 fastcgi: /var/run/php5-fpm.sock
 temp_dir: /dev/shm/cachetool
+```
+
+You can define the supported extensions in the config file. By default, `apc`, `apcu`, and
+`opcache` are enabled. To disable `apc`, add this to your config file:
+
+```yml
+extensions: [apcu, opcache]
 ```
 
 Usage (as a library)

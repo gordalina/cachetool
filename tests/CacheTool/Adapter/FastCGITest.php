@@ -24,12 +24,13 @@ class FastCGITest extends \PHPUnit_Framework_TestCase
 
     public function testGetScriptFileNameWithChroot()
     {
-        $fcgi = new FastCGI(null, sys_get_temp_dir());
+        $tmpdir = sys_get_temp_dir();
+        $fcgi = new FastCGI(null, $tmpdir);
         $class = new \ReflectionClass($fcgi);
         $method = $class->getMethod('getScriptFileName');
         $method->setAccessible(true);
 
-        self::assertEquals('/test.php', $method->invoke($fcgi, '/tmp/test.php'));
+        self::assertEquals('/test.php', $method->invoke($fcgi, "{$tmpdir}/test.php"));
     }
 
     public function testGetScriptFileNameWithoutChroot()

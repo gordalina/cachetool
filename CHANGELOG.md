@@ -1,6 +1,11 @@
 # 3.1.0
 
 - Test with PHP 7.2
+- [#65](https://github.com/gordalina/cachetool/pull/65) Add support for symfony4 (@daniel-iwaniec)
+- [#61](https://github.com/gordalina/cachetool/pull/61) Possibility to communicate with chrooted FastCGI (@rusnak)
+- [#63](https://github.com/gordalina/cachetool/pull/63) allow to force scripts invalidation (@jaymecd)
+- [#69](https://github.com/gordalina/cachetool/pull/69) Allow configuration file to specify which commands are available. (@bangpound)
+- [#64](https://github.com/gordalina/cachetool/pull/64) compile file into opcache (@jaymecd)
 
 # 3.0.0
 

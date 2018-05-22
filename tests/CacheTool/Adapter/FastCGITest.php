@@ -4,7 +4,7 @@ namespace CacheTool\Adapter;
 
 use CacheTool\Code;
 
-class FastCGITest extends \PHPUnit_Framework_TestCase
+class FastCGITest extends \PHPUnit\Framework\TestCase
 {
     public function testRun()
     {

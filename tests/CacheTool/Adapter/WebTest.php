@@ -4,7 +4,7 @@ namespace CacheTool\Adapter;
 
 use CacheTool\Code;
 
-class WebTest extends \PHPUnit_Framework_TestCase
+class WebTest extends \PHPUnit\Framework\TestCase
 {
     public function testRun()
     {

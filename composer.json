@@ -3,19 +3,19 @@
     "description": "Manage your opcode & apc through the cli",
     "keywords": ["cache", "opcache", "apc", "fastcgi", "opcode", "fpm"],
     "require": {
-        "php": ">=5.5.9",
-        "symfony/console": "~3.0",
-        "symfony/dependency-injection": "~3.0",
-        "symfony/finder": "~3.0",
-        "symfony/process": "~3.0",
-        "symfony/yaml": "~3.0",
+        "php": ">=7.1.0",
+        "symfony/console": "~4.0",
+        "symfony/dependency-injection": "~4.0",
+        "symfony/finder": "~4.0",
+        "symfony/process": "~4.0",
+        "symfony/yaml": "~4.0",
         "psr/log": "~1.0",
         "monolog/monolog": "~1.1",
         "adoy/fastcgi-client": "~1.0"
     },
     "require-dev": {
         "herrera-io/phar-update": "~2.0",
-        "phpunit/phpunit": "4.8.*"
+        "phpunit/phpunit": "~7.0"
     },
     "license": "MIT",
     "authors": [

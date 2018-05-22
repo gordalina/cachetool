@@ -2,13 +2,13 @@
 
 namespace CacheTool\Proxy;
 
-abstract class ProxyTest extends \PHPUnit_Framework_TestCase
+abstract class ProxyTest extends \PHPUnit\Framework\TestCase
 {
     abstract protected function createProxyInstance();
 
     protected function assertProxyCode($code, $function, $arguments)
     {
-        $mock = $this->getMock('CacheTool\Adapter\Cli');
+        $mock = $this->createMock('CacheTool\Adapter\Cli');
         $mock->expects($this->once())
             ->method('run')
             ->will($this->returnArgument(0));
@@ -23,7 +23,7 @@ abstract class ProxyTest extends \PHPUnit_Framework_TestCase
 
     protected function assertProxyCodeArray($code, $function, $arguments)
     {
-        $mock = $this->getMock('CacheTool\Adapter\Cli');
+        $mock = $this->createMock('CacheTool\Adapter\Cli');
         $mock->expects($this->once())
             ->method('run')
             ->will($this->returnCallback(function ($code) {

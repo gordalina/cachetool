@@ -6,7 +6,7 @@ use CacheTool\CacheTool;
 use CacheTool\Adapter;
 use Monolog\Logger;
 
-class CacheToolTest extends \PHPUnit_Framework_TestCase
+class CacheToolTest extends \PHPUnit\Framework\TestCase
 {
     public function testConstruct()
     {

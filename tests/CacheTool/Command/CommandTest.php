@@ -7,7 +7,7 @@ use CacheTool\Console\Config;
 use Symfony\Component\Console\Input\StringInput;
 use Symfony\Component\Console\Output\BufferedOutput;
 
-abstract class CommandTest extends \PHPUnit_Framework_TestCase
+abstract class CommandTest extends \PHPUnit\Framework\TestCase
 {
     public function runCommand($cmd)
     {

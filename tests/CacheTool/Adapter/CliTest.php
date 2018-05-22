@@ -4,7 +4,7 @@ namespace CacheTool\Adapter;
 
 use CacheTool\Code;
 
-class CliTest extends \PHPUnit_Framework_TestCase
+class CliTest extends \PHPUnit\Framework\TestCase
 {
     public function testRun()
     {

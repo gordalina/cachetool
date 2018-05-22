@@ -4,7 +4,7 @@ namespace CacheTool;
 
 use CacheTool\Code;
 
-class CodeTest extends \PHPUnit_Framework_TestCase
+class CodeTest extends \PHPUnit\Framework\TestCase
 {
     public function testFactory()
     {

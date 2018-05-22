@@ -1,3 +1,12 @@
+# 4.0.0
+
+- Supports only PHP>=7.1
+- Supports only Symfony 4
+
+# 3.2.1
+
+- Uses Symfony 3.x
+
 # 3.1.0
 
 - Test with PHP 7.2

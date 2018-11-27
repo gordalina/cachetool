@@ -96,7 +96,7 @@ class FastCGI extends AbstractAdapter
         $body = $this->request($code);
 
         if (@unserialize($body) === false) {
-            throw new \RuntimeException(sprintf("Error: %s", $response));
+            throw new \RuntimeException(sprintf("Error: %s", $body));
         }
 
         return $body;

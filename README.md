@@ -8,7 +8,7 @@ CacheTool - Manage cache in the CLI
 [![Codacy Badge](https://img.shields.io/codacy/2d4176f2526d4251a51b691249c4d3e1.svg)](https://www.codacy.com/app/gordalina/cachetool/dashboard)
 
 CacheTool allows you to work with `apc`, `opcache`, and the file status cache through the cli.
-It will connect to a fastcgi server (like php-fpm) and operate it's cache.
+It will connect to a fastcgi server (like php-fpm) and operate its cache.
 
 Why is this useful?
 - Maybe you want to clear the bytecode cache without reloading php-fpm or using a web endpoint

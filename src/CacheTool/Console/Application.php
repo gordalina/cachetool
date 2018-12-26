@@ -13,6 +13,7 @@ namespace CacheTool\Console;
 
 use CacheTool\Adapter\FastCGI;
 use CacheTool\Adapter\Cli;
+use CacheTool\Adapter\Http\HttpInterface;
 use CacheTool\Adapter\Http\FileGetContents;
 use CacheTool\Adapter\Web;
 use CacheTool\CacheTool;
@@ -204,6 +205,8 @@ class Application extends BaseApplication
             case 'fastcgi':
                 return new FastCGI($this->config['fastcgi'], $this->config['fastcgiChroot']);
             case 'web':
+                if (!$this->config['http'] instanceof HttpInterface)
+                    $this->config['http'] = new FileGetContents($this->config['http']);
                 return new Web($this->config['webPath'], $this->config['http']);
         }
 

@@ -1,6 +1,6 @@
 #!/bin/bash
 
-set -e
+set -ex
 
 if [ $# -ne 1 ]; then
   echo "Usage: `basename $0` <tag>"

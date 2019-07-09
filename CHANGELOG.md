@@ -2,6 +2,7 @@
 
 - Support for APC cache has been removed.
 - Use PSR-4 autoloading.
+- Use `PHP_BINARY` in the CLI adapter to execute PHP.
 
 # 4.0.0
 

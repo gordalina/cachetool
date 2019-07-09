@@ -24,7 +24,7 @@ class Cli extends AbstractAdapter
         $file = $this->createTemporaryFile();
         $code->writeTo($file);
 
-        $process = new Process("php $file");
+        $process = new Process([PHP_BINARY, $file]);
         $process->run();
 
         if (!@unlink($file)) {

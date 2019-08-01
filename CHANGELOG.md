@@ -3,6 +3,8 @@
 - Support for APC cache has been removed.
 - Use PSR-4 autoloading.
 - Use `PHP_BINARY` in the CLI adapter to execute PHP.
+- Passing ``--tmp-dir`` a directory that is not writable now fails rather than
+  falling back to the default directories.
 
 # 4.0.0
 

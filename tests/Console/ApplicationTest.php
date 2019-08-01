@@ -89,4 +89,36 @@ class ApplicationTest extends CommandTest
         $this->assertContains('apcu:cache:clear', $content);
         $this->assertContains('opcache:configuration', $content);
     }
+
+    public function testWithTmpDirArgNotWriable()
+    {
+        $app = new Application(new Config());
+        $app->setAutoExit(false);
+
+        $output = new BufferedOutput();
+        $code = $app->run(new StringInput('opcache:reset --tmp-dir=/doesnotexist'), $output);
+        $content = $output->fetch();
+
+        $this->assertSame(1, $code);
+        $this->assertRegExp(
+            '|Could not write to `/doesnotexist/cachetool-.*\.php`:|',
+            $content
+        );
+    }
+
+    public function testWithTmpDirConfigNotWriable()
+    {
+        $app = new Application(new Config(array('temp_dir' => '/doesnotexist')));
+        $app->setAutoExit(false);
+
+        $output = new BufferedOutput();
+        $code = $app->run(new StringInput('opcache:reset'), $output);
+        $content = $output->fetch();
+
+        $this->assertSame(1, $code);
+        $this->assertRegExp(
+            '|Could not write to `/doesnotexist/cachetool-.*\.php`:|',
+            $content
+        );
+    }
 }

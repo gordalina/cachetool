@@ -27,11 +27,5 @@
     "autoload": {
         "psr-0": { "CacheTool": "src/" }
     },
-    "repositories": [
-        {
-            "type": "vcs",
-            "url": "https://github.com/gordalina/cachetool"
-        }
-    ],
     "bin": ["bin/cachetool"]
 }

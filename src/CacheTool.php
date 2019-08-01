@@ -51,14 +51,16 @@ class CacheTool
     {
         $this->logger = $logger ?: new Logger('cachetool');
 
-        $tempDirs = array($tempDir, '/dev/shm', '/var/run', sys_get_temp_dir());
-
-        foreach ($tempDirs as $tempDir) {
-            if (is_dir($tempDir) && is_writable($tempDir)) {
-                $this->tempDir = $tempDir;
-                break;
+        if (is_null($tempDir)) {
+            $tempDirs = array('/dev/shm', '/var/run', sys_get_temp_dir());
+            foreach ($tempDirs as $dir) {
+                if (is_dir($dir) && is_writable($dir)) {
+                    $tempDir = $dir;
+                    break;
+                }
             }
         }
+        $this->tempDir = $tempDir;
     }
 
     /**
@@ -102,6 +104,11 @@ class CacheTool
     public function getAdapter()
     {
         return $this->adapter;
+    }
+
+    public function getTempDir()
+    {
+        return $this->tempDir;
     }
 
     /**

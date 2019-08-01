@@ -42,6 +42,14 @@ class CacheToolTest extends \PHPUnit\Framework\TestCase
         $this->assertSame($logger, $cachetool->getLogger());
     }
 
+    public function testFactoryWithTempDirNotWritable()
+    {
+        $adapter = new Adapter\FastCGI();
+        $tempDir = '/doesnotexit';
+        $cachetool = CacheTool::factory($adapter, $tempDir, $this->getLogger());
+        $this->assertSame($tempDir, $cachetool->getTempDir());
+    }
+
     public function testLoggerWithAdapter()
     {
         $cachetool = new CacheTool(null, $this->getLogger());

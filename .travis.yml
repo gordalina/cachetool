@@ -1,25 +1,14 @@
-env:
-  global:
-    secure: "NjbqUJv8rY5GeDdpX5Ygl58f2q+OKZqzzz1EuWdVxa3R/nMspKxFbWuM6L/pJsogzNrZBn6tAX0ke7Ojz6t/RNSe8XYrjis4lPEf9c/KN7/ESZg7fIkrJOegrY/CUYa0KjOqMSxouEcU/6maNjP3jI/4Bdxd7rSJPduriCSdCAI="
-
 language: php
 php:
-    - 7.1
-    - 7.2
-
-before_install:
-  - composer config --global github-oauth.github.com "$GITHUB_TOKEN"
+  - 7.1
+  - 7.2
 
 install:
-    - composer self-update
-    - composer install --prefer-source
-
-#before_script:
-    #- sudo apt-get install php5-fpm
+  - composer install
 
 script:
-    - phpunit --coverage-clover=coverage.clover
+  - $(composer config bin-dir)/phpunit --coverage-clover=coverage.clover
 
 after_script:
-    - wget https://scrutinizer-ci.com/ocular.phar
-    - php ocular.phar code-coverage:upload --format=php-clover coverage.clover
+  - wget https://scrutinizer-ci.com/ocular.phar
+  - php ocular.phar code-coverage:upload --format=php-clover coverage.clover

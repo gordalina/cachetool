@@ -15,14 +15,14 @@ use Symfony\Component\Yaml\Parser;
 
 class Config implements \ArrayAccess
 {
-    private $config = array(
+    private $config = [
         'adapter' => 'fastcgi',
         'extensions' => ['apcu', 'opcache'],
         'fastcgi' => null,
         'temp_dir' => null
-    );
+    ];
 
-    public function __construct(array $config = array())
+    public function __construct(array $config = [])
     {
         if (!empty($config)) {
             $this->config = array_replace($this->config, $config);
@@ -58,7 +58,7 @@ class Config implements \ArrayAccess
     public static function factory() {
         $previous = null;
         $path = getcwd();
-        $paths = array();
+        $paths = [];
         $yaml = new Parser();
 
         while (($path = realpath($path)) && $path !== $previous) {

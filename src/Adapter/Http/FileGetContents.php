@@ -18,15 +18,15 @@ class FileGetContents extends AbstractHttp
         $contents = @file_get_contents($this->baseUrl.'/'.$filename);
 
         if (false === $contents) {
-            return serialize(array(
+            return serialize([
                 'result' => false,
-                'errors' => array(
-                    array(
+                'errors' => [
+                    [
                         'no' => 0,
                         'str' => 'file_get_contents call failed',
-                    ),
-                ),
-            ));
+                    ],
+                ],
+            ]);
         }
 
         return $contents;

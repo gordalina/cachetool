@@ -49,10 +49,10 @@ class OpcacheInvalidateScriptsCommand extends AbstractCommand
 
         $table = new Table($output);
         $table
-            ->setHeaders(array(
+            ->setHeaders([
                 'Cleaned',
                 'Filename'
-            ))
+            ])
             ->setRows($this->processFilelist($info['scripts'], $path, $force))
         ;
 
@@ -61,17 +61,17 @@ class OpcacheInvalidateScriptsCommand extends AbstractCommand
 
     protected function processFileList(array $cacheList, $path, $force)
     {
-        $list = array();
+        $list = [];
 
         sort($cacheList);
 
         foreach ($cacheList as $item) {
             $filename = $this->processFilename($item['full_path']);
             if (preg_match('|' . $path . '|', $filename)) {
-                $list[] = array(
+                $list[] = [
                     $this->getCacheTool()->opcache_invalidate($filename, $force),
                     $filename
-                );
+                ];
             }
         }
 

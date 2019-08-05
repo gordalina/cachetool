@@ -46,8 +46,8 @@ class FastCGITest extends \PHPUnit\Framework\TestCase
     public function testRunWithChroot()
     {
         $fcgi = $this->getMockBuilder('\CacheTool\Adapter\FastCGI')
-            ->setMethods(array('getScriptFileName'))
-            ->setConstructorArgs(array(null, sys_get_temp_dir()))
+            ->setMethods(['getScriptFileName'])
+            ->setConstructorArgs([null, sys_get_temp_dir()])
             ->getMock();
 
         $reflection = new \ReflectionClass($fcgi);
@@ -67,11 +67,11 @@ class FastCGITest extends \PHPUnit\Framework\TestCase
         $clientMock->expects(self::once())
             ->method('request')
             ->with(
-                array(
+                [
                     'REQUEST_METHOD'  => 'POST',
                     'REQUEST_URI'     => '/',
                     'SCRIPT_FILENAME' => $fileName
-                ),
+                ],
                 ''
             )
             ->willReturn("Content-type: text/html; charset=UTF-8\r\n\r\na:2:{s:6:\"result\";b:1;s:6:\"errors\";a:0:{}}");

@@ -26,12 +26,12 @@ class CacheTool
     /**
      * @var array
      */
-    protected $proxies = array();
+    protected $proxies = [];
 
     /**
      * @var array
      */
-    protected $functions = array();
+    protected $functions = [];
 
     /**
      * @var string
@@ -52,7 +52,7 @@ class CacheTool
         $this->logger = $logger ?: new Logger('cachetool');
 
         if (is_null($tempDir)) {
-            $tempDirs = array('/dev/shm', '/var/run', sys_get_temp_dir());
+            $tempDirs = ['/dev/shm', '/var/run', sys_get_temp_dir()];
             foreach ($tempDirs as $dir) {
                 if (is_dir($dir) && is_writable($dir)) {
                     $tempDir = $dir;
@@ -122,7 +122,7 @@ class CacheTool
         $this->proxies[] = $proxy;
 
         // reset functions (to be built when needed)
-        $this->functions = array();
+        $this->functions = [];
 
         return $this;
     }
@@ -191,7 +191,7 @@ class CacheTool
 
                 foreach ($proxy->getFunctions() as $fn) {
                     $this->logger->debug(sprintf('Loading Function: %s', $fn));
-                    $this->functions[$fn] = array($proxy, $fn);
+                    $this->functions[$fn] = [$proxy, $fn];
                 }
             }
         }

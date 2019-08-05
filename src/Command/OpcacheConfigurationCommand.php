@@ -41,7 +41,7 @@ class OpcacheConfigurationCommand extends AbstractCommand
 
         $table = new Table($output);
         $table
-            ->setHeaders(array('Directive', 'Value'))
+            ->setHeaders(['Directive', 'Value'])
             ->setRows($this->processDirectives($info['directives']))
         ;
 
@@ -50,10 +50,10 @@ class OpcacheConfigurationCommand extends AbstractCommand
 
     protected function processDirectives(array $directives)
     {
-        $list = array();
+        $list = [];
 
         foreach ($directives as $name => $value) {
-            $list[] = array($name, var_export($value, true));
+            $list[] = [$name, var_export($value, true)];
         }
 
         return $list;

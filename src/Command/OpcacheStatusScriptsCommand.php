@@ -44,11 +44,11 @@ class OpcacheStatusScriptsCommand extends AbstractCommand
 
         $table = new Table($output);
         $table
-            ->setHeaders(array(
+            ->setHeaders([
                 'Hits',
                 'Memory',
                 'Filename'
-            ))
+            ])
             ->setRows($this->processFilelist($info['scripts']))
         ;
 
@@ -57,14 +57,14 @@ class OpcacheStatusScriptsCommand extends AbstractCommand
 
     protected function processFileList(array $cacheList)
     {
-        $list = array();
+        $list = [];
 
         foreach ($cacheList as $item) {
-            $list[] = array(
+            $list[] = [
                 number_format($item['hits']),
                 Formatter::bytes($item['memory_consumption']),
                 $this->processFilename($item['full_path']),
-            );
+            ];
         }
 
         return $list;

@@ -30,7 +30,7 @@ class SelfUpdateCommand extends Command
     {
         $this
             ->setName('self-update')
-            ->setAliases(array('selfupdate'))
+            ->setAliases(['selfupdate'])
             ->setDescription('Updates cachetool.phar to the latest version')
         ;
     }

@@ -20,7 +20,7 @@ class Formatter
      */
     public static function bytes($bytes, $precision = 2)
     {
-        $units = array('b', 'KiB', 'MiB', 'GiB', 'TiB');
+        $units = ['b', 'KiB', 'MiB', 'GiB', 'TiB'];
 
         $bytes = max($bytes, 0);
         $pow = floor(($bytes ? log($bytes) : 0) / log(1024));

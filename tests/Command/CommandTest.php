@@ -22,13 +22,6 @@ abstract class CommandTest extends \PHPUnit\Framework\TestCase
         return $output->fetch();
     }
 
-    protected function assertHasApc()
-    {
-        if (!extension_loaded('apc')) {
-            $this->markTestSkipped('APC extension is not loaded.');
-        }
-    }
-
     protected function assertHasApcu()
     {
         if (!extension_loaded('apcu')) {

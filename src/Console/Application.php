@@ -61,20 +61,6 @@ class Application extends BaseApplication
         $commands = parent::getDefaultCommands();
         $commands[] = new CacheToolCommand\SelfUpdateCommand();
 
-        if (in_array('apc', $this->config['extensions'], true)) {
-            $commands[] = new CacheToolCommand\ApcBinDumpCommand();
-            $commands[] = new CacheToolCommand\ApcBinLoadCommand();
-            $commands[] = new CacheToolCommand\ApcCacheClearCommand();
-            $commands[] = new CacheToolCommand\ApcCacheInfoCommand();
-            $commands[] = new CacheToolCommand\ApcCacheInfoFileCommand();
-            $commands[] = new CacheToolCommand\ApcKeyDeleteCommand();
-            $commands[] = new CacheToolCommand\ApcKeyExistsCommand();
-            $commands[] = new CacheToolCommand\ApcKeyFetchCommand();
-            $commands[] = new CacheToolCommand\ApcKeyStoreCommand();
-            $commands[] = new CacheToolCommand\ApcSmaInfoCommand();
-            $commands[] = new CacheToolCommand\ApcRegexpDeleteCommand();
-        }
-
         if (in_array('apcu', $this->config['extensions'], true)) {
             $commands[] = new CacheToolCommand\ApcuCacheClearCommand();
             $commands[] = new CacheToolCommand\ApcuCacheInfoCommand();

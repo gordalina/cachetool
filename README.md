@@ -7,8 +7,9 @@ CacheTool - Manage cache in the CLI
 [![SensioLabsInsight](https://img.shields.io/sensiolabs/i/595c9feb-3f4d-473a-a575-81c7e97eb672.svg)](https://insight.sensiolabs.com/projects/595c9feb-3f4d-473a-a575-81c7e97eb672)
 [![Codacy Badge](https://img.shields.io/codacy/2d4176f2526d4251a51b691249c4d3e1.svg)](https://www.codacy.com/app/gordalina/cachetool/dashboard)
 
-CacheTool allows you to work with `apc`, `opcache`, and the file status cache through the cli.
-It will connect to a fastcgi server (like php-fpm) and operate its cache.
+CacheTool allows you to work with APCu, OPcache, and the file status cache
+through the CLI. It will connect to a FastCGI server (like PHP-FPM) and operate
+on its cache.
 
 Why is this useful?
 - Maybe you want to clear the bytecode cache without reloading php-fpm or using a web endpoint
@@ -16,7 +17,7 @@ Why is this useful?
 - Maybe you want to see some statistics right from the console
 - And many more...
 
-Note that, unlike APC and Opcache, the file status cache is per-process rather than stored in shared memory. This means that running `stat:clear` against PHP-FPM will only affect whichever FPM worker responds to the request, not the whole pool. [Julien Pauli has written a post](http://blog.jpauli.tech/2014/06/30/realpath-cache.html) with more details on how the file status cache operates.
+Note that, unlike APCu and Opcache, the file status cache is per-process rather than stored in shared memory. This means that running `stat:clear` against PHP-FPM will only affect whichever FPM worker responds to the request, not the whole pool. [Julien Pauli has written a post](http://blog.jpauli.tech/2014/06/30/realpath-cache.html) with more details on how the file status cache operates.
 
 Compatibility
 -------------
@@ -45,13 +46,13 @@ You can pass an IP address or a unix socket to the `--fcgi` adapter, or leave it
   * You can let CacheTool find the unix socket for you, or default to IP.
 
 ```sh
-$ php cachetool.phar apc:cache:info --fcgi
+$ php cachetool.phar apcu:cache:info --fcgi
 ```
 
   * You can connect to a fastcgi server using an IP address
 
 ```sh
-$ php cachetool.phar apc:cache:info --fcgi=127.0.0.1:9000
+$ php cachetool.phar apcu:cache:info --fcgi=127.0.0.1:9000
 ```
 
   * You can connect to a fastcgi server using a unix socket
@@ -81,18 +82,6 @@ $ php cachetool.phar opcache:status --web --web-path=/path/to/your/document/root
 You have some useful commands that you can use
 
 ```sh
- apc
-  apc:bin:dump                Get a binary dump of files and user variables
-  apc:bin:load                Load a binary dump into the APC file and user variables
-  apc:cache:clear             Clears APC cache (user, system or all)
-  apc:cache:info              Shows APC user & system cache information
-  apc:cache:info:file         Shows APC file cache information
-  apc:key:delete              Deletes an APC key
-  apc:key:exists              Checks if an APC key exists
-  apc:key:fetch               Shows the content of an APC key
-  apc:key:store               Store an APC key with given value
-  apc:regexp:delete           Deletes all APC key matching a regexp
-  apc:sma:info                Show APC shared memory allocation information
  apcu
   apcu:cache:clear            Clears APCu cache
   apcu:cache:info             Shows APCu user & system cache information
@@ -152,11 +141,11 @@ fastcgi: /var/run/php5-fpm.sock
 temp_dir: /dev/shm/cachetool
 ```
 
-You can define the supported extensions in the config file. By default, `apc`, `apcu`, and
-`opcache` are enabled. To disable `apc`, add this to your config file:
+You can define the supported extensions in the config file. By default, `apcu`,
+and `opcache` are enabled. To disable `apcu`, add this to your config file:
 
 ```yml
-extensions: [apcu, opcache]
+extensions: [opcache]
 ```
 
 Usage (as a library)
@@ -184,10 +173,10 @@ $adapter = new FastCGI('127.0.0.1:9000', $tempDir = '/tmp');
 $cache = CacheTool::factory($adapter);
 ```
 
-You can use `apc` and `opcache` functions
+You can use `apcu` and `opcache` functions
 
 ```php
-$cache->apc_clear_cache('both');
+$cache->apcu_clear_cache('both');
 $cache->opcache_reset();
 ```
 
@@ -195,7 +184,7 @@ Proxies
 -------
 
 CacheTool depends on `Proxies` to provide functionality, by default when creating a CacheTool instance from the factory
-all proxies are enabled [`ApcProxy`](https://github.com/gordalina/cachetool/blob/master/src/CacheTool/Proxy/ApcProxy.php), [`OpcacheProxy`](https://github.com/gordalina/cachetool/blob/master/src/CacheTool/Proxy/OpcacheProxy.php) and [`PhpProxy`](https://github.com/gordalina/cachetool/blob/master/src/CacheTool/Proxy/PhpProxy.php), you can customize it or extend to your will like the example below:
+all proxies are enabled [`ApcuProxy`](https://github.com/gordalina/cachetool/blob/master/src/CacheTool/Proxy/ApcuProxy.php), [`OpcacheProxy`](https://github.com/gordalina/cachetool/blob/master/src/CacheTool/Proxy/OpcacheProxy.php) and [`PhpProxy`](https://github.com/gordalina/cachetool/blob/master/src/CacheTool/Proxy/PhpProxy.php), you can customize it or extend to your will like the example below:
 
 ```php
 use CacheTool\Adapter\FastCGI;
@@ -205,7 +194,7 @@ use CacheTool\Proxy;
 $adapter = new FastCGI('/var/run/php5-fpm.sock');
 $cache = new CacheTool();
 $cache->setAdapter($adapter);
-$cache->addProxy(new Proxy\ApcProxy());
+$cache->addProxy(new Proxy\ApcuProxy());
 $cache->addProxy(new Proxy\PhpProxy());
 ```
 

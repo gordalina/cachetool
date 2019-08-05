@@ -18,7 +18,7 @@ class CacheToolTest extends \PHPUnit\Framework\TestCase
     {
         $cachetool = CacheTool::factory(null, null, $this->getLogger());
 
-        $this->assertCount(4, $cachetool->getProxies());
+        $this->assertCount(3, $cachetool->getProxies());
         $this->assertNull($cachetool->getAdapter());
     }
 
@@ -27,7 +27,7 @@ class CacheToolTest extends \PHPUnit\Framework\TestCase
         $adapter = new Adapter\FastCGI();
         $cachetool = CacheTool::factory($adapter, null, $this->getLogger());
 
-        $this->assertCount(4, $cachetool->getProxies());
+        $this->assertCount(3, $cachetool->getProxies());
         $this->assertSame($adapter, $cachetool->getAdapter());
     }
 
@@ -37,7 +37,7 @@ class CacheToolTest extends \PHPUnit\Framework\TestCase
         $logger = $this->getLogger();
         $cachetool = CacheTool::factory($adapter, null, $logger);
 
-        $this->assertCount(4, $cachetool->getProxies());
+        $this->assertCount(3, $cachetool->getProxies());
         $this->assertSame($adapter, $cachetool->getAdapter());
         $this->assertSame($logger, $cachetool->getLogger());
     }

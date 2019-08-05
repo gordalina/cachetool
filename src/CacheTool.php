@@ -70,7 +70,6 @@ class CacheTool
     public static function factory(AbstractAdapter $adapter = null, $tempDir = null, LoggerInterface $logger = null)
     {
         $cacheTool = new static($tempDir, $logger);
-        $cacheTool->addProxy(new Proxy\ApcProxy());
         $cacheTool->addProxy(new Proxy\ApcuProxy());
         $cacheTool->addProxy(new Proxy\PhpProxy());
         $cacheTool->addProxy(new Proxy\OpcacheProxy());

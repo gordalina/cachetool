@@ -1,7 +1,7 @@
 {
     "name": "gordalina/cachetool",
-    "description": "Manage your opcode & apc through the cli",
-    "keywords": ["cache", "opcache", "apc", "fastcgi", "opcode", "fpm"],
+    "description": "Manage your OPcache & APCu cache through the CLI",
+    "keywords": ["cache", "opcache", "apcu", "fastcgi", "opcode", "fpm"],
     "require": {
         "php": ">=7.1.0",
         "symfony/console": "~4.0",

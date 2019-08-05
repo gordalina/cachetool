@@ -4,6 +4,9 @@ php:
   - 7.2
   - 7.3
 
+before_install:
+  - echo 'opcache.enable_cli = 1' > $(php -r 'echo PHP_CONFIG_FILE_SCAN_DIR;')/cachetool.ini
+
 install:
   - composer install
 

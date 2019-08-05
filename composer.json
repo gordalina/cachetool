@@ -25,7 +25,14 @@
         }
     ],
     "autoload": {
-        "psr-0": { "CacheTool": "src/" }
+        "psr-4": {
+            "CacheTool\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "CacheTool\\": "tests/"
+        }
     },
     "bin": ["bin/cachetool"]
 }

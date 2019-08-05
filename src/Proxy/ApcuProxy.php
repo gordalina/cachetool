@@ -26,7 +26,7 @@ class ApcuProxy implements ProxyInterface
      */
     public function getFunctions()
     {
-        return array(
+        return [
             'apcu_add',
             'apcu_cache_info',
             'apcu_regexp_get_keys',
@@ -41,7 +41,7 @@ class ApcuProxy implements ProxyInterface
             'apcu_sma_info',
             'apcu_store',
             'apcu_version'
-        );
+        ];
     }
 
     /**

@@ -39,13 +39,13 @@ class StatRealpathGetCommand extends AbstractCommand
 
         $table = new Table($output);
         $table
-            ->setHeaders(array(
+            ->setHeaders([
                 'Path entry',
                 'key',
                 'is_dir',
                 'realpath',
                 'expires',
-            ))
+            ])
             ->setRows($this->processFilelist($info))
         ;
 
@@ -54,16 +54,16 @@ class StatRealpathGetCommand extends AbstractCommand
 
     protected function processFileList(array $cacheList)
     {
-        $list = array();
+        $list = [];
 
         foreach ($cacheList as $path_entry => $item) {
-            $list[] = array(
+            $list[] = [
                $path_entry,
                $item['key'],
                $item['is_dir'],
                $item['realpath'],
                $item['expires'],
-            );
+            ];
         }
 
         return $list;

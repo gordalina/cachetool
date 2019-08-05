@@ -43,13 +43,13 @@ class ApcuCacheInfoKeysCommand extends ApcuCacheInfoCommand
             throw new \RuntimeException("Could not fetch info from APCu");
         }
 
-        $header = array(
+        $header = [
             'Hits',
             'Accessed',
             'Deleted',
             'Memory size',
             'Key',
-        );
+        ];
 
         $table = new Table($output);
         $table
@@ -62,16 +62,16 @@ class ApcuCacheInfoKeysCommand extends ApcuCacheInfoCommand
 
     protected function processFileList(array $cacheList)
     {
-        $list = array();
+        $list = [];
 
         foreach ($cacheList as $item) {
-            $list[] = array(
+            $list[] = [
                 number_format($item['num_hits']),
                 $item['access_time'] > 0 ? 'Yes' : 'No',
                 $item['deletion_time'] > 0 ? 'Yes' : 'No',
                 Formatter::bytes($item['mem_size']),
                 $item['info'],
-            );
+            ];
         }
 
         return $list;

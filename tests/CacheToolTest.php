@@ -72,7 +72,7 @@ class CacheToolTest extends \PHPUnit\Framework\TestCase
     public function testInexistentWithMagicCallFunction()
     {
         $cachetool = new CacheTool(null, $this->getLogger());
-        $cachetool->__call('doesNotExist', array());
+        $cachetool->__call('doesNotExist', []);
     }
 
     protected function getLogger()

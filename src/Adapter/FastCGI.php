@@ -105,11 +105,11 @@ class FastCGI extends AbstractAdapter
         try {
             $code->writeTo($file);
 
-            $environment = array(
+            $environment = [
                 'REQUEST_METHOD'  => 'POST',
                 'REQUEST_URI'     => '/',
                 'SCRIPT_FILENAME' => $this->getScriptFileName($file),
-            );
+            ];
 
             $this->logger->info(sprintf('FastCGI: Requesting FPM using socket: %s', $this->host));
             $response = $this->client->request($environment, '');

@@ -11,7 +11,7 @@ abstract class CommandTest extends \PHPUnit\Framework\TestCase
 {
     public function runCommand($cmd)
     {
-        $app = new Application(new Config(array('adapter' => 'cli')));
+        $app = new Application(new Config(['adapter' => 'cli']));
         $app->setAutoExit(false);
 
         $input = new StringInput($cmd);

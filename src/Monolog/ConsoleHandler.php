@@ -43,12 +43,12 @@ class ConsoleHandler extends AbstractProcessingHandler
     /**
      * @var array
      */
-    private $verbosityLevelMap = array(
+    private $verbosityLevelMap = [
         OutputInterface::VERBOSITY_NORMAL => Logger::WARNING,
         OutputInterface::VERBOSITY_VERBOSE => Logger::NOTICE,
         OutputInterface::VERBOSITY_VERY_VERBOSE => Logger::INFO,
         OutputInterface::VERBOSITY_DEBUG => Logger::DEBUG,
-    );
+    ];
 
     /**
      * Constructor.
@@ -59,7 +59,7 @@ class ConsoleHandler extends AbstractProcessingHandler
      * @param array                $verbosityLevelMap Array that maps the OutputInterface verbosity to a minimum logging
      *                                                level (leave empty to use the default mapping)
      */
-    public function __construct(OutputInterface $output = null, $bubble = true, array $verbosityLevelMap = array())
+    public function __construct(OutputInterface $output = null, $bubble = true, array $verbosityLevelMap = [])
     {
         parent::__construct(Logger::DEBUG, $bubble);
         $this->output = $output;

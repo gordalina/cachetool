@@ -37,7 +37,7 @@ class ApplicationTest extends CommandTest
 
     public function testWrongAdapter()
     {
-        $app = new Application(new Config(array('adapter' => 'err')));
+        $app = new Application(new Config(['adapter' => 'err']));
         $app->add(new DummyCommand);
         $app->setAutoExit(false);
 
@@ -50,7 +50,7 @@ class ApplicationTest extends CommandTest
 
     public function testOutput()
     {
-        $app = new Application(new Config(array('adapter' => 'cli')));
+        $app = new Application(new Config(['adapter' => 'cli']));
         $app->add(new DummyCommand);
         $app->setAutoExit(false);
 
@@ -62,7 +62,7 @@ class ApplicationTest extends CommandTest
 
     public function testNoSupportedExtensions()
     {
-        $app = new Application(new Config(array('extensions' => [])));
+        $app = new Application(new Config(['extensions' => []]));
         $app->setAutoExit(false);
 
         $output = new BufferedOutput();
@@ -77,7 +77,7 @@ class ApplicationTest extends CommandTest
 
     public function testAllSupportedExtensions()
     {
-        $app = new Application(new Config(array('extensions' => ['apcu', 'opcache'])));
+        $app = new Application(new Config(['extensions' => ['apcu', 'opcache']]));
         $app->setAutoExit(false);
 
         $output = new BufferedOutput();
@@ -108,7 +108,7 @@ class ApplicationTest extends CommandTest
 
     public function testWithTmpDirConfigNotWriable()
     {
-        $app = new Application(new Config(array('temp_dir' => '/doesnotexist')));
+        $app = new Application(new Config(['temp_dir' => '/doesnotexist']));
         $app->setAutoExit(false);
 
         $output = new BufferedOutput();

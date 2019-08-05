@@ -11,12 +11,12 @@ class OpcacheProxyTest extends ProxyTest
 
     public function testFunctions()
     {
-        $this->assertProxyCode("return opcache_compile_file('file');", 'opcache_compile_file', array('file'));
-        $this->assertProxyCode("return opcache_get_configuration();", 'opcache_get_configuration', array());
-        $this->assertProxyCode("return opcache_get_status(true);", 'opcache_get_status', array(true));
-        $this->assertProxyCode("return opcache_invalidate('key', true);", 'opcache_invalidate', array('key', true));
-        $this->assertProxyCode("return opcache_reset();", 'opcache_reset', array());
-        $this->assertProxyCode('return phpversion("Zend OPcache");', 'opcache_version', array());
+        $this->assertProxyCode("return opcache_compile_file('file');", 'opcache_compile_file', ['file']);
+        $this->assertProxyCode("return opcache_get_configuration();", 'opcache_get_configuration', []);
+        $this->assertProxyCode("return opcache_get_status(true);", 'opcache_get_status', [true]);
+        $this->assertProxyCode("return opcache_invalidate('key', true);", 'opcache_invalidate', ['key', true]);
+        $this->assertProxyCode("return opcache_reset();", 'opcache_reset', []);
+        $this->assertProxyCode('return phpversion("Zend OPcache");', 'opcache_version', []);
     }
 
     protected function createProxyInstance()

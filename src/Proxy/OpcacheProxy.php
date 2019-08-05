@@ -26,7 +26,7 @@ class OpcacheProxy implements ProxyInterface
      */
     public function getFunctions()
     {
-        return array(
+        return [
             'opcache_compile_file',
             'opcache_get_configuration',
             'opcache_get_status',
@@ -34,7 +34,7 @@ class OpcacheProxy implements ProxyInterface
             'opcache_reset',
 
             'opcache_version'
-        );
+        ];
     }
 
     /**

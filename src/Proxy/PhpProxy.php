@@ -26,7 +26,7 @@ class PhpProxy implements ProxyInterface
      */
     public function getFunctions()
     {
-        return array(
+        return [
             'extension_loaded',
             'ini_get',
             'ini_set',
@@ -36,7 +36,7 @@ class PhpProxy implements ProxyInterface
             'stat_cache_clear',
 
             '_eval',
-        );
+        ];
     }
 
     /**

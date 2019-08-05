@@ -16,7 +16,7 @@ class Code
     /**
      * @var array
      */
-    protected $code = array();
+    protected $code = [];
 
     /**
      * @param  string $statement

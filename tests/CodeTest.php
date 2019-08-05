@@ -127,12 +127,12 @@ class CodeTest extends \PHPUnit\Framework\TestCase
 
     public function testUserErrors()
     {
-        $errors = array(
+        $errors = [
             'E_USER_NOTICE',
             'E_USER_WARNING',
             'E_USER_ERROR',
             'E_USER_DEPRECATED',
-        );
+        ];
 
         foreach ($errors as $error) {
             $result = $this->getCodeResult(sprintf('trigger_error("%s", %s); return true;', $error, $error));

@@ -49,10 +49,10 @@ class OpcacheCompileScriptsCommand extends AbstractCommand
 
         $table = new Table($output);
         $table
-            ->setHeaders(array(
+            ->setHeaders([
                 'Compiled',
                 'Filename'
-            ))
+            ])
             ->setRows($this->processFilelist($splFiles))
         ;
 
@@ -61,13 +61,13 @@ class OpcacheCompileScriptsCommand extends AbstractCommand
 
     protected function processFileList($splFiles)
     {
-        $list = array();
+        $list = [];
 
         foreach ($splFiles as $file) {
-            $list[] = array(
+            $list[] = [
                 $this->getCacheTool()->opcache_compile_file($file->getRealPath()),
                 $file->getRealPath()
-            );
+            ];
         }
 
         return $list;

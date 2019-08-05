@@ -44,7 +44,7 @@ class OpcacheStatusCommand extends AbstractCommand
         }
 
         $table = new Table($output);
-        $table->setHeaders(array('Name', 'Value'));
+        $table->setHeaders(['Name', 'Value']);
         $table->setRows($this->getRows($info, $info['opcache_statistics']));
         $table->render();
     }
@@ -71,15 +71,15 @@ class OpcacheStatusCommand extends AbstractCommand
      */
     protected function getGeneralRows($info)
     {
-        return array(
-            array('Enabled', $info['opcache_enabled'] ? 'Yes' : 'No'),
-            array('Cache full', $info['cache_full'] ? 'Yes' : 'No'),
-            array('Restart pending', $info['restart_pending'] ? 'Yes' : 'No'),
-            array('Restart in progress', $info['restart_in_progress'] ? 'Yes' : 'No'),
-            array('Memory used', Formatter::bytes($info['memory_usage']['used_memory'])),
-            array('Memory free', Formatter::bytes($info['memory_usage']['free_memory'])),
-            array('Memory wasted (%)', sprintf("%s (%s%%)", Formatter::bytes($info['memory_usage']['wasted_memory']), $info['memory_usage']['current_wasted_percentage'])),
-        );
+        return [
+            ['Enabled', $info['opcache_enabled'] ? 'Yes' : 'No'],
+            ['Cache full', $info['cache_full'] ? 'Yes' : 'No'],
+            ['Restart pending', $info['restart_pending'] ? 'Yes' : 'No'],
+            ['Restart in progress', $info['restart_in_progress'] ? 'Yes' : 'No'],
+            ['Memory used', Formatter::bytes($info['memory_usage']['used_memory'])],
+            ['Memory free', Formatter::bytes($info['memory_usage']['free_memory'])],
+            ['Memory wasted (%)', sprintf("%s (%s%%)", Formatter::bytes($info['memory_usage']['wasted_memory']), $info['memory_usage']['current_wasted_percentage'])],
+        ];
     }
 
     /**
@@ -88,12 +88,12 @@ class OpcacheStatusCommand extends AbstractCommand
      */
     protected function getStringsRows($info)
     {
-        return array(
-            array('Strings buffer size', Formatter::bytes($info['interned_strings_usage']['buffer_size'])),
-            array('Strings memory used', Formatter::bytes($info['interned_strings_usage']['used_memory'])),
-            array('Strings memory free', Formatter::bytes($info['interned_strings_usage']['free_memory'])),
-            array('Number of strings', $info['interned_strings_usage']['number_of_strings']),
-        );
+        return [
+            ['Strings buffer size', Formatter::bytes($info['interned_strings_usage']['buffer_size'])],
+            ['Strings memory used', Formatter::bytes($info['interned_strings_usage']['used_memory'])],
+            ['Strings memory free', Formatter::bytes($info['interned_strings_usage']['free_memory'])],
+            ['Number of strings', $info['interned_strings_usage']['number_of_strings']],
+        ];
     }
 
     /**
@@ -102,20 +102,20 @@ class OpcacheStatusCommand extends AbstractCommand
      */
     protected function getOpcacheStatsRows($stats)
     {
-        return array(
+        return [
             new TableSeparator(),
-            array('Cached scripts', $stats['num_cached_scripts']),
-            array('Cached keys', $stats['num_cached_keys']),
-            array('Max cached keys', $stats['max_cached_keys']),
-            array('Start time', Formatter::date($stats['start_time'], 'U')),
-            array('Last restart time', $stats['last_restart_time'] ? Formatter::date($stats['last_restart_time'], 'U') : 'Never'),
-            array('Oom restarts', $stats['oom_restarts']),
-            array('Hash restarts', $stats['hash_restarts']),
-            array('Manual restarts', $stats['manual_restarts']),
-            array('Hits', $stats['hits']),
-            array('Misses', $stats['misses']),
-            array('Blacklist misses (%)', sprintf('%s (%s%%)', $stats['blacklist_misses'], $stats['blacklist_miss_ratio'])),
-            array('Opcache hit rate', $stats['opcache_hit_rate']),
-        );
+            ['Cached scripts', $stats['num_cached_scripts']],
+            ['Cached keys', $stats['num_cached_keys']],
+            ['Max cached keys', $stats['max_cached_keys']],
+            ['Start time', Formatter::date($stats['start_time'], 'U')],
+            ['Last restart time', $stats['last_restart_time'] ? Formatter::date($stats['last_restart_time'], 'U') : 'Never'],
+            ['Oom restarts', $stats['oom_restarts']],
+            ['Hash restarts', $stats['hash_restarts']],
+            ['Manual restarts', $stats['manual_restarts']],
+            ['Hits', $stats['hits']],
+            ['Misses', $stats['misses']],
+            ['Blacklist misses (%)', sprintf('%s (%s%%)', $stats['blacklist_misses'], $stats['blacklist_miss_ratio'])],
+            ['Opcache hit rate', $stats['opcache_hit_rate']],
+        ];
     }
 }

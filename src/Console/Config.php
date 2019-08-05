@@ -17,7 +17,7 @@ class Config implements \ArrayAccess
 {
     private $config = array(
         'adapter' => 'fastcgi',
-        'extensions' => ['apc', 'apcu', 'opcache'],
+        'extensions' => ['apcu', 'opcache'],
         'fastcgi' => null,
         'temp_dir' => null
     );

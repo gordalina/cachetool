@@ -1,5 +1,6 @@
 # UNRELEASED
 
+- Support for APC cache has been removed.
 - Use PSR-4 autoloading.
 
 # 4.0.0

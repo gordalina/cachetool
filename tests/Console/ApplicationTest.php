@@ -71,14 +71,13 @@ class ApplicationTest extends CommandTest
 
         $this->assertSame(0, $code);
         $this->assertContains('stat:clear', $content);
-        $this->assertNotContains('apc:bin:dump', $content);
         $this->assertNotContains('apcu:cache:clear', $content);
         $this->assertNotContains('opcache:configuration', $content);
     }
 
     public function testAllSupportedExtensions()
     {
-        $app = new Application(new Config(array('extensions' => ['apc', 'apcu', 'opcache'])));
+        $app = new Application(new Config(array('extensions' => ['apcu', 'opcache'])));
         $app->setAutoExit(false);
 
         $output = new BufferedOutput();
@@ -87,7 +86,6 @@ class ApplicationTest extends CommandTest
 
         $this->assertSame(0, $code);
         $this->assertContains('stat:clear', $content);
-        $this->assertContains('apc:bin:dump', $content);
         $this->assertContains('apcu:cache:clear', $content);
         $this->assertContains('opcache:configuration', $content);
     }

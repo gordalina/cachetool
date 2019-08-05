@@ -1,3 +1,7 @@
+# UNRELEASED
+
+- Use PSR-4 autoloading.
+
 # 4.0.0
 
 - Supports only PHP>=7.1

@@ -198,7 +198,7 @@ class ApcuProxy implements ProxyInterface
         ));
         $code->addStatement('return array($result, $success);');
 
-        list($result, $success) = $this->adapter->run($code);
+        [$result, $success] = $this->adapter->run($code);
 
         if (is_object($ref)) {
             $ref->success = $success;
@@ -284,7 +284,7 @@ class ApcuProxy implements ProxyInterface
         $code->addStatement(sprintf('$result = apcu_fetch(%s, $success);', var_export($key, true)));
         $code->addStatement('return array($result, $success);');
 
-        list($var, $success) = $this->adapter->run($code);
+        [$var, $success] = $this->adapter->run($code);
 
         if (is_object($ref)) {
             $ref->success = $success;
@@ -313,7 +313,7 @@ class ApcuProxy implements ProxyInterface
         ));
         $code->addStatement('return array($result, $success);');
 
-        list($result, $success) = $this->adapter->run($code);
+        [$result, $success] = $this->adapter->run($code);
 
         if (is_object($ref)) {
             $ref->success = $success;

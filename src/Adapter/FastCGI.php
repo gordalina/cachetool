@@ -62,7 +62,7 @@ class FastCGI extends AbstractAdapter
         $this->host = $host;
 
         if (false !== strpos($host, ':')) {
-            list($host, $port) = explode(':', $host);
+            [$host, $port] = explode(':', $host);
             $this->client = new Client($host, $port);
         } else {
             // socket

@@ -123,8 +123,8 @@ class PhpProxy implements ProxyInterface
      * Get contents of the realpath cache
      *
      * @since  5.3.2
-     * @return array Returns an array of realpath cache entries. The keys are original path entries, 
-     * and the values are arrays of data items, containing the resolved path, expiration date, and 
+     * @return array Returns an array of realpath cache entries. The keys are original path entries,
+     * and the values are arrays of data items, containing the resolved path, expiration date, and
      * other options kept in the cache.
      */
     public function stat_realpath_get()
@@ -136,7 +136,7 @@ class PhpProxy implements ProxyInterface
     }
 
     /**
-     * Returns how much memory realpath cache is using. 
+     * Returns how much memory realpath cache is using.
      *
      * @since  5.3.2
      * @return int Memory usage in bytes

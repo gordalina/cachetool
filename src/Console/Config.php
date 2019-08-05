@@ -55,7 +55,8 @@ class Config implements \ArrayAccess
         unset($this->config[$offset]);
     }
 
-    public static function factory() {
+    public static function factory()
+    {
         $previous = null;
         $path = getcwd();
         $paths = [];
@@ -68,7 +69,7 @@ class Config implements \ArrayAccess
         }
 
         if ($home = static::getUserHomeDir()) {
-          $paths[] = "{$home}/.cachetool.yml";
+            $paths[] = "{$home}/.cachetool.yml";
         }
 
         $paths[] = '/etc/cachetool.yml';
@@ -89,7 +90,8 @@ class Config implements \ArrayAccess
      *
      * @return string
      */
-    protected static function getUserHomeDir() {
+    protected static function getUserHomeDir()
+    {
         // Cannot use $_SERVER superglobal since that's empty during UnitUnishTestCase
         // getenv('HOME') isn't set on Windows and generates a Notice.
         $home = getenv('HOME');
@@ -105,6 +107,6 @@ class Config implements \ArrayAccess
             $home = rtrim($home, '\\/');
         }
 
-        return empty($home) ? NULL : $home;
+        return empty($home) ? null : $home;
     }
 }

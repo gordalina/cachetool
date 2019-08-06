@@ -79,11 +79,7 @@ class FastCGITest extends \PHPUnit\Framework\TestCase
 
         $code = Code::fromString('return true;');
 
-        try {
-            $result = $fcgi->run($code);
-            $this->assertTrue($result);
-        } catch (\RuntimeException $e) {
-            $this->markTestSkipped($e->getMessage());
-        }
+        $result = $fcgi->run($code);
+        $this->assertTrue($result);
     }
 }

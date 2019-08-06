@@ -19,12 +19,7 @@ class WebTest extends \PHPUnit\Framework\TestCase
 
         $code = Code::fromString('return true;');
 
-        try {
-            $result = $web->run($code);
-        } catch (\RuntimeException $e) {
-            $this->markTestSkipped($e->getMessage());
-        }
-
+        $result = $web->run($code);
         $this->assertTrue($result);
     }
 }

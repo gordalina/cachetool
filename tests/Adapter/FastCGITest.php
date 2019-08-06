@@ -3,23 +3,21 @@
 namespace CacheTool\Adapter;
 
 use CacheTool\Code;
+use CacheTool\PhpFpmRunner;
 
 class FastCGITest extends \PHPUnit\Framework\TestCase
 {
     public function testRun()
     {
-        $fcgi = new FastCGI();
+        $fpm = new PhpFpmRunner();
+        $fcgi = new FastCGI($fpm->socket);
         $fcgi->setTempDir(sys_get_temp_dir());
         $fcgi->setLogger($this->getMockBuilder('Monolog\Logger')->disableOriginalConstructor()->getMock());
 
         $code = Code::fromString('return true;');
 
-        try {
-            $result = $fcgi->run($code);
-            $this->assertTrue($result);
-        } catch (\RuntimeException $e) {
-            $this->markTestSkipped($e->getMessage());
-        }
+        $result = $fcgi->run($code);
+        $this->assertTrue($result);
     }
 
     public function testGetScriptFileNameWithChroot()

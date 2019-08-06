@@ -169,8 +169,9 @@ class CacheTool
     {
         $this->logger->notice(sprintf('Executing: %s(%s)', $name, implode(', ', array_map('json_encode', $arguments))));
 
-        if ($this->getFunction($name)) {
-            return call_user_func_array($this->getFunction($name), $arguments);
+        $function = $this->getFunction($name);
+        if ($function) {
+            return $function(...$arguments);
         }
     }
 

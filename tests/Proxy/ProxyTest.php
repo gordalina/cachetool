@@ -16,7 +16,7 @@ abstract class ProxyTest extends \PHPUnit\Framework\TestCase
         $proxy = $this->createProxyInstance();
         $proxy->setAdapter($mock);
 
-        $result = call_user_func_array([$proxy, $function], $arguments);
+        $result = $proxy->$function(...$arguments);
 
         $this->assertSame($code, $result->getCode());
     }
@@ -33,7 +33,7 @@ abstract class ProxyTest extends \PHPUnit\Framework\TestCase
         $proxy = $this->createProxyInstance();
         $proxy->setAdapter($mock);
 
-        $result = call_user_func_array([$proxy, $function], $arguments);
+        $result = $proxy->$function(...$arguments);
 
         $this->assertSame($code, $result->getCode());
     }

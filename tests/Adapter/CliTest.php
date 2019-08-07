@@ -43,7 +43,8 @@ class CliTest extends \PHPUnit\Framework\TestCase
         $result = $cli->run($code);
 
         if ('' === PHP_BINARY) {
-            $this->assertEquals('php', $result);
+            $this->assertNotEmpty($result);
+            $this->assertFileExists($result);
         } else {
             $this->assertEquals(PHP_BINARY, $result);
         }

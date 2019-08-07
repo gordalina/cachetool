@@ -3,15 +3,15 @@
     "description": "Manage your OPcache & APCu cache through the CLI",
     "keywords": ["cache", "opcache", "apcu", "fastcgi", "opcode", "fpm"],
     "require": {
+        "adoy/fastcgi-client": "~1.0",
+        "monolog/monolog": "~1.1",
         "php": ">=7.1.0",
+        "psr/log": "~1.0",
         "symfony/console": "~4.0",
         "symfony/dependency-injection": "~4.0",
         "symfony/finder": "~4.0",
         "symfony/process": "~4.0",
-        "symfony/yaml": "~4.0",
-        "psr/log": "~1.0",
-        "monolog/monolog": "~1.1",
-        "adoy/fastcgi-client": "~1.0"
+        "symfony/yaml": "~4.0"
     },
     "require-dev": {
         "herrera-io/phar-update": "~2.0",

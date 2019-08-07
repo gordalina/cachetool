@@ -15,7 +15,7 @@ class OpcacheProxyTest extends ProxyTest
         $this->assertProxyCode("return opcache_get_configuration();", 'opcache_get_configuration', []);
         $this->assertProxyCode("return opcache_get_status(true);", 'opcache_get_status', [true]);
         $this->assertProxyCode("return opcache_invalidate('key', true);", 'opcache_invalidate', ['key', true]);
-        $this->assertProxyCode("return opcache_reset();", 'opcache_reset', []);
+        $this->assertProxyCode("opcache_reset();\nreturn true;", 'opcache_reset', []);
         $this->assertProxyCode('return phpversion("Zend OPcache");', 'opcache_version', []);
     }
 

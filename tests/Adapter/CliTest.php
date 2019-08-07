@@ -31,4 +31,21 @@ class CliTest extends \PHPUnit\Framework\TestCase
         $code = Code::fromString('throw new \Exception("test");');
         $result = $cli->run($code);
     }
+
+    public function testPhpBinary()
+    {
+        $cli = new Cli();
+        $cli->setTempDir(sys_get_temp_dir());
+        $cli->setLogger($this->getMockBuilder('Monolog\Logger')->disableOriginalConstructor()->getMock());
+
+        $code = Code::fromString('return PHP_BINARY;');
+
+        $result = $cli->run($code);
+
+        if ('' === PHP_BINARY) {
+            $this->assertEquals('php', $result);
+        } else {
+            $this->assertEquals(PHP_BINARY, $result);
+        }
+    }
 }

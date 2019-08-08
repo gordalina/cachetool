@@ -46,7 +46,7 @@ class CliTest extends \PHPUnit\Framework\TestCase
             $this->assertNotEmpty($result);
             $this->assertFileExists($result);
         } else {
-            $this->assertEquals(PHP_BINARY, $result);
+            $this->assertSame(PHP_BINARY, $result);
         }
     }
 }

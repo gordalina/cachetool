@@ -134,8 +134,11 @@ class OpcacheProxy implements ProxyInterface
      */
     public function opcache_reset()
     {
+        // Avoid using the opcache_reset() return value to workaround PHP bug
+        // https://bugs.php.net/bug.php?id=71621
         $code = new Code();
-        $code->addStatement('return opcache_reset();');
+        $code->addStatement('opcache_reset();');
+        $code->addStatement('return true;');
 
         return $this->adapter->run($code);
     }

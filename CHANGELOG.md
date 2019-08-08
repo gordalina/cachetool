@@ -5,6 +5,8 @@
 - Use `PHP_BINARY` in the CLI adapter to execute PHP.
 - Passing `--tmp-dir` a directory that is not writable now fails rather than
   falling back to the default directories.
+- Add workaround for `opcache_reset()` bug
+  <https://bugs.php.net/bug.php?id=71621>.
 
 # 4.0.0
 

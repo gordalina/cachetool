@@ -28,7 +28,7 @@ class FastCGITest extends \PHPUnit\Framework\TestCase
         $method = $class->getMethod('getScriptFileName');
         $method->setAccessible(true);
 
-        self::assertEquals('/test.php', $method->invoke($fcgi, "{$tmpdir}/test.php"));
+        $this->assertSame('/test.php', $method->invoke($fcgi, "{$tmpdir}/test.php"));
     }
 
     public function testGetScriptFileNameWithoutChroot()
@@ -38,7 +38,7 @@ class FastCGITest extends \PHPUnit\Framework\TestCase
         $method = $class->getMethod('getScriptFileName');
         $method->setAccessible(true);
 
-        self::assertEquals('/tmp/test.php', $method->invoke($fcgi, '/tmp/test.php'));
+        $this->assertSame('/tmp/test.php', $method->invoke($fcgi, '/tmp/test.php'));
     }
 
     public function testRunWithChroot()

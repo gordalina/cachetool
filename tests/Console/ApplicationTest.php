@@ -12,7 +12,7 @@ class ApplicationTest extends CommandTest
     public function atestVersion()
     {
         $result = $this->runCommand('--version');
-        $this->assertEquals("CacheTool version @package_version@\n", $result);
+        $this->assertSame("CacheTool version @package_version@\n", $result);
     }
 
     public function testWithCli()

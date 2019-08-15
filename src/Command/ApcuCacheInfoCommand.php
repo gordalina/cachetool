@@ -87,7 +87,7 @@ class ApcuCacheInfoCommand extends AbstractCommand
             ['Entries', number_format($info['num_entries'])],
             ['File upload progress', ini_get('apcu.rfc1867') ? 'Yes' : 'No'],
             ['Memory type', $info['memory_type']],
-            ['Locking type', (isset($info['locking_type']) ? $info['locking_type'] : 'Not Supported')],
+            ['Locking type', $info['locking_type'] ?? 'Not Supported'],
         ];
     }
 

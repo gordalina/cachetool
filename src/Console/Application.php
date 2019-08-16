@@ -170,7 +170,10 @@ class Application extends BaseApplication
             $this->config['adapter'] = 'web';
             $this->config['webPath'] = $input->getParameterOption('--web-path');
             $this->config['webUrl'] = $input->getParameterOption('--web-url');
-            $this->config['http'] = new FileGetContents($input->getParameterOption('--web-url'));
+        }
+
+        if ($this->config['adapter'] === 'web') {
+            $this->config['http'] = new FileGetContents($this->config['webUrl']);
         }
 
         if ($input->hasParameterOption('--tmp-dir') || $input->hasParameterOption('-t')) {

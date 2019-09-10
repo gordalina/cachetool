@@ -4,7 +4,7 @@
     "keywords": ["cache", "opcache", "apcu", "fastcgi", "opcode", "fpm"],
     "require": {
         "adoy/fastcgi-client": "~1.0",
-        "monolog/monolog": "~2.0",
+        "monolog/monolog": "~1.0 || ~2.0",
         "php": ">=7.1.0",
         "psr/log": "~1.0",
         "symfony/console": "~4.0",

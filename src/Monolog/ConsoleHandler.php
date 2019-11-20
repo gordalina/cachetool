@@ -11,7 +11,6 @@
 
 namespace CacheTool\Monolog;
 
-use Monolog\Formatter\FormatterInterface;
 use Monolog\Handler\AbstractProcessingHandler;
 use Monolog\Logger;
 use Symfony\Component\Console\Output\ConsoleOutputInterface;
@@ -73,7 +72,7 @@ class ConsoleHandler extends AbstractProcessingHandler
     /**
      * {@inheritdoc}
      */
-    public function isHandling(array $record): bool
+    public function isHandling(array $record)
     {
         return $this->updateLevel() && parent::isHandling($record);
     }
@@ -81,7 +80,7 @@ class ConsoleHandler extends AbstractProcessingHandler
     /**
      * {@inheritdoc}
      */
-    public function handle(array $record): bool
+    public function handle(array $record)
     {
         // we have to update the logging level each time because the verbosity of the
         // console output might have changed in the meantime (it is not immutable)
@@ -101,7 +100,7 @@ class ConsoleHandler extends AbstractProcessingHandler
     /**
      * Disables the output.
      */
-    public function close(): void
+    public function close()
     {
         $this->output = null;
 
@@ -111,7 +110,7 @@ class ConsoleHandler extends AbstractProcessingHandler
     /**
      * {@inheritdoc}
      */
-    protected function write(array $record): void
+    protected function write(array $record)
     {
         if ($record['level'] >= Logger::ERROR && $this->output instanceof ConsoleOutputInterface) {
             $this->output->getErrorOutput()->write((string) $record['formatted']);
@@ -123,7 +122,7 @@ class ConsoleHandler extends AbstractProcessingHandler
     /**
      * {@inheritdoc}
      */
-    protected function getDefaultFormatter(): FormatterInterface
+    protected function getDefaultFormatter()
     {
         return new ConsoleFormatter();
     }

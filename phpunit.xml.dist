@@ -2,8 +2,8 @@
 
 <phpunit colors="true">
     <filter>
-	    <whitelist processUncoveredFilesFromWhitelist="true">
-		    <directory suffix=".php">tests</directory>
-	    </whitelist>
+        <whitelist processUncoveredFilesFromWhitelist="true">
+            <directory suffix=".php">src</directory>
+        </whitelist>
     </filter>
 </phpunit>

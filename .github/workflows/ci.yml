@@ -19,7 +19,7 @@ jobs:
       uses: shivammathur/setup-php@master
       with:
         php-version: ${{ matrix.php-versions }}
-        extension-csv: apcu, xdebug
+        extension-csv: apcu, xdebug, mbstring
         ini-values-csv: apc.enabled=1, apc.enable_cli=1, opcache.enable=1, opcache.enable_cli=1
         coverage: xdebug
 

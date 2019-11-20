@@ -70,6 +70,10 @@ class Code
     public function getCodeExecutable()
     {
         $template =<<<'EOF'
+if (extension_loaded('newrelic')) {
+    newrelic_ignore_transaction();
+}
+
 $errors = array();
 
 $cachetool_error_handler_%s = function($errno, $errstr, $errfile, $errline) use (&$errors) {

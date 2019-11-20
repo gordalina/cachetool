@@ -26,7 +26,7 @@ class ConsoleFormatter extends LineFormatter
     /**
      * {@inheritdoc}
      */
-    public function format(array $record)
+    public function format(array $record): string
     {
         if ($record['level'] >= Logger::ERROR) {
             $record['start_tag'] = '<error>';

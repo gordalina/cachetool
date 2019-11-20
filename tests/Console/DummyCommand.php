@@ -37,7 +37,7 @@ class DummyCommand extends Command implements ContainerAwareInterface
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $this->container->get('logger')->crit('critical');
+        $this->container->get('logger')->critical('critical');
         $this->container->get('logger')->debug('debug');
 
         return 42;

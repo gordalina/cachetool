@@ -47,7 +47,7 @@ jobs:
       run: composer install --prefer-dist
 
     - name: Run test suite
-      run: $(composer config bin-dir)/phpunit --coverage-clover=coverage.clover
+      run: vendor/bin/phpunit --coverage-clover=coverage.clover
 
     - name: Upload coverage to scrutinizer
       run: |

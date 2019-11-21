@@ -35,10 +35,21 @@ composer install --no-dev
 box build
 
 #
+# Copy Readme
+#
+SCRATCH=$(mktemp -t tmp.XXXXXXXXXX)
+cat README.md > $SCRATCH
+
+#
 # Copy executable file into GH pages
 #
 git checkout gh-pages
 
+# Add index
+cat $SCRATCH > index.md
+git add index.md
+
+# Add release
 cp cachetool.phar downloads/cachetool-${TAG}.phar
 git add downloads/cachetool-${TAG}.phar
 

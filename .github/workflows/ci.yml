@@ -1,0 +1,55 @@
+name: Tests
+
+on: [push, pull_request]
+
+jobs:
+  run:
+    runs-on: ${{ matrix.operating-system }}
+    strategy:
+      max-parallel: 15
+      matrix:
+        operating-system: [ubuntu-latest, macOS-latest]
+        php-versions: ['7.1', '7.2', '7.3']
+    name: PHP ${{ matrix.php-versions }} test on ${{ matrix.operating-system }}
+    steps:
+    - name: Checkout
+      uses: actions/checkout@master
+
+    - name: Setup PHP
+      uses: shivammathur/setup-php@master
+      with:
+        php-version: ${{ matrix.php-versions }}
+        extension-csv: apcu, xdebug, mbstring
+        ini-values-csv: apc.enabled=1, apc.enable_cli=1, opcache.enable=1, opcache.enable_cli=1
+        coverage: xdebug
+
+    - name: Check PHP Version
+      run: php -v
+
+    - name: Check Composer Version
+      run: composer -V
+
+    - name: Check PHP Extensions
+      run: php -m
+
+    - name: Get Composer Cache Directory
+      id: composer-cache
+      run: echo "::set-output name=dir::$(composer config cache-files-dir)"
+
+    - name: Cache dependencies
+      uses: actions/cache@v1
+      with:
+        path: ${{ steps.composer-cache.outputs.dir }}
+        key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.json') }}
+        restore-keys: ${{ runner.os }}-composer-
+
+    - name: Install Dependencies
+      run: composer install --prefer-dist
+
+    - name: Run test suite
+      run: $(composer config bin-dir)/phpunit --coverage-clover=coverage.clover
+
+    - name: Upload coverage to scrutinizer
+      run: |
+        wget https://scrutinizer-ci.com/ocular.phar
+        php ocular.phar code-coverage:upload --format=php-clover coverage.clover

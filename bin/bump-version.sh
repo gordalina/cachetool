@@ -20,6 +20,7 @@ jsawk -h
 # Run tests
 #
 
+composer install
 vendor/bin/phpunit
 
 #

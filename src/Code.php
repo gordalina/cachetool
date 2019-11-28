@@ -39,6 +39,14 @@ class Code
     }
 
     /**
+     * @param string[] $statements
+     */
+    public function addStatements($statements)
+    {
+        $this->code = array_merge($this->code, $statements);
+    }
+
+    /**
      * @return string
      */
     public function getCode()

@@ -28,6 +28,7 @@ class OpcacheProxy implements ProxyInterface
     {
         return [
             'opcache_compile_file',
+            'opcache_compile_files',
             'opcache_get_configuration',
             'opcache_get_status',
             'opcache_invalidate',
@@ -63,6 +64,41 @@ class OpcacheProxy implements ProxyInterface
             'return opcache_compile_file(%s);',
             var_export($file, true)
         ));
+
+        return $this->adapter->run($code);
+    }
+
+    /**
+     * Compiles and caches a PHP scripts without executing them
+     *
+     * This function compiles a PHP scripts and adds them to the opcode cache without executing them. This can be used to
+     * prime the cache after a Web server restart by pre-caching files that will be included in later requests.
+     *
+     * @since  5.5.5
+     * @since  7.0.2
+     * @param  array $files The array for paths to PHP scripts to be compiled.
+     * @return boolean      Returns TRUE if files were compiled successfully or FALSE on failure.
+     */
+    public function opcache_compile_files($files)
+    {
+        $code = new Code();
+        $code->addStatement('$paths = [');
+        foreach ($files as $file) {
+            $code->addStatement(sprintf('%s,', var_export($file, true)));
+        }
+
+        $code->addStatement('];');
+
+        $code->addStatements([
+            'foreach ($paths as $path) {',
+            '    $compiled = opcache_compile_file($path);',
+            '    if (!$compiled) {',
+            '        return false;',
+            '    }',
+            '}',
+        ]);
+
+        $code->addStatement('return true;');
 
         return $this->adapter->run($code);
     }

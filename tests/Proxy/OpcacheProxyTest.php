@@ -6,7 +6,7 @@ class OpcacheProxyTest extends ProxyTest
 {
     public function testGetFunctions()
     {
-        $this->assertCount(6, $this->createProxyInstance()->getFunctions());
+        $this->assertCount(7, $this->createProxyInstance()->getFunctions());
     }
 
     public function testFunctions()

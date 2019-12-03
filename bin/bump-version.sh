@@ -33,6 +33,7 @@ composer install --no-dev
 #
 # Tag & build master branch
 #
+git tag ${TAG}
 box build
 
 #
@@ -55,7 +56,7 @@ cp cachetool.phar downloads/cachetool-${TAG}.phar
 git add downloads/cachetool-${TAG}.phar
 
 if [ "$BRANCH" == "master" ]; then
-  cp cachetool.phar downloads/cachetool.phar
+  cp -f cachetool.phar downloads/cachetool.phar
   git add downloads/cachetool.phar
 fi
 

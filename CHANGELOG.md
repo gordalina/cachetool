@@ -1,4 +1,4 @@
-# UNRELEASED
+# 4.1.0
 
 - Support for APC cache has been removed.
 - Use PSR-4 autoloading.
@@ -7,6 +7,8 @@
   falling back to the default directories.
 - Add workaround for `opcache_reset()` bug
   <https://bugs.php.net/bug.php?id=71621>.
+- Add documentation on how to get older cachetool versions
+- Fixed web adapter from config
 
 # 4.0.0
 

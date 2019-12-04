@@ -66,6 +66,9 @@ class FastCGITest extends \PHPUnit\Framework\TestCase
             ->method('request')
             ->with(
                 [
+                    'SERVER_ADDR'     => '127.0.0.1',
+                    'REMOTE_ADDR'     => '127.0.0.1',
+                    'REMOTE_PORT'     => '65000',
                     'REQUEST_METHOD'  => 'POST',
                     'REQUEST_URI'     => '/',
                     'SCRIPT_FILENAME' => $fileName

@@ -9,7 +9,7 @@ jobs:
       max-parallel: 15
       matrix:
         operating-system: [ubuntu-latest, macOS-latest]
-        php-versions: ['7.1', '7.2', '7.3']
+        php-versions: ['7.1', '7.2', '7.3', '7.4']
     name: PHP ${{ matrix.php-versions }} test on ${{ matrix.operating-system }}
     steps:
     - name: Checkout

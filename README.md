@@ -15,7 +15,7 @@ Why is this useful?
 - Maybe you want to see some statistics right from the console
 - And many more...
 
-Note that, unlike APCu and Opcache, the file status cache is per-process rather than stored in shared memory. This means that running `stat:clear` against PHP-FPM will only affect whichever FPM worker responds to the request, not the whole pool. [Julien Pauli has written a post](http://blog.jpauli.tech/2014/06/30/realpath-cache.html) with more details on how the file status cache operates.
+Note that, unlike APCu and Opcache, the file status cache is per-process rather than stored in shared memory. This means that running `stat:clear` against PHP-FPM will only affect whichever FPM worker responds to the request, not the whole pool. [Julien Pauli has written a post](http://blog.jpauli.tech/2014-06-30-realpath-cache-html/) with more details on how the file status cache operates.
 
 Compatibility
 -------------
@@ -29,7 +29,7 @@ Installation - Latest version - cachetool 4, for PHP `>=7.1`
 ------------------------------------------------------------
 
 ```sh
-$ curl -sO http://gordalina.github.io/cachetool/downloads/cachetool.phar
+$ curl -sO https://gordalina.github.io/cachetool/downloads/cachetool.phar
 $ chmod +x cachetool.phar
 ```
 
@@ -39,7 +39,7 @@ Use tag name in the binary file name. E.g to download cachetool 3.2.1
 which is compatible with PHP `>=5.5.9` use: `cachetool-3.2.1.phar`
 
 ```sh
-$ curl -sO http://gordalina.github.io/cachetool/downloads/cachetool-3.2.1.phar
+$ curl -sO https://gordalina.github.io/cachetool/downloads/cachetool-3.2.1.phar
 $ chmod +x cachetool-3.2.1.phar
 ```
 

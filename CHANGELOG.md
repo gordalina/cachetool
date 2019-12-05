@@ -1,5 +1,6 @@
 # Unreleased
 
+- [#132](https://github.com/gordalina/cachetool/pull/132) CI in PHP 7.4
 - [#129](https://github.com/gordalina/cachetool/pull/129) Implement --batch and --exclude options for opcache:compile:scripts command
 - [#131](https://github.com/gordalina/cachetool/pull/131) Add SERVER_ADDR, REMOTE_ADDR, REMOTE_PORT in FCGI call
 - Update `http` to `https` in documentation

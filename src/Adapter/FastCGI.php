@@ -13,6 +13,7 @@ namespace CacheTool\Adapter;
 
 use CacheTool\Code;
 use hollodotme\FastCGI\Client;
+use hollodotme\FastCGI\Interfaces\ConfiguresSocketConnection;
 use hollodotme\FastCGI\SocketConnections\NetworkSocket;
 use hollodotme\FastCGI\SocketConnections\UnixDomainSocket;
 use hollodotme\FastCGI\Requests\PostRequest;
@@ -25,7 +26,7 @@ class FastCGI extends AbstractAdapter
     protected $client;
 
     /**
-     * @var Connection
+     * @var ConfiguresSocketConnection
      */
     protected $connection;
 

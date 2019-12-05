@@ -84,7 +84,7 @@ class OpcacheProxy implements ProxyInterface
         $code = new Code();
         $code->addStatement('$paths = [');
         foreach ($files as $file) {
-            $code->addStatement(sprintf('%s,', var_export($file, true)));
+            $code->addStatement(sprintf('    %s,', var_export($file, true)));
         }
 
         $code->addStatement('];');

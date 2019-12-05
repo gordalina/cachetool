@@ -12,7 +12,10 @@
 namespace CacheTool\Adapter;
 
 use CacheTool\Code;
-use Adoy\FastCGI\Client;
+use hollodotme\FastCGI\Client;
+use hollodotme\FastCGI\SocketConnections\NetworkSocket;
+use hollodotme\FastCGI\SocketConnections\UnixDomainSocket;
+use hollodotme\FastCGI\Requests\PostRequest;
 
 class FastCGI extends AbstractAdapter
 {
@@ -20,6 +23,11 @@ class FastCGI extends AbstractAdapter
      * @var Client
      */
     protected $client;
+
+    /**
+     * @var Connection
+     */
+    protected $connection;
 
     /**
      * @var Array of patterns matching php socket files
@@ -63,15 +71,21 @@ class FastCGI extends AbstractAdapter
 
         if (false !== strpos($host, ':')) {
             [$host, $port] = explode(':', $host);
-            $this->client = new Client($host, $port);
+            $this->connection = new NetworkSocket(
+            	  $host,    # Hostname
+            	  $port,    # Port
+            	  5000,     # Connect timeout in milliseconds (default: 5000)
+            	  120000    # Read/write timeout in milliseconds (default: 5000)
+            );
         } else {
-            // socket
-            $this->client = new Client('unix://' . $host, -1);
+            $this->connection = new UnixDomainSocket(
+                $host,  # Socket path to php-fpm
+                5000,   # Connect timeout in milliseconds (default: 5000)
+                120000  # Read/write timeout in milliseconds (default: 5000)
+            );
         }
 
-        $this->client->setReadWriteTimeout(60 * 1000);
-        $this->client->setPersistentSocket(false);
-        $this->client->setKeepAlive(true);
+        $this->client = new Client();
 
         if ($chroot !== null) {
             $this->chroot = rtrim($chroot, '/');
@@ -83,15 +97,10 @@ class FastCGI extends AbstractAdapter
      */
     protected function doRun(Code $code)
     {
-        $response = $this->request($code);
-        $parts = explode("\r\n\r\n", $response);
-
-        // remove headers
-        array_shift($parts);
-        $body = implode("\r\n\r\n", $parts);
+        $body = $this->request($code);
 
         if (@unserialize($body) === false) {
-            throw new \RuntimeException(sprintf("Error: %s", $response));
+            throw new \RuntimeException(sprintf("Error: %s", $body));
         }
 
         return $body;
@@ -105,24 +114,16 @@ class FastCGI extends AbstractAdapter
         try {
             $code->writeTo($file);
 
-            $environment = [
-                'SERVER_ADDR'     => '127.0.0.1',
-                'REMOTE_ADDR'     => '127.0.0.1',
-                'REMOTE_PORT'     => '65000',
-                'REQUEST_METHOD'  => 'POST',
-                'REQUEST_URI'     => '/',
-                'SCRIPT_FILENAME' => $this->getScriptFileName($file),
-            ];
-
             $this->logger->info(sprintf('FastCGI: Requesting FPM using socket: %s', $this->host));
-            $response = $this->client->request($environment, '');
+            $request = new PostRequest($this->getScriptFileName($file), '');
+            $response = $this->client->sendRequest($this->connection, $request);
             $this->logger->debug(sprintf('FastCGI: Response: %s', json_encode($response)));
 
             if (!@unlink($file)) {
                 $this->logger->debug(sprintf('FastCGI: Could not delete file: %s', $file));
             }
 
-            return $response;
+            return $response->getBody();
         } catch (\Exception $e) {
             if (!@unlink($file)) {
                 $this->logger->debug(sprintf('FastCGI: Could not delete file: %s', $file));

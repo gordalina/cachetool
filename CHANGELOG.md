@@ -1,7 +1,9 @@
 # Unreleased
 
+- [#133](https://github.com/gordalina/cachetool/pull/133) Switch FastCGI library (hollodotme/fast-cgi-client)
 - [#129](https://github.com/gordalina/cachetool/pull/129) Implement --batch and --exclude options for opcache:compile:scripts command
 - [#131](https://github.com/gordalina/cachetool/pull/131) Add SERVER_ADDR, REMOTE_ADDR, REMOTE_PORT in FCGI call
+- []
 - Update `http` to `https` in documentation
 
 # 4.1.0

@@ -49,14 +49,7 @@ class CacheToolTest extends \PHPUnit\Framework\TestCase
         $cachetool = CacheTool::factory($adapter, $tempDir, $this->getLogger());
         $this->assertSame($tempDir, $cachetool->getTempDir());
     }
-
-    public function testLoggerWithAdapter()
-    {
-        $cachetool = new CacheTool(null, $this->getLogger());
-        $cachetool->setAdapter(new Adapter\Cli);
-        $cachetool->setLogger($this->getLogger());
-    }
-
+    
     /**
      * @expectedException \InvalidArgumentException
      */

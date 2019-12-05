@@ -52,9 +52,12 @@ class CacheToolTest extends \PHPUnit\Framework\TestCase
 
     public function testLoggerWithAdapter()
     {
+        $adapter = new Adapter\Cli;
         $cachetool = new CacheTool(null, $this->getLogger());
-        $cachetool->setAdapter(new Adapter\Cli);
+        $cachetool->setAdapter($adapter);
         $cachetool->setLogger($this->getLogger());
+        $this->assertSame($adapter, $cachetool->getAdapter());
+        $this->assertSame($this->getLogger(), $cachetool->getLogger());
     }
 
     /**

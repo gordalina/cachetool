@@ -43,26 +43,66 @@ class OpcacheStatusCommand extends AbstractCommand
             throw new \RuntimeException('opcache_get_status(): No Opcache status info available.  Perhaps Opcache is disabled via opcache.enable or opcache.enable_cli?');
         }
 
+        $fileOnly = false;
+        # Deal with file cache only setups. In this case OPCache erroneously reports disabled OPCache
+        if (empty($info['opcache_enabled'])) {
+            $config = $this->getCacheTool()->opcache_get_configuration();
+            if ($this->getCacheTool()->ini_get('opcache.enable')
+                && !empty($config['directives']['opcache.file_cache_only'])
+                && is_dir($config['directives']['opcache.file_cache'])) {
+
+                $fileOnly = true;
+                $fileCachePath = realpath($config['directives']['opcache.file_cache']);
+                $usedBytes = 0;
+                $cachedScripts = 0;
+                foreach(new \RecursiveIteratorIterator(
+                    new \RecursiveDirectoryIterator($fileCachePath, \FilesystemIterator::SKIP_DOTS)) as $object) {
+                    $usedBytes += $object->getSize();
+                    $cachedScripts++;
+                }
+                $freeBytes = disk_free_space($fileCachePath);
+                if ($freeBytes !== false) {
+                    $cacheFull = $freeBytes < 4096;
+                } else {
+                    $cacheFull = 'N/A';
+                    $freeBytes = 'N/A';
+                }
+
+                $info['opcache_enabled'] = true;
+                // construct statistics ourselves
+                $info['used_disk'] = $usedBytes;
+                $info['free_disk'] = $freeBytes;
+                $info['cache_full'] = $cacheFull;
+                $info['opcache_statistics'] = [
+                    'num_cached_scripts' => $cachedScripts
+                ];
+            }
+        }
+
         $table = new Table($output);
         $table->setHeaders(['Name', 'Value']);
-        $table->setRows($this->getRows($info, $info['opcache_statistics']));
+        $table->setRows($this->getRows($info, $info['opcache_statistics'], $fileOnly));
         $table->render();
     }
 
     /**
-     * @param  array $info
-     * @param  array $stats
+     * @param array $info
+     * @param array $stats
+     * @param bool $fileOnly
      * @return array
      */
-    protected function getRows($info, $stats)
+    protected function getRows($info, $stats, $fileOnly = false)
     {
-        $rows = $this->getGeneralRows($info);
-
-        if (isset($info['interned_strings_usage'])) {
-            $rows = array_merge($rows, $this->getStringsRows($info));
+        if (!$fileOnly) {
+            $rows = $this->getGeneralRows($info);
+            if (isset($info['interned_strings_usage'])) {
+                $rows = array_merge($rows, $this->getStringsRows($info));
+            }
+            return array_merge($rows, $this->getOpcacheStatsRows($stats));
+        } else {
+            $rows = $this->getGeneralRowsFileOnly($info);
+            return array_merge($rows, $this->getOpcacheStatsRowsFileOnly($stats));
         }
-
-        return array_merge($rows, $this->getOpcacheStatsRows($stats));
     }
 
     /**
@@ -79,6 +119,20 @@ class OpcacheStatusCommand extends AbstractCommand
             ['Memory used', Formatter::bytes($info['memory_usage']['used_memory'])],
             ['Memory free', Formatter::bytes($info['memory_usage']['free_memory'])],
             ['Memory wasted (%)', sprintf("%s (%s%%)", Formatter::bytes($info['memory_usage']['wasted_memory']), $info['memory_usage']['current_wasted_percentage'])],
+        ];
+    }
+
+    /**
+     * @param  array $info
+     * @return array
+     */
+    protected function getGeneralRowsFileOnly($info)
+    {
+        return [
+            ['Enabled', $info['opcache_enabled'] ? 'Yes, File-Based Only' : 'No'],
+            ['Cache full', $info['cache_full'] ? 'Yes' : 'No'],
+            ['Disk used', Formatter::bytes($info['used_disk'])],
+            ['Disk free', Formatter::bytes($info['free_disk'])],
         ];
     }
 
@@ -118,4 +172,17 @@ class OpcacheStatusCommand extends AbstractCommand
             ['Opcache hit rate', $stats['opcache_hit_rate']],
         ];
     }
+
+    /**
+     * @param  array $stats
+     * @return array
+     */
+    protected function getOpcacheStatsRowsFileOnly($stats)
+    {
+        return [
+            new TableSeparator(),
+            ['Cached scripts', $stats['num_cached_scripts']],
+        ];
+    }
+
 }

@@ -38,7 +38,7 @@ class SelfUpdateCommand extends Command
     /**
      * {@inheritdoc}
      */
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $manifest = Manifest::loadFile(self::MANIFEST_FILE);
 
@@ -57,5 +57,7 @@ class SelfUpdateCommand extends Command
         $manager->update($this->getApplication()->getVersion(), true);
 
         $output->writeln(sprintf('SHA1 verified <info>%s</info>', $update->getSha1()));
+
+        return 0;
     }
 }

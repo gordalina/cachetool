@@ -31,7 +31,7 @@ class OpcacheConfigurationCommand extends AbstractCommand
     /**
      * {@inheritdoc}
      */
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $this->ensureExtensionLoaded('Zend OPcache');
 
@@ -46,6 +46,8 @@ class OpcacheConfigurationCommand extends AbstractCommand
         ;
 
         $table->render();
+
+        return 0;
     }
 
     protected function processDirectives(array $directives)

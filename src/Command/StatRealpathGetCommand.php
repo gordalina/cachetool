@@ -33,7 +33,7 @@ class StatRealpathGetCommand extends AbstractCommand
     /**
      * {@inheritdoc}
      */
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $info = $this->getCacheTool()->stat_realpath_get();
 
@@ -50,6 +50,8 @@ class StatRealpathGetCommand extends AbstractCommand
         ;
 
         $table->render();
+
+        return 0;
     }
 
     protected function processFileList(array $cacheList)

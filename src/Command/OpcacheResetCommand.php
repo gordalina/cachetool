@@ -30,7 +30,7 @@ class OpcacheResetCommand extends AbstractCommand
     /**
      * {@inheritdoc}
      */
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $this->ensureExtensionLoaded('Zend OPcache');
 
@@ -39,5 +39,7 @@ class OpcacheResetCommand extends AbstractCommand
         if (!$success) {
             throw new \RuntimeException('opcache_reset(): No Opcache status info available.  Perhaps Opcache is disabled via opcache.enable or opcache.enable_cli?');
         }
+
+        return 0;
     }
 }

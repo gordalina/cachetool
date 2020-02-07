@@ -32,9 +32,11 @@ class StatRealpathSizeCommand extends AbstractCommand
     /**
      * {@inheritdoc}
      */
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $size = $this->getCacheTool()->stat_realpath_size();
         $output->writeln(sprintf("<comment>Realpath cache size: <info>%s</info></comment>", Formatter::bytes($size)));
+
+        return 0;
     }
 }

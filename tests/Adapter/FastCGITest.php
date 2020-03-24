@@ -4,6 +4,9 @@ namespace CacheTool\Adapter;
 
 use CacheTool\Code;
 use CacheTool\PhpFpmRunner;
+use CacheTool\Adapter\FastCGI;
+use Monolog\Logger;
+use Adoy\FastCGI\Client;
 
 class FastCGITest extends \PHPUnit\Framework\TestCase
 {
@@ -12,7 +15,7 @@ class FastCGITest extends \PHPUnit\Framework\TestCase
         $fpm = new PhpFpmRunner();
         $fcgi = new FastCGI($fpm->socket);
         $fcgi->setTempDir(sys_get_temp_dir());
-        $fcgi->setLogger($this->getMockBuilder('Monolog\Logger')->disableOriginalConstructor()->getMock());
+        $fcgi->setLogger($this->getMockBuilder(Logger::class)->disableOriginalConstructor()->getMock());
 
         $code = Code::fromString('return true;');
 
@@ -43,7 +46,7 @@ class FastCGITest extends \PHPUnit\Framework\TestCase
 
     public function testRunWithChroot()
     {
-        $fcgi = $this->getMockBuilder('\CacheTool\Adapter\FastCGI')
+        $fcgi = $this->getMockBuilder(FastCGI::class)
             ->setMethods(['getScriptFileName'])
             ->setConstructorArgs([null, sys_get_temp_dir()])
             ->getMock();
@@ -52,7 +55,7 @@ class FastCGITest extends \PHPUnit\Framework\TestCase
         $reflectionClient = $reflection->getProperty('client');
         $reflectionClient->setAccessible(true);
 
-        $clientMock = $this->getMockBuilder('\Adoy\FastCGI\Client')
+        $clientMock = $this->getMockBuilder(Client::class)
             ->disableOriginalConstructor()
             ->getMock();
         $reflectionClient->setValue($fcgi, $clientMock);
@@ -78,7 +81,7 @@ class FastCGITest extends \PHPUnit\Framework\TestCase
             ->willReturn("Content-type: text/html; charset=UTF-8\r\n\r\na:2:{s:6:\"result\";b:1;s:6:\"errors\";a:0:{}}");
 
         $fcgi->setTempDir(sys_get_temp_dir());
-        $fcgi->setLogger($this->getMockBuilder('Monolog\Logger')->disableOriginalConstructor()->getMock());
+        $fcgi->setLogger($this->getMockBuilder(Logger::class)->disableOriginalConstructor()->getMock());
 
         $code = Code::fromString('return true;');
 

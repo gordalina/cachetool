@@ -74,14 +74,14 @@ class CodeTest extends \PHPUnit\Framework\TestCase
         $this->assertTrue(strlen($result) > 0);
 
         $unserialized = @unserialize($result);
-        $this->assertTrue(is_array($unserialized));
+        $this->assertIsArray($unserialized);
 
         $this->assertCount(2, $unserialized);
         $this->assertArrayHasKey('result', $unserialized);
         $this->assertArrayHasKey('errors', $unserialized);
 
         $this->assertSame(10, $unserialized['result']);
-        $this->assertTrue(is_array($unserialized['errors']));
+        $this->assertIsArray($unserialized['errors']);
         $this->assertCount(0, $unserialized['errors']);
     }
 
@@ -166,7 +166,7 @@ class CodeTest extends \PHPUnit\Framework\TestCase
         $this->assertTrue(strlen($result) > 0);
 
         $unserialized = unserialize($result);
-        $this->assertTrue(is_array($unserialized));
+        $this->assertIsArray($unserialized);
 
         $this->assertCount(2, $unserialized);
         $this->assertArrayHasKey('result', $unserialized);

@@ -33,7 +33,7 @@ class OpcacheStatusCommand extends AbstractCommand
     /**
      * {@inheritdoc}
      */
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $this->ensureExtensionLoaded('Zend OPcache');
 
@@ -47,6 +47,8 @@ class OpcacheStatusCommand extends AbstractCommand
         $table->setHeaders(['Name', 'Value']);
         $table->setRows($this->getRows($info, $info['opcache_statistics']));
         $table->render();
+
+        return 0;
     }
 
     /**

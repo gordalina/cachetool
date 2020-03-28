@@ -32,7 +32,7 @@ class OpcacheStatusScriptsCommand extends AbstractCommand
     /**
      * {@inheritdoc}
      */
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $this->ensureExtensionLoaded('Zend OPcache');
 
@@ -53,6 +53,8 @@ class OpcacheStatusScriptsCommand extends AbstractCommand
         ;
 
         $table->render();
+
+        return 0;
     }
 
     protected function processFileList(array $cacheList)

@@ -32,7 +32,7 @@ class ApcuCacheInfoKeysCommand extends ApcuCacheInfoCommand
     /**
      * {@inheritdoc}
      */
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $this->ensureExtensionLoaded('apcu');
 
@@ -58,6 +58,8 @@ class ApcuCacheInfoKeysCommand extends ApcuCacheInfoCommand
         ;
 
         $table->render();
+
+        return 0;
     }
 
     protected function processFileList(array $cacheList)

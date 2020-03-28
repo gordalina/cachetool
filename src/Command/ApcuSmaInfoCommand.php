@@ -31,7 +31,7 @@ class ApcuSmaInfoCommand extends AbstractCommand
     /**
      * {@inheritdoc}
      */
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $this->ensureExtensionLoaded('apcu');
 
@@ -40,5 +40,7 @@ class ApcuSmaInfoCommand extends AbstractCommand
         $output->writeln(sprintf("<comment>Segments: <info>%s</info></comment>", $sma['num_seg']));
         $output->writeln(sprintf("<comment>Segment size: <info>%s</info></comment>", Formatter::bytes($sma['seg_size'])));
         $output->writeln(sprintf("<comment>Available memory: <info>%s</info></comment>", Formatter::bytes($sma['avail_mem'])));
+
+        return 0;
     }
 }

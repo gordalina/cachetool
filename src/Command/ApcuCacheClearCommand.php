@@ -30,10 +30,12 @@ class ApcuCacheClearCommand extends AbstractCommand
     /**
      * {@inheritdoc}
      */
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $this->ensureExtensionLoaded('apcu');
 
         $this->getCacheTool()->apcu_clear_cache();
+
+        return 0;
     }
 }

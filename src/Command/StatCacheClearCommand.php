@@ -30,8 +30,10 @@ class StatCacheClearCommand extends AbstractCommand
     /**
      * {@inheritdoc}
      */
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $this->getCacheTool()->stat_cache_clear();
+
+        return 0;
     }
 }

@@ -32,7 +32,7 @@ class ApcuKeyFetchCommand extends AbstractCommand
     /**
      * {@inheritdoc}
      */
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $this->ensureExtensionLoaded('apcu');
 
@@ -47,5 +47,7 @@ class ApcuKeyFetchCommand extends AbstractCommand
             $output->writeln("<comment>APCu key=<info>{$key}</info> does not exist.</comment>");
             return 1;
         }
+
+        return 0;
     }
 }

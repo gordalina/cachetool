@@ -47,7 +47,7 @@ class OpcacheCompileScriptsCommand extends AbstractCommand
     /**
      * {@inheritdoc}
      */
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $this->ensureExtensionLoaded('Zend OPcache');
         $path = $input->getArgument('path');
@@ -69,6 +69,8 @@ class OpcacheCompileScriptsCommand extends AbstractCommand
         } else {
             $this->compile($splFiles, $output);
         }
+
+        return 0;
     }
 
     /**

@@ -50,7 +50,7 @@ class ApcuCacheInfoCommand extends AbstractCommand
     /**
      * {@inheritdoc}
      */
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $this->ensureExtensionLoaded('apcu');
 
@@ -66,6 +66,8 @@ class ApcuCacheInfoCommand extends AbstractCommand
         $table->setHeaders(['Name', 'Info']);
         $table->setRows($this->getRows($info));
         $table->render($output);
+
+        return 0;
     }
 
     /**

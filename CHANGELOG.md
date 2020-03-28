@@ -1,5 +1,6 @@
 # Unreleased
 
+- [#137](https://github.com/gordalina/cachetool/pull/137) Update to dependencies to support Symfony 5
 - [#138](https://github.com/gordalina/cachetool/pull/138) Add dependency check before running cachetool
 - [#139](https://github.com/gordalina/cachetool/pull/139) [BUGFIX] Correct link to Julien Pauli´s blog post #139
 - [#133](https://github.com/gordalina/cachetool/pull/133) Switch FastCGI library (hollodotme/fast-cgi-client)

@@ -1,5 +1,7 @@
 # Unreleased
 
+- [#138](https://github.com/gordalina/cachetool/pull/138) Add dependency check before running cachetool
+- [#139](https://github.com/gordalina/cachetool/pull/139) [BUGFIX] Correct link to Julien Pauli´s blog post #139
 - [#133](https://github.com/gordalina/cachetool/pull/133) Switch FastCGI library (hollodotme/fast-cgi-client)
 - [#132](https://github.com/gordalina/cachetool/pull/132) CI in PHP 7.4
 - [#129](https://github.com/gordalina/cachetool/pull/129) Implement --batch and --exclude options for opcache:compile:scripts command

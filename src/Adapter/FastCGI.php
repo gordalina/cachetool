@@ -71,12 +71,22 @@ class FastCGI extends AbstractAdapter
         $this->host = $host;
 
         if (false !== strpos($host, ':')) {
-            [$host, $port] = explode(':', $host);
+            $last = strrpos($host, ':');
+            $port = substr($host, $last + 1, strlen($host));
+            $host = substr($host, 0, $last);
+
+            $IPv6 = '/^(?:[A-F0-9]{0,4}:){1,7}[A-F0-9]{0,4}$/';
+            if (preg_match($IPv6, $host) === 1) {
+                // IPv6 addresses need to be surrounded by brackets
+                // see: https://www.php.net/manual/en/function.stream-socket-client.php#refsect1-function.stream-socket-client-notes
+                $host = "[${host}]";
+            }
+
             $this->connection = new NetworkSocket(
-            	  $host,    # Hostname
-            	  $port,    # Port
-            	  5000,     # Connect timeout in milliseconds (default: 5000)
-            	  120000    # Read/write timeout in milliseconds (default: 5000)
+                $host,    # Hostname
+                $port,    # Port
+                5000,     # Connect timeout in milliseconds (default: 5000)
+                120000    # Read/write timeout in milliseconds (default: 5000)
             );
         } else {
             $this->connection = new UnixDomainSocket(

@@ -4,6 +4,7 @@ namespace CacheTool\Adapter;
 
 use CacheTool\Code;
 use CacheTool\PhpFpmRunner;
+use CacheTool\Adapter\FastCGI;
 use \hollodotme\FastCGI\SocketConnections\NetworkSocket;
 use \hollodotme\FastCGI\Requests\PostRequest;
 use \hollodotme\FastCGI\Responses\Response;
@@ -47,7 +48,7 @@ class FastCGITest extends \PHPUnit\Framework\TestCase
 
     public function testRunWithChroot()
     {
-        $fcgi = $this->getMockBuilder(\CacheTool\Adapter\FastCGI::class)
+        $fcgi = $this->getMockBuilder(FastCGI::class)
             ->setMethods(['getScriptFileName'])
             ->setConstructorArgs(['127.0.0.1:9000', sys_get_temp_dir()])
             ->getMock();
@@ -82,5 +83,37 @@ class FastCGITest extends \PHPUnit\Framework\TestCase
 
         $result = $fcgi->run($code);
         $this->assertTrue($result);
+    }
+
+    public function testRunWithIPv4()
+    {
+        $fcgi = new FastCGI('127.0.0.1:9000');
+
+        $reflection = new \ReflectionClass($fcgi);
+        $reflectionConn = $reflection->getProperty('connection');
+        $reflectionConn->setAccessible(true);
+        $connection = $reflectionConn->getValue($fcgi);
+
+        $reflection = new \ReflectionClass($connection);
+        $reflectionHost = $reflection->getProperty('host');
+        $reflectionHost->setAccessible(true);
+
+        $this->assertSame('127.0.0.1', $reflectionHost->getValue($connection));
+    }
+
+    public function testRunWithIPv6()
+    {
+        $fcgi = new FastCGI(':::9000');
+
+        $reflection = new \ReflectionClass($fcgi);
+        $reflectionConn = $reflection->getProperty('connection');
+        $reflectionConn->setAccessible(true);
+        $connection = $reflectionConn->getValue($fcgi);
+
+        $reflection = new \ReflectionClass($connection);
+        $reflectionHost = $reflection->getProperty('host');
+        $reflectionHost->setAccessible(true);
+
+        $this->assertSame('[::]', $reflectionHost->getValue($connection));
     }
 }

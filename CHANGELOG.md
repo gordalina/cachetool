@@ -1,5 +1,7 @@
 # Unreleased
 
+- [77](https://github.com/gordalina/cachetool/issues/77) Add IPv6 support
+
 # 5.0.0
 
 - **Breaking Change**: PHP 7.2 is now required

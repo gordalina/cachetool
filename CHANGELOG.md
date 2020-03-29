@@ -3,6 +3,7 @@
 # 5.0.0
 
 - **Breaking Change**: PHP 7.2 is now required
+- [#140](https://github.com/gordalina/cachetool/issues/140) Add `opcache:reset:file-cache` command that clears the file cache directory contents
 - [#88](https://github.com/gordalina/cachetool/issues/88), [#92](https://github.com/gordalina/cachetool/issues/92) Add support for `opcache.file_cache_only`
 - [#87](https://github.com/gordalina/cachetool/issues/87) Fix `self-update` command
 - [#135](https://github.com/gordalina/cachetool/issues/135) Automatically creates temporary directory

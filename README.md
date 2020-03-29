@@ -107,6 +107,7 @@ You have some useful commands that you can use
   opcache:configuration       Get configuration information about the cache
   opcache:invalidate:scripts  Remove scripts from the opcode cache
   opcache:reset               Resets the contents of the opcode cache
+  opcache:reset:file-cache    Deletes all contents of the file cache directory
   opcache:status              Show summary information about the opcode cache
   opcache:status:scripts      Show scripts in the opcode cache
  stat

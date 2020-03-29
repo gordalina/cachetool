@@ -29,7 +29,7 @@ class CodeTest extends \PHPUnit\Framework\TestCase
         $code = Code::fromString('$a = 10; return $a;');
         $code->writeTo($file);
 
-        $this->assertContains('$a = 10; return $a;', file_get_contents($file));
+        $this->assertStringContainsString('$a = 10; return $a;', file_get_contents($file));
 
         @unlink($file);
     }

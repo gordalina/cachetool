@@ -9,6 +9,6 @@ class ApcuKeyFetchCommandTest extends CommandTest
         $this->assertHasApcu();
 
         $result = $this->runCommand('apcu:key:fetch key -v');
-        $this->assertContains('apcu_fetch("key", {})', $result);
+        $this->assertStringContainsString('apcu_fetch("key", {})', $result);
     }
 }

@@ -9,6 +9,6 @@ class ApcuKeyDeleteCommandTest extends CommandTest
         $this->assertHasApcu();
 
         $result = $this->runCommand('apcu:key:delete key -v');
-        $this->assertContains('apcu_delete("key")', $result);
+        $this->assertStringContainsString('apcu_delete("key")', $result);
     }
 }

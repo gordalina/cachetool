@@ -10,9 +10,9 @@ class OpcacheStatusScriptsCommandTest extends CommandTest
 
         $result = $this->runCommand('opcache:status:scripts -v');
 
-        $this->assertContains('opcache_get_status(true)', $result);
-        $this->assertContains('Hits', $result);
-        $this->assertContains('Memory', $result);
-        $this->assertContains('Filename', $result);
+        $this->assertStringContainsString('opcache_get_status(true)', $result);
+        $this->assertStringContainsString('Hits', $result);
+        $this->assertStringContainsString('Memory', $result);
+        $this->assertStringContainsString('Filename', $result);
     }
 }

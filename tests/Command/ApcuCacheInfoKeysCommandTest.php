@@ -10,7 +10,7 @@ class ApcuCacheInfoKeysCommandTest extends CommandTest
 
         $result = $this->runCommand('apcu:cache:info:keys -v');
 
-        $this->assertContains('Hits', $result);
-        $this->assertContains('Key', $result);
+        $this->assertStringContainsString('Hits', $result);
+        $this->assertStringContainsString('Key', $result);
     }
 }

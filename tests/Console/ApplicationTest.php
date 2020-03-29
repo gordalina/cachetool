@@ -45,7 +45,7 @@ class ApplicationTest extends CommandTest
         $code = $app->run(new StringInput("dummy"), $output);
 
         $this->assertSame(1, $code);
-        $this->assertContains('Adapter `err` is not one of cli, fastcgi or web', $output->fetch());
+        $this->assertStringContainsString('Adapter `err` is not one of cli, fastcgi or web', $output->fetch());
     }
 
     public function testOutput()
@@ -70,7 +70,7 @@ class ApplicationTest extends CommandTest
         $content = $output->fetch();
 
         $this->assertSame(0, $code);
-        $this->assertContains('stat:clear', $content);
+        $this->assertStringContainsString('stat:clear', $content);
         $this->assertNotContains('apcu:cache:clear', $content);
         $this->assertNotContains('opcache:configuration', $content);
     }
@@ -85,9 +85,9 @@ class ApplicationTest extends CommandTest
         $content = $output->fetch();
 
         $this->assertSame(0, $code);
-        $this->assertContains('stat:clear', $content);
-        $this->assertContains('apcu:cache:clear', $content);
-        $this->assertContains('opcache:configuration', $content);
+        $this->assertStringContainsString('stat:clear', $content);
+        $this->assertStringContainsString('apcu:cache:clear', $content);
+        $this->assertStringContainsString('opcache:configuration', $content);
     }
 
     public function testWithTmpDirArgNotWriable()

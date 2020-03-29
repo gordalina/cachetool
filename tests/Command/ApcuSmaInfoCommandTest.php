@@ -10,9 +10,9 @@ class ApcuSmaInfoCommandTest extends CommandTest
 
         $result = $this->runCommand('apcu:sma:info -v');
 
-        $this->assertContains('apcu_sma_info(true)', $result);
-        $this->assertContains('Segments', $result);
-        $this->assertContains('Segment size', $result);
-        $this->assertContains('Available memory', $result);
+        $this->assertStringContainsString('apcu_sma_info(true)', $result);
+        $this->assertStringContainsString('Segments', $result);
+        $this->assertStringContainsString('Segment size', $result);
+        $this->assertStringContainsString('Available memory', $result);
     }
 }

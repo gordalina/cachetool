@@ -9,6 +9,6 @@ class ApcuKeyExistsCommandTest extends CommandTest
         $this->assertHasApcu();
 
         $result = $this->runCommand('apcu:key:exists key -v');
-        $this->assertContains('apcu_exists("key")', $result);
+        $this->assertStringContainsString('apcu_exists("key")', $result);
     }
 }

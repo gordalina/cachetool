@@ -9,6 +9,6 @@ class ApcuKeyStoreCommandTest extends CommandTest
         $this->assertHasApcu();
 
         $result = $this->runCommand('apcu:key:store key value 3600 -v');
-        $this->assertContains('apcu_store("key", "value", "3600")', $result);
+        $this->assertStringContainsString('apcu_store("key", "value", "3600")', $result);
     }
 }

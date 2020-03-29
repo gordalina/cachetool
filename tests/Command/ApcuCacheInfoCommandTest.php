@@ -10,7 +10,7 @@ class ApcuCacheInfoCommandTest extends CommandTest
 
         $result = $this->runCommand('apcu:cache:info');
 
-        $this->assertContains('Slots', $result);
-        $this->assertContains('Locking type', $result);
+        $this->assertStringContainsString('Slots', $result);
+        $this->assertStringContainsString('Locking type', $result);
     }
 }

@@ -10,6 +10,6 @@ class ApcuCacheClearCommandTest extends CommandTest
 
         $result = $this->runCommand('apcu:cache:clear -v');
 
-        $this->assertContains('apcu_clear_cache()', $result);
+        $this->assertStringContainsString('apcu_clear_cache()', $result);
     }
 }

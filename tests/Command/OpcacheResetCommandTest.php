@@ -10,6 +10,6 @@ class OpcacheResetCommandTest extends CommandTest
 
         $result = $this->runCommand('opcache:reset -v');
 
-        $this->assertContains('opcache_reset()', $result);
+        $this->assertStringContainsString('opcache_reset()', $result);
     }
 }

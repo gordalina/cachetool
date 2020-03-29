@@ -9,11 +9,10 @@ class ApcuProxyTest extends ProxyTest
         $this->assertCount(14, $this->createProxyInstance()->getFunctions());
     }
 
-    /**
-     * @expectedException InvalidArgumentException
-     */
     public function testApcAddException()
     {
+        $this->expectException(\InvalidArgumentException::class);
+
         $proxy = $this->createProxyInstance();
         $proxy->apcu_add('key', null);
     }

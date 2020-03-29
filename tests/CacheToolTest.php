@@ -49,21 +49,19 @@ class CacheToolTest extends \PHPUnit\Framework\TestCase
         $cachetool = CacheTool::factory($adapter, $tempDir, $this->getLogger());
         $this->assertSame($tempDir, $cachetool->getTempDir());
     }
-    
-    /**
-     * @expectedException \InvalidArgumentException
-     */
+
     public function testInexistentFunction()
     {
+        $this->expectException(\InvalidArgumentException::class);
+
         $cachetool = new CacheTool(null, $this->getLogger());
         $cachetool->doesNotExist();
     }
 
-    /**
-     * @expectedException \InvalidArgumentException
-     */
     public function testInexistentWithMagicCallFunction()
     {
+        $this->expectException(\InvalidArgumentException::class);
+
         $cachetool = new CacheTool(null, $this->getLogger());
         $cachetool->__call('doesNotExist', []);
     }

@@ -19,11 +19,10 @@ class CliTest extends \PHPUnit\Framework\TestCase
         $this->assertTrue($result);
     }
 
-    /**
-     * @expectedException RuntimeException
-     */
     public function testException()
     {
+        $this->expectException(\RuntimeException::class);
+
         $cli = new Cli();
         $cli->setTempDir(sys_get_temp_dir());
         $cli->setLogger($this->getMockBuilder('Monolog\Logger')->disableOriginalConstructor()->getMock());

@@ -34,24 +34,22 @@ class CodeTest extends \PHPUnit\Framework\TestCase
         @unlink($file);
     }
 
-    /**
-     * @expectedException RuntimeException
-     * @expectedExceptionMessage Could not write to `/non-existant-folder/file.php`: No such file or directory.
-     */
     public function testWriteToWrongFolder()
     {
+        $this->expectException(\RuntimeException::class);
+        $this->expectExceptionMessage('Could not write to `/non-existant-folder/file.php`: No such file or directory.');
+
         $file = '/non-existant-folder/file.php';
 
         $code = Code::fromString('$a = 10; return $a;');
         $code->writeTo($file);
     }
 
-    /**
-     * @expectedException RuntimeException
-     * @expectedExceptionMessageRegExp /Aborted due to security constraints: After writing to `.*` the contents were not the same/
-     */
     public function testWriteToTampered()
     {
+        $this->expectException(\RuntimeException::class);
+        $this->expectExceptionMessageMatches('/Aborted due to security constraints: After writing to `.*` the contents were not the same/');
+
         if (defined('HHVM_VERSION')) {
             $this->markTestSkipped('HHVM does not support php://filter stream wrapper');
         }

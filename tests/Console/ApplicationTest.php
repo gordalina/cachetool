@@ -71,8 +71,8 @@ class ApplicationTest extends CommandTest
 
         $this->assertSame(0, $code);
         $this->assertStringContainsString('stat:clear', $content);
-        $this->assertNotContains('apcu:cache:clear', $content);
-        $this->assertNotContains('opcache:configuration', $content);
+        $this->assertStringNotContainsString('apcu:cache:clear', $content);
+        $this->assertStringNotContainsString('opcache:configuration', $content);
     }
 
     public function testAllSupportedExtensions()

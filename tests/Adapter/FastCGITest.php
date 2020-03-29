@@ -4,6 +4,9 @@ namespace CacheTool\Adapter;
 
 use CacheTool\Code;
 use CacheTool\PhpFpmRunner;
+use \hollodotme\FastCGI\SocketConnections\NetworkSocket;
+use \hollodotme\FastCGI\Requests\PostRequest;
+use \hollodotme\FastCGI\Responses\Response;
 
 class FastCGITest extends \PHPUnit\Framework\TestCase
 {
@@ -43,7 +46,7 @@ class FastCGITest extends \PHPUnit\Framework\TestCase
 
     public function testRunWithChroot()
     {
-        $fcgi = $this->getMockBuilder('\CacheTool\Adapter\FastCGI')
+        $fcgi = $this->getMockBuilder(\CacheTool\Adapter\FastCGI::class)
             ->setMethods(['getScriptFileName'])
             ->setConstructorArgs([null, sys_get_temp_dir()])
             ->getMock();
@@ -52,7 +55,7 @@ class FastCGITest extends \PHPUnit\Framework\TestCase
         $reflectionClient = $reflection->getProperty('client');
         $reflectionClient->setAccessible(true);
 
-        $clientMock = $this->getMockBuilder('\Adoy\FastCGI\Client')
+        $clientMock = $this->getMockBuilder(\hollodotme\FastCGI\Client::class)
             ->disableOriginalConstructor()
             ->getMock();
         $reflectionClient->setValue($fcgi, $clientMock);
@@ -62,20 +65,14 @@ class FastCGITest extends \PHPUnit\Framework\TestCase
             ->method('getScriptFileName')
             ->willReturn($fileName);
 
+        $connectionMock = new NetworkSocket('127.0.0.1', '9000', 5000, 120000);
+        $request = new PostRequest($fileName, '');
+        $response = new Response("Content-type: text/html; charset=UTF-8\r\n\r\na:2:{s:6:\"result\";b:1;s:6:\"errors\";a:0:{}}", '', 0);
+
         $clientMock->expects(self::once())
-            ->method('request')
-            ->with(
-                [
-                    'SERVER_ADDR'     => '127.0.0.1',
-                    'REMOTE_ADDR'     => '127.0.0.1',
-                    'REMOTE_PORT'     => '65000',
-                    'REQUEST_METHOD'  => 'POST',
-                    'REQUEST_URI'     => '/',
-                    'SCRIPT_FILENAME' => $fileName
-                ],
-                ''
-            )
-            ->willReturn("Content-type: text/html; charset=UTF-8\r\n\r\na:2:{s:6:\"result\";b:1;s:6:\"errors\";a:0:{}}");
+            ->method('sendRequest')
+            ->with($connectionMock, $request)
+            ->willReturn($response);
 
         $fcgi->setTempDir(sys_get_temp_dir());
         $fcgi->setLogger($this->getMockBuilder('Monolog\Logger')->disableOriginalConstructor()->getMock());

@@ -3,6 +3,7 @@
 namespace CacheTool\Adapter;
 
 use CacheTool\Code;
+use \Monolog\Logger;
 
 class CliTest extends \PHPUnit\Framework\TestCase
 {
@@ -10,7 +11,7 @@ class CliTest extends \PHPUnit\Framework\TestCase
     {
         $cli = new Cli();
         $cli->setTempDir(sys_get_temp_dir());
-        $cli->setLogger($this->getMockBuilder('Monolog\Logger')->disableOriginalConstructor()->getMock());
+        $cli->setLogger($this->getMockBuilder(Logger::class)->disableOriginalConstructor()->getMock());
 
         $code = Code::fromString('return true;');
 
@@ -25,7 +26,7 @@ class CliTest extends \PHPUnit\Framework\TestCase
 
         $cli = new Cli();
         $cli->setTempDir(sys_get_temp_dir());
-        $cli->setLogger($this->getMockBuilder('Monolog\Logger')->disableOriginalConstructor()->getMock());
+        $cli->setLogger($this->getMockBuilder(Logger::class)->disableOriginalConstructor()->getMock());
 
         $code = Code::fromString('throw new \Exception("test");');
         $result = $cli->run($code);
@@ -35,7 +36,7 @@ class CliTest extends \PHPUnit\Framework\TestCase
     {
         $cli = new Cli();
         $cli->setTempDir(sys_get_temp_dir());
-        $cli->setLogger($this->getMockBuilder('Monolog\Logger')->disableOriginalConstructor()->getMock());
+        $cli->setLogger($this->getMockBuilder(Logger::class)->disableOriginalConstructor()->getMock());
 
         $code = Code::fromString('return PHP_BINARY;');
 

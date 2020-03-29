@@ -11,7 +11,7 @@ class CacheToolTest extends \PHPUnit\Framework\TestCase
     public function testConstruct()
     {
         $cachetool = new CacheTool();
-        $this->assertInstanceOf('CacheTool\CacheTool', $cachetool);
+        $this->assertInstanceOf(CacheTool::class, $cachetool);
     }
 
     public function testFactory()
@@ -70,6 +70,6 @@ class CacheToolTest extends \PHPUnit\Framework\TestCase
 
     protected function getLogger()
     {
-        return $this->getMockBuilder('Monolog\Logger')->disableOriginalConstructor()->getMock();
+        return $this->getMockBuilder(\Monolog\Logger::class)->disableOriginalConstructor()->getMock();
     }
 }

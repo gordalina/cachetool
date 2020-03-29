@@ -3,19 +3,20 @@
 namespace CacheTool\Adapter;
 
 use CacheTool\Code;
+use CacheTool\Adapter\Http\FileGetContents;
 
 class WebTest extends \PHPUnit\Framework\TestCase
 {
     public function testRun()
     {
-        $httpMock = $this->getMockBuilder('CacheTool\Adapter\Http\FileGetContents')->disableOriginalConstructor()->getMock();
+        $httpMock = $this->getMockBuilder(FileGetContents::class)->disableOriginalConstructor()->getMock();
         $httpMock
             ->method('fetch')
             ->willReturn(serialize(['errors' => [], 'result' => true]));
 
         $web = new Web(sys_get_temp_dir(), $httpMock);
         $web->setTempDir(sys_get_temp_dir());
-        $web->setLogger($this->getMockBuilder('Monolog\Logger')->disableOriginalConstructor()->getMock());
+        $web->setLogger($this->getMockBuilder(\Monolog\Logger::class)->disableOriginalConstructor()->getMock());
 
         $code = Code::fromString('return true;');
 

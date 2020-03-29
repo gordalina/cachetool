@@ -48,7 +48,7 @@ class FastCGITest extends \PHPUnit\Framework\TestCase
     {
         $fcgi = $this->getMockBuilder(\CacheTool\Adapter\FastCGI::class)
             ->setMethods(['getScriptFileName'])
-            ->setConstructorArgs([null, sys_get_temp_dir()])
+            ->setConstructorArgs(['127.0.0.1:9000', sys_get_temp_dir()])
             ->getMock();
 
         $reflection = new \ReflectionClass($fcgi);

@@ -20,16 +20,17 @@ Note that, unlike APCu and Opcache, the file status cache is per-process rather 
 Compatibility
 -------------
 
+CacheTool 5.x works with PHP `>=7.2`
 CacheTool 4.x works with PHP `>=7.1`
 CacheTool 3.x works with PHP `>=5.5.9`
 CacheTool 2.x works with PHP `>=5.5.9`
 CacheTool 1.x works with PHP `>=5.3.3`
 
-Installation - Latest version - cachetool 4, for PHP `>=7.1`
-------------------------------------------------------------
+Installation - Latest version
+-----------------------------
 
 ```sh
-$ curl -sO http://gordalina.github.io/cachetool/downloads/cachetool.phar
+$ curl -sO https://gordalina.github.io/cachetool/downloads/cachetool.phar
 $ chmod +x cachetool.phar
 ```
 
@@ -39,7 +40,7 @@ Use tag name in the binary file name. E.g to download cachetool 3.2.1
 which is compatible with PHP `>=5.5.9` use: `cachetool-3.2.1.phar`
 
 ```sh
-$ curl -sO http://gordalina.github.io/cachetool/downloads/cachetool-3.2.1.phar
+$ curl -sO https://gordalina.github.io/cachetool/downloads/cachetool-3.2.1.phar
 $ chmod +x cachetool-3.2.1.phar
 ```
 
@@ -106,6 +107,7 @@ You have some useful commands that you can use
   opcache:configuration       Get configuration information about the cache
   opcache:invalidate:scripts  Remove scripts from the opcode cache
   opcache:reset               Resets the contents of the opcode cache
+  opcache:reset:file-cache    Deletes all contents of the file cache directory
   opcache:status              Show summary information about the opcode cache
   opcache:status:scripts      Show scripts in the opcode cache
  stat

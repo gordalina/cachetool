@@ -16,7 +16,7 @@ use Symfony\Component\Console\Helper\Table;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
-class OpcacheStatusScriptsCommand extends AbstractCommand
+class OpcacheStatusScriptsCommand extends AbstractOpcacheCommand
 {
     /**
      * {@inheritdoc}
@@ -37,10 +37,7 @@ class OpcacheStatusScriptsCommand extends AbstractCommand
         $this->ensureExtensionLoaded('Zend OPcache');
 
         $info = $this->getCacheTool()->opcache_get_status(true);
-
-        if ($info === false) {
-            throw new \RuntimeException('opcache_get_status(): No Opcache status info available.  Perhaps Opcache is disabled via opcache.enable or opcache.enable_cli?');
-        }
+        $this->ensureSuccessfulOpcacheCall($info);
 
         $table = new Table($output);
         $table

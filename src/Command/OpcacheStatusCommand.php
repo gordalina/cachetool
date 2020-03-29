@@ -17,7 +17,7 @@ use Symfony\Component\Console\Helper\TableSeparator;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
-class OpcacheStatusCommand extends AbstractCommand
+class OpcacheStatusCommand extends AbstractOpcacheCommand
 {
     /**
      * {@inheritdoc}
@@ -38,18 +38,51 @@ class OpcacheStatusCommand extends AbstractCommand
         $this->ensureExtensionLoaded('Zend OPcache');
 
         $info = $this->getCacheTool()->opcache_get_status(false);
+        try {
 
-        if ($info === false) {
-            throw new \RuntimeException('opcache_get_status(): No Opcache status info available.  Perhaps Opcache is disabled via opcache.enable or opcache.enable_cli?');
+            $this->ensureSuccessfulOpcacheCall($info);
+        } catch (\RuntimeException $e) {
+            // lets handle gracefully when file_cache_only is true
+            if (!strstr($e->getMessage(), 'opcache.file_cache_only')) {
+                throw $e;
+            }
         }
 
+        if ($info['file_cache_only'] ?? false) {
+            $this->renderFileCacheOnlyMode($output, $info);
+        } else {
+            $this->render($output, $info);
+        }
+
+        return 0;
+    }
+
+    /**
+     * @param  OutputInterface $output
+     * @param  array $info
+     */
+    protected function renderFileCacheOnlyMode(OutputInterface $output, $info) {
+        $iterator = function ($k) use (&$info) {
+            return [$k, var_export($info[$k], true)];
+        };
+
+        $table = new Table($output);
+        $table->setHeaders(['Name', 'Value']);
+        $table->setRows(array_map($iterator, array_keys($info)));
+        $table->render();
+    }
+
+    /**
+     * @param  OutputInterface $output
+     * @param  array $info
+     */
+    protected function render(OutputInterface $output, $info) {
         $table = new Table($output);
         $table->setHeaders(['Name', 'Value']);
         $table->setRows($this->getRows($info, $info['opcache_statistics']));
         $table->render();
-
-        return 0;
     }
+
 
     /**
      * @param  array $info

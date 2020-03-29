@@ -52,12 +52,6 @@ class OpcacheCompileScriptsCommand extends AbstractCommand
         $this->ensureExtensionLoaded('Zend OPcache');
         $path = $input->getArgument('path');
 
-        $info = $this->getCacheTool()->opcache_get_status(true);
-
-        if ($info === false) {
-            throw new \RuntimeException('opcache_get_status(): No Opcache status info available.  Perhaps Opcache is disabled via opcache.enable or opcache.enable_cli?');
-        }
-
         $exclude = [];
         if ($input->hasOption('exclude')) {
             $exclude = $input->getOption('exclude');

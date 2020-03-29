@@ -31,8 +31,16 @@ abstract class CommandTest extends \PHPUnit\Framework\TestCase
 
     protected function assertHasOpcache()
     {
-        if (!extension_loaded('Zend OPcache') || !ini_get('opcache.enable_cli')) {
-            $this->markTestSkipped('OPcache extension is not loaded.');
+        if (!extension_loaded('Zend OPcache')) {
+            return $this->markTestSkipped('OPcache extension is not loaded.');
+        }
+
+        if (!ini_get('opcache.enable_cli')) {
+            return $this->markTestSkipped('OPcache extension is not enabled for the cli. (opcache.enable_cli)');
+        }
+
+        if (ini_get('opcache.file_cache_only')) {
+            return $this->markTestSkipped('OPcache extension is in file_cache_only mode. (opcache.enable_cli)');
         }
     }
 

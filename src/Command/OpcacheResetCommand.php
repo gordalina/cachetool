@@ -14,7 +14,7 @@ namespace CacheTool\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
-class OpcacheResetCommand extends AbstractCommand
+class OpcacheResetCommand extends AbstractOpcacheCommand
 {
     /**
      * {@inheritdoc}
@@ -35,10 +35,6 @@ class OpcacheResetCommand extends AbstractCommand
         $this->ensureExtensionLoaded('Zend OPcache');
 
         $success = $this->getCacheTool()->opcache_reset();
-
-        if (!$success) {
-            throw new \RuntimeException('opcache_reset(): No Opcache status info available.  Perhaps Opcache is disabled via opcache.enable or opcache.enable_cli?');
-        }
 
         return 0;
     }

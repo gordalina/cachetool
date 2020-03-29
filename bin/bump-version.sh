@@ -91,7 +91,6 @@ git commit -m "Bump version ${TAG}"
 #
 git checkout master
 
-git tag ${TAG}
 git push origin gh-pages
 git push --tags
 

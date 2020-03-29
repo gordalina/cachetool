@@ -32,7 +32,7 @@ composer install --no-dev
 
 #
 # Tag & build master branch
-#
+# Tag must happen before `box build` as it will be referenced
 git tag ${TAG}
 box build
 

@@ -1,12 +1,22 @@
 {
     "chmod": "0755",
-    "directories": ["src"],
-    "files": ["LICENSE"],
+    "directories": [
+        "src"
+    ],
+    "files": [
+        "LICENSE"
+    ],
     "finder": [
         {
             "name": "*.php",
-            "exclude": ["Tests"],
+            "exclude": [
+                "Tests"
+            ],
             "in": "vendor"
+        },
+        {
+            "name": "*",
+            "in": "vendor/herrera-io/phar-update"
         }
     ],
     "git-version": "package_version",

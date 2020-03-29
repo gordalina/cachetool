@@ -1,5 +1,6 @@
 # Unreleased
 
+- [#87](https://github.com/gordalina/cachetool/issues/87) Fix `self-update` command
 - [#135](https://github.com/gordalina/cachetool/issues/135) Automatically creates temporary directory
 - [#142](https://github.com/gordalina/cachetool/issues/142) Migrating to assertStringContainsString PHPUnit 8.x
 - [#141](https://github.com/gordalina/cachetool/issues/141) @expectedException annotation deprecated on PHPUnit 8.x

@@ -37,7 +37,6 @@ class OpcacheResetFileCacheCommand extends AbstractOpcacheCommand
     {
         $this->ensureExtensionLoaded('Zend OPcache');
 
-        $force = $input->getOption('force');
         $info = $this->getCacheTool()->opcache_get_status();
         $fileCache = $info['file_cache'] ?? false;
 

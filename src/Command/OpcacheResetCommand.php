@@ -33,8 +33,7 @@ class OpcacheResetCommand extends AbstractOpcacheCommand
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $this->ensureExtensionLoaded('Zend OPcache');
-
-        $success = $this->getCacheTool()->opcache_reset();
+        $this->getCacheTool()->opcache_reset();
 
         return 0;
     }

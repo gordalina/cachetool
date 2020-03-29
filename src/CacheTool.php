@@ -50,17 +50,7 @@ class CacheTool
     public function __construct($tempDir = null, LoggerInterface $logger = null)
     {
         $this->logger = $logger ?: new Logger('cachetool');
-
-        if (is_null($tempDir)) {
-            $tempDirs = ['/dev/shm', '/var/run', sys_get_temp_dir()];
-            foreach ($tempDirs as $dir) {
-                if (is_dir($dir) && is_writable($dir)) {
-                    $tempDir = $dir;
-                    break;
-                }
-            }
-        }
-        $this->tempDir = $tempDir;
+        $this->tempDir = $this->getWritableTempDir($tempDir);
     }
 
     /**
@@ -82,6 +72,7 @@ class CacheTool
 
         return $cacheTool;
     }
+
 
     /**
      * @param  AbstractAdapter $adapter
@@ -202,5 +193,27 @@ class CacheTool
         }
 
         throw new \InvalidArgumentException("Function with name: {$name} is not provided by any Proxy.");
+    }
+
+    /**
+     * @param  string $tempDir
+     * @return string
+     */
+    protected function getWritableTempDir($tempDir = null) {
+        if (is_null($tempDir)) {
+            $tempDirs = ['/dev/shm', '/var/run', sys_get_temp_dir()];
+            foreach ($tempDirs as $dir) {
+                if (is_dir($dir) && is_writable($dir)) {
+                    $tempDir = $dir;
+                    break;
+                }
+            }
+        }
+
+        if (!file_exists($tempDir)) {
+            mkdir($tempDir, 0700, true);
+        }
+
+        return $tempDir;
     }
 }

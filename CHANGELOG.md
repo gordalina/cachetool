@@ -1,5 +1,8 @@
 # Unreleased
 
+- [#135](https://github.com/gordalina/cachetool/issues/135) Automatically creates temporary directory
+- [#142](https://github.com/gordalina/cachetool/issues/142) Migrating to assertStringContainsString PHPUnit 8.x
+- [#141](https://github.com/gordalina/cachetool/issues/141) @expectedException annotation deprecated on PHPUnit 8.x
 - [#137](https://github.com/gordalina/cachetool/pull/137) Update to dependencies to support Symfony 5
 - [#138](https://github.com/gordalina/cachetool/pull/138) Add dependency check before running cachetool
 - [#139](https://github.com/gordalina/cachetool/pull/139) [BUGFIX] Correct link to Julien Pauli´s blog post #139

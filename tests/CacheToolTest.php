@@ -42,14 +42,6 @@ class CacheToolTest extends \PHPUnit\Framework\TestCase
         $this->assertSame($logger, $cachetool->getLogger());
     }
 
-    public function testFactoryWithTempDirNotWritable()
-    {
-        $adapter = new Adapter\FastCGI();
-        $tempDir = '/doesnotexit';
-        $cachetool = CacheTool::factory($adapter, $tempDir, $this->getLogger());
-        $this->assertSame($tempDir, $cachetool->getTempDir());
-    }
-
     public function testInexistentFunction()
     {
         $this->expectException(\InvalidArgumentException::class);
@@ -64,6 +56,16 @@ class CacheToolTest extends \PHPUnit\Framework\TestCase
 
         $cachetool = new CacheTool(null, $this->getLogger());
         $cachetool->__call('doesNotExist', []);
+    }
+
+    public function testWithInexistentTempDir() {
+        $dir = sys_get_temp_dir() . '/does-not-exist';
+
+        $this->assertFalse(file_exists($dir));
+        $cachetool = new CacheTool($dir);
+        $this->assertTrue(file_exists($dir));
+
+        rmdir($dir);
     }
 
     protected function getLogger()

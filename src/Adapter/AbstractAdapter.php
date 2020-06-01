@@ -97,7 +97,7 @@ abstract class AbstractAdapter
      */
     protected function createTemporaryFile()
     {
-        $file = sprintf("%s/cachetool-%s.php", $this->tempDir, uniqid());
+        $file = sprintf("%s/cachetool-%s.php", $this->tempDir, uniqid('', true));
 
         touch($file);
         chmod($file, 0666);

@@ -27,6 +27,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\DependencyInjection\ContainerAwareInterface;
 use Symfony\Component\DependencyInjection\Container;
 use Symfony\Component\DependencyInjection\ContainerInterface;
+use Symfony\Component\Yaml\Parser;
 
 class Application extends BaseApplication
 {
@@ -104,6 +105,7 @@ class Application extends BaseApplication
         $definition->addOption(new InputOption('--web-path', null, InputOption::VALUE_OPTIONAL, 'If specified, used as a information for web adapter'));
         $definition->addOption(new InputOption('--web-url', null, InputOption::VALUE_OPTIONAL, 'If specified, used as a information for web adapter'));
         $definition->addOption(new InputOption('--tmp-dir', '-t', InputOption::VALUE_REQUIRED, 'Temporary directory to write files to'));
+        $definition->addOption(new InputOption('--config', '-c', InputOption::VALUE_OPTIONAL, 'If specified use this yaml config'));
 
         return $definition;
     }
@@ -159,6 +161,15 @@ class Application extends BaseApplication
      */
     private function parseConfiguration(InputInterface $input)
     {
+        if ($input->hasParameterOption('--config')) {
+            $path = $input->getParameterOption('--config');
+            if (is_file($path)) {
+                $yaml = new Parser();
+                $config = $yaml->parse(file_get_contents($path));
+                $this->config = new Config($config);
+            }
+        }
+
         if ($input->hasParameterOption('--cli')) {
             $this->config['adapter'] = 'cli';
         } elseif ($input->hasParameterOption('--fcgi')) {

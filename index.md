@@ -20,18 +20,18 @@ Note that, unlike APCu and Opcache, the file status cache is per-process rather 
 Compatibility
 -------------
 
-CacheTool 5.x works with PHP `>=7.2`
-CacheTool 4.x works with PHP `>=7.1`
-CacheTool 3.x works with PHP `>=5.5.9`
-CacheTool 2.x works with PHP `>=5.5.9`
-CacheTool 1.x works with PHP `>=5.3.3`
+- CacheTool 5.x works with PHP `>=7.2`
+- CacheTool 4.x works with PHP `>=7.1`
+- CacheTool 3.x works with PHP `>=5.5.9`
+- CacheTool 2.x works with PHP `>=5.5.9`
+- CacheTool 1.x works with PHP `>=5.3.3`
 
 Installation - Latest version
 -----------------------------
 
 ```sh
-$ curl -sO https://gordalina.github.io/cachetool/downloads/cachetool.phar
-$ chmod +x cachetool.phar
+curl -sO https://gordalina.github.io/cachetool/downloads/cachetool.phar
+chmod +x cachetool.phar
 ```
 
 Installation - old versions
@@ -40,8 +40,8 @@ Use tag name in the binary file name. E.g to download cachetool 3.2.1
 which is compatible with PHP `>=5.5.9` use: `cachetool-3.2.1.phar`
 
 ```sh
-$ curl -sO https://gordalina.github.io/cachetool/downloads/cachetool-3.2.1.phar
-$ chmod +x cachetool-3.2.1.phar
+curl -sO https://gordalina.github.io/cachetool/downloads/cachetool-3.2.1.phar
+chmod +x cachetool-3.2.1.phar
 ```
 
 Usage (as an application)
@@ -55,37 +55,37 @@ You can pass an IP address or a unix socket to the `--fcgi` adapter, or leave it
   * You can let CacheTool find the unix socket for you, or default to IP.
 
 ```sh
-$ php cachetool.phar apcu:cache:info --fcgi
+php cachetool.phar apcu:cache:info --fcgi
 ```
 
   * You can connect to a fastcgi server using an IP address
 
 ```sh
-$ php cachetool.phar apcu:cache:info --fcgi=127.0.0.1:9000
+php cachetool.phar apcu:cache:info --fcgi=127.0.0.1:9000
 ```
 
   * You can connect to a fastcgi server using a unix socket
 
 ```sh
-$ php cachetool.phar opcache:status --fcgi=/var/run/php5-fpm.sock
+php cachetool.phar opcache:status --fcgi=/var/run/php5-fpm.sock
 ```
 
   * To connect to a chrooted fastcgi server you need to set `--fcgi-chroot` and `--tmp-dir` parameters
 
 ```sh
-$ php cachetool.phar opcache:status --fcgi=/var/run/php5-fpm.sock --fcgi-chroot=/path/to/chroot --tmp-dir=/path/to/chroot/tmp
+php cachetool.phar opcache:status --fcgi=/var/run/php5-fpm.sock --fcgi-chroot=/path/to/chroot --tmp-dir=/path/to/chroot/tmp
 ```
 
   * Using the CLI
 
 ```sh
-$ php cachetool.phar opcache:status --cli
+php cachetool.phar opcache:status --cli
 ```
 
   * Using an HTTP interface
 
 ```sh
-$ php cachetool.phar opcache:status --web --web-path=/path/to/your/document/root --web-url=http://url-to-your-document.root
+php cachetool.phar opcache:status --web --web-path=/path/to/your/document/root --web-url=http://url-to-your-document.root
 ```
 
 You have some useful commands that you can use
@@ -122,9 +122,12 @@ Configuration File
 You can have a configuration file with the adapter configuration, allowing you to
 call CacheTool without `--fcgi`, `--cli`, or `--web` option.
 
-The file must be named `.cachetool.yml`. CacheTool will look for this file on the
-current directory and in any parent directory until it finds one.
-If the paths above fail it will try to load `/etc/cachetool.yml` configuration file.
+You can pass a `--config <file>` option to the application or it will choose to load
+a file automaically.
+
+The file must be named `.cachetool.yml` or `.cachetool.yaml`. CacheTool will look for
+this file on the current directory and in any parent directory until it finds one.
+If the paths above fail it will try to load `/etc/cachetool.yml` or `/etc/cachetool.yaml` configuration file.
 
 An example of what this file might look like is:
 
@@ -165,13 +168,13 @@ Usage (as a library)
 Add it as a dependency
 
 ```sh
-$ composer require gordalina/cachetool
+composer require gordalina/cachetool
 ```
 
 If you want to use it in a Symfony 2.x project, require the `1.x` version
 
 ```sh
-$ composer require gordalina/cachetool:~1.0
+composer require gordalina/cachetool:~1.0
 ```
 
 Create instance

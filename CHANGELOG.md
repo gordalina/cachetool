@@ -1,3 +1,8 @@
+# 5.1.1
+
+- Add more information when file_get_contents() fail with web adapter
+- Correctly delete files when calling `opcache:reset:file-cache`
+
 # 5.1.0
 
 - [#77](https://github.com/gordalina/cachetool/issues/77) Add IPv6 support

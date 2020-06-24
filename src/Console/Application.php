@@ -85,8 +85,7 @@ class Application extends BaseApplication
             $commands[] = new CacheToolCommand\OpcacheCompileScriptCommand();
         }
 
-        $commands[] = new CacheToolCommand\PHPEvalCommand();
-        $commands[] = new CacheToolCommand\PHPFileCommand();
+        $commands[] = new CacheToolCommand\PhpEvalCommand();
         $commands[] = new CacheToolCommand\StatCacheClearCommand();
         $commands[] = new CacheToolCommand\StatRealpathGetCommand();
         $commands[] = new CacheToolCommand\StatRealpathSizeCommand();

@@ -1,3 +1,8 @@
+# Next
+
+- Add logging information about version & configuration during startup
+- [#157](https://github.com/gordalina/cachetool/issues/157) Add documentation about docker images. Thanks to @NITEMAN and @jonhattan
+
 # 5.1.1
 
 - Add more information when file_get_contents() fail with web adapter

@@ -11,11 +11,6 @@ TAG=$1
 BRANCH=$(git rev-parse --abbrev-ref HEAD)
 
 #
-# Check for dependencies
-#
-jsawk -h
-
-#
 # Run tests
 #
 
@@ -59,15 +54,19 @@ elif [ "$(expr substr $(uname -s) 1 5)" == "Linux" ]; then
     SHA1=$(openssl sha1 cachetool.phar)
 fi
 
-JSON='name:"cachetool.phar"'
-JSON="${JSON},sha1:\"${SHA1}\""
-JSON="${JSON},url:\"https://github.com/gordalina/cachetool/releases/download/cachetool-${TAG}.phar\""
-JSON="${JSON},version:\"${TAG}\""
+JSON=<<EOF
+{
+  "name": "cachetool.phar",
+  "sha1": "${SHA1}",
+  "url": "https://github.com/gordalina/cachetool/releases/download/cachetool-${TAG}.phar",
+  "version": "${TAG}"
+}
+EOF;
 
 #
 # Update manifest
 #
-cat manifest.json | jsawk -a "this.push({${JSON}})" | python -mjson.tool > manifest.json.tmp
+cat manifest.json | jsq -Mr ". |= . + [${JSON}]" > manifest.json.tmp
 mv manifest.json.tmp manifest.json
 git add manifest.json
 

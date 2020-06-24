@@ -40,35 +40,35 @@ jobs:
     - name: Run test suite
       run: $(composer config bin-dir)/phpunit --coverage-clover=coverage.clover
 
-    - name: Create Release Assets
-      run: |
-        $(composer config home)/vendor/bin/box compile
+    # - name: Create Release Assets
+    #   run: |
+    #     $(composer config home)/vendor/bin/box compile
 
-    - name: Update GitHub Pages
-      run: |
-        REF="${{ github.ref }}"
-        git config --global user.email "actions@github.com"
-        git config --global user.name "GitHub Actions"
-        bin/update-gh-pages.sh ${REF/refs\/tags\//}
+    # - name: Create GitHub Release
+    #   id: create_release
+    #   uses: actions/create-release@v1
+    #   env:
+    #     GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    #   with:
+    #     tag_name: ${{ github.ref }}
+    #     release_name: ${{ github.ref }}
+    #     draft: false
+    #     prerelease: true
 
-    - name: Create GitHub Release
-      id: create_release
-      uses: actions/create-release@v1
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      with:
-        tag_name: ${{ github.ref }}
-        release_name: ${{ github.ref }}
-        draft: false
-        prerelease: true
+    # - name: Upload Release Asset
+    #   id: upload-release-asset
+    #   uses: actions/upload-release-asset@v1
+    #   env:
+    #     GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    #   with:
+    #     upload_url: ${{ steps.create_release.outputs.upload_url }}
+    #     asset_path: ./cachetool.phar
+    #     asset_name: cachetool.phar
+    #     asset_content_type: application/octet-stream
 
-    - name: Upload Release Asset
-      id: upload-release-asset
-      uses: actions/upload-release-asset@v1
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      with:
-        upload_url: ${{ steps.create_release.outputs.upload_url }}
-        asset_path: ./cachetool.phar
-        asset_name: cachetool.phar
-        asset_content_type: application/octet-stream
+    # - name: Update GitHub Pages
+    #   run: |
+    #     REF="${{ github.ref }}"
+    #     git config --global user.email "actions@github.com"
+    #     git config --global user.name "GitHub Actions"
+    #     bin/update-gh-pages.sh ${REF/refs\/tags\//}

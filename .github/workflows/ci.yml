@@ -4,12 +4,14 @@ on:
   push:
     branches:
       - '*'
+    tags:
+      - '*'
   pull_request:
     branches:
       - '*'
 
 jobs:
-  run:
+  test:
     runs-on: ${{ matrix.operating-system }}
     strategy:
       max-parallel: 15
@@ -59,3 +61,9 @@ jobs:
       run: |
         wget https://scrutinizer-ci.com/ocular.phar
         php ocular.phar code-coverage:upload --format=php-clover coverage.clover
+
+  release:
+    if: ${{ github.event_name == 'push' }}
+    steps:
+      - name: test
+        run: echo ${{ toJson(github) }}

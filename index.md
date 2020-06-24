@@ -30,7 +30,7 @@ Installation - Latest version
 -----------------------------
 
 ```sh
-curl -sO https://gordalina.github.io/cachetool/downloads/cachetool.phar
+curl -sO https://github.com/gordalina/cachetool/releases/latest/download/cachetool.phar
 chmod +x cachetool.phar
 ```
 

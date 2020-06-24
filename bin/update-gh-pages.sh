@@ -61,7 +61,7 @@ set -e
 #
 # Update manifest
 #
-cat manifest.json | jsq -Mr ". |= . + [${JSON}]" > manifest.json.tmp
+cat manifest.json | jq -Mr ". |= . + [${JSON}]" > manifest.json.tmp
 mv manifest.json.tmp manifest.json
 git add manifest.json
 

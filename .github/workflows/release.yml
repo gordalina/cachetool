@@ -40,11 +40,6 @@ jobs:
     - name: Run test suite
       run: $(composer config bin-dir)/phpunit --coverage-clover=coverage.clover
 
-    - name: Upload coverage to scrutinizer
-      run: |
-        wget https://scrutinizer-ci.com/ocular.phar
-        php ocular.phar code-coverage:upload --format=php-clover coverage.clover
-
     - name: Create Release Assets
       run: |
         $(composer config home)/vendor/bin/box compile

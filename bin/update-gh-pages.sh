@@ -47,14 +47,14 @@ elif [ "$(expr substr $(uname -s) 1 5)" == "Linux" ]; then
     SHA1=$(openssl sha1 cachetool.phar)
 fi
 
-JSON=<<EOF
+read -r -d '' JSON <<EOF
 {
   "name": "cachetool.phar",
   "sha1": "${SHA1}",
   "url": "https://github.com/gordalina/cachetool/releases/download/cachetool-${TAG}.phar",
   "version": "${TAG}"
 }
-EOF;
+EOF
 
 #
 # Update manifest

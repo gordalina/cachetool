@@ -60,7 +60,6 @@ class Config implements \ArrayAccess
         $previous = null;
         $path = getcwd();
         $paths = [];
-        $yaml = new Parser();
 
         while (($path = realpath($path)) && $path !== $previous) {
             $paths[] = "{$path}/.cachetool.yml";
@@ -79,12 +78,17 @@ class Config implements \ArrayAccess
 
         foreach ($paths as $path) {
             if (is_file($path)) {
-                $config = $yaml->parse(file_get_contents($path));
-                return new Config($config);
+                static::fromFile($path);
             }
         }
 
         return new Config();
+    }
+
+    public static function fromFile($path) {
+        $yaml = new Parser();
+        $config = $yaml->parse(file_get_contents($path));
+        return new Config($config);
     }
 
     /**

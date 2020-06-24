@@ -1,3 +1,7 @@
+# 5.1.3
+
+- Fix issue where `cachetool.yml` files were not being loaded
+
 # 5.1.2
 
 - Add logging information about version & configuration during startup

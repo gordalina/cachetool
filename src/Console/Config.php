@@ -83,7 +83,7 @@ class Config implements \ArrayAccess
 
         foreach ($paths as $path) {
             if (is_file($path)) {
-                static::fromFile($path);
+                return static::fromFile($path);
             }
         }
 

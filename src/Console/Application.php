@@ -167,6 +167,8 @@ class Application extends BaseApplication
                 $yaml = new Parser();
                 $config = $yaml->parse(file_get_contents($path));
                 $this->config = new Config($config);
+            } else {
+                throw new \RuntimeException("Could not read configuration file: {$path}");
             }
         }
 

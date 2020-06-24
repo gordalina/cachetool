@@ -1,6 +1,7 @@
 # Unreleased
 
-- [77](https://github.com/gordalina/cachetool/issues/77) Add IPv6 support
+- [#77](https://github.com/gordalina/cachetool/issues/77) Add IPv6 support
+- [#156](https://github.com/gordalina/cachetool/pull/156) Add `--config` argument & yaml extension
 
 # 5.0.0
 

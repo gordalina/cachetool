@@ -122,9 +122,12 @@ Configuration File
 You can have a configuration file with the adapter configuration, allowing you to
 call CacheTool without `--fcgi`, `--cli`, or `--web` option.
 
-The file must be named `.cachetool.yml`. CacheTool will look for this file on the
-current directory and in any parent directory until it finds one.
-If the paths above fail it will try to load `/etc/cachetool.yml` configuration file.
+You can pass a `--config <file>` option to the application or it will choose to load
+a file automaically.
+
+The file must be named `.cachetool.yml` or `.cachetool.yaml`. CacheTool will look for
+this file on the current directory and in any parent directory until it finds one.
+If the paths above fail it will try to load `/etc/cachetool.yml` or `/etc/cachetool.yaml` configuration file.
 
 An example of what this file might look like is:
 

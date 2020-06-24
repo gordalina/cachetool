@@ -62,6 +62,6 @@ class Web extends AbstractAdapter
      */
     protected function createFilename()
     {
-        return sprintf('cachetool-%s.php', uniqid());
+        return sprintf('cachetool-%s.php', uniqid('', true));
     }
 }

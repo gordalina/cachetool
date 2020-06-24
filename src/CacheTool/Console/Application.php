@@ -88,11 +88,11 @@ class Application extends BaseApplication
         }
 
         if (in_array('opcache', $this->config['extensions'], true)) {
+            $commands[] = new CacheToolCommand\OpcacheCompileScriptsCommand();
             $commands[] = new CacheToolCommand\OpcacheConfigurationCommand();
             $commands[] = new CacheToolCommand\OpcacheResetCommand();
             $commands[] = new CacheToolCommand\OpcacheStatusCommand();
             $commands[] = new CacheToolCommand\OpcacheStatusScriptsCommand();
-            $commands[] = new CacheToolCommand\OpcacheInvalidateScriptsCommand();
             $commands[] = new CacheToolCommand\OpcacheInvalidateScriptsCommand();
         }
 

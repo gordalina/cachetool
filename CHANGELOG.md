@@ -1,11 +1,11 @@
-# 5.1.0-alpha.1
+# 5.1.0
 
 - [#77](https://github.com/gordalina/cachetool/issues/77) Add IPv6 support
 - [#156](https://github.com/gordalina/cachetool/pull/156) Add `--config` argument & yaml extension (@rayderua)
 - [#151](https://github.com/gordalina/cachetool/pull/152) Generate unique identifiers with more entropy (@jonhattan)
 - [#146](https://github.com/gordalina/cachetool/pull/146) Add Eval & File commands
-- Use GitHub Actions to issue releases
-- Versioning format is now `vX.X.X` instead of `X.X.X`
+- [#144, #149](https://github.com/gordalina/cachetool/pull/149) Replace `herrera-io/phar-update` with `padriac/phar-updated`
+- Use GitHub Actions to issue releases and to self-update the binary
 
 # 5.0.0
 

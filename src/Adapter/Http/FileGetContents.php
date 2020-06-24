@@ -15,7 +15,8 @@ class FileGetContents extends AbstractHttp
 {
     public function fetch($filename)
     {
-        $contents = @file_get_contents($this->baseUrl.'/'.$filename);
+        $url = "{$this->baseUrl}/{$filename}";
+        $contents = @file_get_contents($url);
 
         if (false === $contents) {
             return serialize([
@@ -23,7 +24,7 @@ class FileGetContents extends AbstractHttp
                 'errors' => [
                     [
                         'no' => 0,
-                        'str' => 'file_get_contents call failed',
+                        'str' => "file_get_contents() call failed with url: ${url}",
                     ],
                 ],
             ]);

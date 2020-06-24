@@ -44,7 +44,7 @@ fi
 if [ "$(uname)" == "Darwin" ]; then
     SHA1=$(shasum cachetool.phar | awk '{print $1}')
 elif [ "$(expr substr $(uname -s) 1 5)" == "Linux" ]; then
-    SHA1=$(openssl sha1 cachetool.phar)
+    SHA1=$(openssl sha1 -r cachetool.phar | awk '{print $1}')
 fi
 
 read -r -d '' JSON <<EOF

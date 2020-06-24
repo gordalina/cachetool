@@ -19,3 +19,10 @@ tools:
         excluded_dirs: [vendor, tests/*]
     php_sim: true
     sensiolabs_security_checker: true
+
+build:
+    nodes:
+        analysis:
+            tests:
+                override:
+                    - php-scrutinizer-run

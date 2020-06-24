@@ -64,15 +64,18 @@ class Config implements \ArrayAccess
 
         while (($path = realpath($path)) && $path !== $previous) {
             $paths[] = "{$path}/.cachetool.yml";
+            $paths[] = "{$path}/.cachetool.yaml";
             $previous = $path;
             $path .= '/../';
         }
 
         if ($home = static::getUserHomeDir()) {
             $paths[] = "{$home}/.cachetool.yml";
+            $paths[] = "{$home}/.cachetool.yaml";
         }
 
         $paths[] = '/etc/cachetool.yml';
+        $paths[] = '/etc/cachetool.yaml';
 
         foreach ($paths as $path) {
             if (is_file($path)) {

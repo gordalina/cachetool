@@ -18,7 +18,7 @@ jobs:
       matrix:
         operating-system: [ubuntu-latest, macOS-latest]
         php-versions: ['7.2', '7.3', '7.4']
-    name: PHP ${{ matrix.php-versions }} test on ${{ matrix.operating-system }}
+    name: Test PHP ${{ matrix.php-versions }} on ${{ matrix.operating-system }}
     steps:
     - name: Checkout
       uses: actions/checkout@master
@@ -63,7 +63,8 @@ jobs:
         php ocular.phar code-coverage:upload --format=php-clover coverage.clover
 
   release:
-    if: ${{ github.event_name == 'push' }}
+    runs-on: ubuntu-latest
+    name: Release
     steps:
       - name: test
         run: echo ${{ toJson(github) }}

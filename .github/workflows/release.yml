@@ -51,7 +51,8 @@ jobs:
 
     - name: Update GitHub Pages
       run: |
-        bin/update-gh-pages.sh ${{ github.ref }}
+        REF="${{ github.ref }}"
+        bin/update-gh-pages.sh ${REF/refs\/tags\//}
 
     - name: Create GitHub Release
       id: create_release

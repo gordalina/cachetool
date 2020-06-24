@@ -19,8 +19,6 @@ use Symfony\Component\Console\Output\OutputInterface;
 
 class SelfUpdateCommand extends Command
 {
-    const MANIFEST_FILE = 'https://gordalina.github.io/cachetool/manifest.json';
-
     /**
      * {@inheritdoc}
      */

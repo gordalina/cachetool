@@ -65,6 +65,7 @@ jobs:
   release:
     runs-on: ubuntu-latest
     name: Release
+    if: ${{ github.event_name == 'push' && startsWith(github.event.ref, 'refs/tags/v') }}
     steps:
       - name: test
         run: echo ${{ toJson(github) }}

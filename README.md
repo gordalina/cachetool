@@ -36,12 +36,12 @@ chmod +x cachetool.phar
 
 Installation - old versions
 ---------------------------
-Use tag name in the binary file name. E.g to download cachetool 3.2.1
-which is compatible with PHP `>=5.5.9` use: `cachetool-3.2.1.phar`
+Use tag name in the binary file name. E.g to download cachetool 3.2.2
+which is compatible with PHP `>=5.5.9` use: `cachetool-3.2.2.phar`
 
 ```sh
-curl -sO https://gordalina.github.io/cachetool/downloads/cachetool-3.2.1.phar
-chmod +x cachetool-3.2.1.phar
+curl -sO https://gordalina.github.io/cachetool/downloads/cachetool-3.2.2.phar
+chmod +x cachetool-3.2.2.phar
 ```
 
 Usage (as an application)

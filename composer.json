@@ -19,7 +19,7 @@
         "symfony/finder": "^4.0|^5.0",
         "symfony/process": "^4.0|^5.0",
         "symfony/yaml": "^4.0|^5.0",
-        "herrera-io/phar-update": "^2.0"
+        "padraic/phar-updater": "^1.0"
     },
     "require-dev": {
         "phpunit/phpunit": "^8.0"

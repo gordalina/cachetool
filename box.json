@@ -13,10 +13,6 @@
                 "Tests"
             ],
             "in": "vendor"
-        },
-        {
-            "name": "*",
-            "in": "vendor/herrera-io/phar-update"
         }
     ],
     "git-version": "package_version",

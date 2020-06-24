@@ -11,17 +11,15 @@
 
 namespace CacheTool\Command;
 
-use Herrera\Phar\Update\Manager;
-use Herrera\Phar\Update\Manifest;
-use Herrera\Phar\Update\Update;
-use Herrera\Version\Parser;
+use CacheTool\Util\ManifestUpdateStrategy;
+use Humbug\SelfUpdate\Updater;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
 class SelfUpdateCommand extends Command
 {
-    const MANIFEST_FILE = 'http://gordalina.github.io/cachetool/manifest.json';
+    const MANIFEST_FILE = 'https://gordalina.github.io/cachetool/manifest.json';
 
     /**
      * {@inheritdoc}
@@ -40,23 +38,21 @@ class SelfUpdateCommand extends Command
      */
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
-        $manifest = Manifest::loadFile(self::MANIFEST_FILE);
-
-        $currentVersion = Parser::toVersion($this->getApplication()->getVersion());
-        $update = $manifest->findRecent($currentVersion, true);
-
-        if (false === $update instanceof Update) {
-            $output->writeln(sprintf('You are already using the latest version: <info>%s</info>', $currentVersion));
-
+        $updater = new Updater(null, false);
+        $updater->setStrategyObject(new ManifestUpdateStrategy());
+        $updater->getStrategy()->setManifestUrl(self::MANIFEST_FILE);
+        
+        if (!$updater->hasUpdate()) {
+            $output->writeln(sprintf('You are already using the latest version: <info>%s</info>', $this->getApplication()->getVersion()));
             return 0;
         }
 
-        $output->writeln(sprintf('Updating to version <info>%s</info>', $update->getVersion()));
+        $output->writeln(sprintf('Updating to SHA-1 <info>%s</info>', $updater->getNewVersion()));
 
-        $manager = new Manager($manifest);
-        $manager->update($this->getApplication()->getVersion(), true);
-
-        $output->writeln(sprintf('SHA1 verified <info>%s</info>', $update->getSha1()));
+        if(!$updater->update()) {
+            $output->writeln(sprintf('Error during update: You are still using SHA-1 <info>%s</info>', $updater->getOldVersion()));
+            return 1;
+        }
 
         return 0;
     }

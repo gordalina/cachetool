@@ -4,6 +4,8 @@
 - [#156](https://github.com/gordalina/cachetool/pull/156) Add `--config` argument & yaml extension (@rayderua)
 - [#151](https://github.com/gordalina/cachetool/pull/152) Generate unique identifiers with more entropy (@jonhattan)
 - [#146](https://github.com/gordalina/cachetool/pull/146) Add Eval & File commands
+- Use GitHub Actions to issue releases
+- Versioning format is now `vX.X.X` instead of `X.X.X`
 
 # 5.0.0
 

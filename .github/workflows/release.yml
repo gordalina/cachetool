@@ -1,0 +1,42 @@
+name: ci
+
+on:
+  push:
+    tags:
+      - v*
+
+jobs:
+  run:
+    runs-on: ubuntu-latest
+    name: Release
+    steps:
+    - name: Checkout
+      uses: actions/checkout@master
+
+    - name: Setup PHP
+      uses: shivammathur/setup-php@master
+      with:
+        php-version: 7.2
+        extensions: apcu, xdebug, mbstring
+        ini-values: apc.enabled=1, apc.enable_cli=1, opcache.enable=1, opcache.enable_cli=1
+        coverage: xdebug
+
+    - name: Check PHP Version
+      run: php -v
+
+    - name: Check Composer Version
+      run: composer -V
+
+    - name: Check PHP Extensions
+      run: php -m
+
+    - name: Install Dependencies
+      run: composer install --prefer-dist
+
+    - name: Run test suite
+      run: $(composer config bin-dir)/phpunit --coverage-clover=coverage.clover
+
+    - name: Upload coverage to scrutinizer
+      run: |
+        wget https://scrutinizer-ci.com/ocular.phar
+        php ocular.phar code-coverage:upload --format=php-clover coverage.clover

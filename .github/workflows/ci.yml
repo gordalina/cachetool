@@ -19,7 +19,7 @@ jobs:
       uses: shivammathur/setup-php@master
       with:
         php-version: ${{ matrix.php-versions }}
-        extension: apcu, xdebug, mbstring
+        extensions: apcu, xdebug, mbstring
         ini-values: apc.enabled=1, apc.enable_cli=1, opcache.enable=1, opcache.enable_cli=1
         coverage: xdebug
 

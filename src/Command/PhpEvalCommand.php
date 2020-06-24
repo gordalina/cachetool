@@ -56,7 +56,9 @@ class PhpEvalCommand extends AbstractCommand
         switch ($input->getOption('format')) {
           case 'var_export': $stringified = var_export($result, true); break;
           case 'json': $stringified = json_encode($result); break;
-          case 'string': $stringified = sprintf('%s', $result); break;
+          case 'string':
+          default:
+            $stringified = sprintf('%s', $result); break;
         }
 
         $output->writeln($stringified);

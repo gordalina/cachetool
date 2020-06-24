@@ -65,7 +65,7 @@ class ApcuCacheInfoCommand extends AbstractCommand
         $table = new Table($output);
         $table->setHeaders(['Name', 'Info']);
         $table->setRows($this->getRows($info));
-        $table->render($output);
+        $table->render();
 
         return 0;
     }

@@ -142,7 +142,7 @@ class ApcuProxy implements ProxyInterface
      */
     public function apcu_regexp_get_keys($regexp = null)
     {
-        if ($regexp && !preg_match("/^\/.+\/[a-z]*$/i", $regexp)) {
+        if ($regexp && preg_match("/^\/.+\/[a-z]*$/i", $regexp) !== null) {
             throw new \RuntimeException("{$regexp} is not a valid Regex");
         }
         $code = new Code();
@@ -198,7 +198,7 @@ class ApcuProxy implements ProxyInterface
         ));
         $code->addStatement('return array($result, $success);');
 
-        [$result, $success] = $this->adapter->run($code);
+        list($result, $success) = $this->adapter->run($code);
 
         if (is_object($ref)) {
             $ref->success = $success;
@@ -237,7 +237,7 @@ class ApcuProxy implements ProxyInterface
      */
     public function apcu_regexp_delete($regexp = null)
     {
-        if ($regexp && !preg_match("/^\/.+\/[a-z]*$/i", $regexp)) {
+        if ($regexp && preg_match("/^\/.+\/[a-z]*$/i", $regexp) !== null) {
             throw new \RuntimeException("{$regexp} is not a valid Regex");
         }
 
@@ -284,7 +284,7 @@ class ApcuProxy implements ProxyInterface
         $code->addStatement(sprintf('$result = apcu_fetch(%s, $success);', var_export($key, true)));
         $code->addStatement('return array($result, $success);');
 
-        [$var, $success] = $this->adapter->run($code);
+        list($var, $success) = $this->adapter->run($code);
 
         if (is_object($ref)) {
             $ref->success = $success;
@@ -313,7 +313,7 @@ class ApcuProxy implements ProxyInterface
         ));
         $code->addStatement('return array($result, $success);');
 
-        [$result, $success] = $this->adapter->run($code);
+        list($result, $success) = $this->adapter->run($code);
 
         if (is_object($ref)) {
             $ref->success = $success;

@@ -47,6 +47,7 @@ elif [ "$(expr substr $(uname -s) 1 5)" == "Linux" ]; then
     SHA1=$(openssl sha1 -r cachetool.phar | awk '{print $1}')
 fi
 
+set +e
 read -r -d '' JSON <<EOF
 {
   "name": "cachetool.phar",
@@ -55,6 +56,7 @@ read -r -d '' JSON <<EOF
   "version": "${TAG}"
 }
 EOF
+set -e
 
 #
 # Update manifest

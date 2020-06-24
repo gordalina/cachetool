@@ -33,13 +33,10 @@ cat $SCRATCH > index.md
 git add index.md
 
 # Add release
-cp cachetool.phar downloads/cachetool-${TAG}.phar
+cp -f cachetool.phar downloads/cachetool-${TAG}.phar
+cp -f cachetool.phar downloads/cachetool.phar
 git add downloads/cachetool-${TAG}.phar
-
-if [ "$BRANCH" == "master" ]; then
-  cp -f cachetool.phar downloads/cachetool.phar
-  git add downloads/cachetool.phar
-fi
+git add downloads/cachetool.phar
 
 if [ "$(uname)" == "Darwin" ]; then
     SHA1=$(shasum cachetool.phar | awk '{print $1}')

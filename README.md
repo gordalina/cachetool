@@ -44,8 +44,8 @@ curl -sO https://gordalina.github.io/cachetool/downloads/cachetool-3.2.2.phar
 chmod +x cachetool-3.2.2.phar
 ```
 
-Usage (as an application)
--------------------------
+Usage
+-----
 
 CacheTool requires an adapter to connect to, it can be `cli`, `fcgi`, and `web`.
 The `fcgi` adapter is the most common, as it connects directly to php-fpm.
@@ -115,6 +115,22 @@ You have some useful commands that you can use
   stat:realpath_get           Show summary information of realpath cache entries
   stat:realpath_size          Display size of realpath cache
 ```
+
+Usage via Docker
+----------------
+
+The great folks at @sbitio, namely @NITEMAN and @jonhattan wrote a docker image that you can invoke to run CacheTool. The images are hosted in https://hub.docker.com/r/sbitio/cachetool
+
+This is an example run with the `web` adapter:
+
+```sh
+APPDIR="/var/www/example.com"
+DOCROOT="/var/www/example.com/current/web"
+URL="http://example.com"
+docker run --rm -v $APPDIR:$APPDIR -w $DOCROOT sbitio/cachetool cachetool --web --web-url=$URL [options] [arguments]
+```
+
+Read more on their project page: https://github.com/sbitio/docker-cachetool
 
 Configuration File
 ------------------

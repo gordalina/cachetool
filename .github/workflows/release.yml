@@ -43,7 +43,7 @@ jobs:
         wget https://scrutinizer-ci.com/ocular.phar
         php ocular.phar code-coverage:upload --format=php-clover coverage.clover
 
-    - name: Create Release Asset
+    - name: Create Release Assets
       run: |
         $(composer config home)/vendor/bin/box compile
 
@@ -51,7 +51,7 @@ jobs:
       run: |
         bin/update-gh-pages.sh ${{ github.ref }}
 
-    - name: Create Release
+    - name: Create GitHub Release
       id: create_release
       uses: actions/create-release@v1
       env:

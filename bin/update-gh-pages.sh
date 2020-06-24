@@ -11,13 +11,6 @@ TAG=$1
 BRANCH=$(git rev-parse --abbrev-ref HEAD)
 
 #
-# Run tests
-#
-
-composer install
-vendor/bin/phpunit
-
-#
 # Remove dependencies and re-install production composer dependencies
 #
 
@@ -33,7 +26,7 @@ cat README.md > $SCRATCH
 #
 # Copy executable file into GH pages
 #
-git checkout gh-pages
+git checkout --track origin/gh-pages
 
 # Add index
 cat $SCRATCH > index.md

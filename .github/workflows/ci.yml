@@ -99,7 +99,10 @@ jobs:
           tag_name: ${{ github.ref }}
           release_name: ${{ github.ref }}
           draft: false
-          prerelease: true
+          prerelease: ${{ contains(github.ref, '-') }}
+          body: |
+            ## Changelog
+            The full changelog can be found in our [changelog file](https://github.com/gordalina/cachetool/blob/${{ github.ref }}/CHANGELOG.md)
 
       - name: Upload Release Assets
         id: upload-release-asset

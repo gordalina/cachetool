@@ -147,9 +147,16 @@ class Application extends BaseApplication
     public function buildContainer(InputInterface $input)
     {
         $this->parseConfiguration($input);
-        $adapter = $this->getAdapter();
 
-        $cacheTool = CacheTool::factory($adapter, $this->config['temp_dir'], $this->logger);
+        $this->logger->info(sprintf('CacheTool %s', self::VERSION));
+        $this->logger->debug(sprintf('Config: %s', $this->config->toJSON()));
+
+        $cacheTool = CacheTool::factory(
+            $this->getAdapter(),
+            $this->config['temp_dir'],
+            $this->logger
+        );
+
         $container = new Container();
         $container->set('cachetool', $cacheTool);
         $container->set('logger', $this->logger);

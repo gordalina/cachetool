@@ -55,6 +55,11 @@ class Config implements \ArrayAccess
         unset($this->config[$offset]);
     }
 
+    public function toJSON()
+    {
+        return json_encode($this->config);
+    }
+
     public static function factory()
     {
         $previous = null;

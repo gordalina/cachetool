@@ -39,18 +39,28 @@ class SelfUpdateCommand extends Command
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $updater = new Updater(null, false);
-        $updater->setStrategyObject(new ManifestUpdateStrategy());
-        $updater->getStrategy()->setManifestUrl(self::MANIFEST_FILE);
-        
+        $updater->setStrategy(Updater::STRATEGY_GITHUB);
+        $updater->getStrategy()->setPackageName('gordalina/cachetool');
+        $updater->getStrategy()->setPharName('cachetool.phar');
+        $updater->getStrategy()->setCurrentLocalVersion('@package_version@');
+
         if (!$updater->hasUpdate()) {
             $output->writeln(sprintf('You are already using the latest version: <info>%s</info>', $this->getApplication()->getVersion()));
             return 0;
         }
 
-        $output->writeln(sprintf('Updating to SHA-1 <info>%s</info>', $updater->getNewVersion()));
+        try {
+            $output->writeln(sprintf('Updating to version <info>%s</info>', $updater->getNewVersion()));
 
-        if(!$updater->update()) {
-            $output->writeln(sprintf('Error during update: You are still using SHA-1 <info>%s</info>', $updater->getOldVersion()));
+            if (!$updater->update()) {
+               throw new Exception("Failed to update");
+            }
+
+            $output->writeln('<info>Updated successfully</info>');
+        } catch (\Exception $e) {
+            $updater->rollback();
+            $output->writeln(sprintf('An error ocurred during the update process, rolled back to version <info>%s</info>', $updater->getOldVersion()));
+
             return 1;
         }
 

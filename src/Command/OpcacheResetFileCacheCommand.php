@@ -77,9 +77,9 @@ class OpcacheResetFileCacheCommand extends AbstractOpcacheCommand
 
         foreach($files as $file) {
             if ($file->isDir()){
-                rmdir($file->getRealPath());
+                $this->getCacheTool()->_eval("rmdir('{$file->getRealPath()}');");
             } else {
-                unlink($file->getRealPath());
+                $this->getCacheTool()->_eval("unlink('{$file->getRealPath()}');");
             }
             $count += 1;
         }

@@ -1,3 +1,7 @@
+# Next
+
+- [#159](https://github.com/gordalina/cachetool/issues/159) Fix missing curl redirect flag
+
 # 5.1.3
 
 - Fix issue where `cachetool.yml` files were not being loaded

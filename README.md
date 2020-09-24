@@ -247,7 +247,7 @@ Troubleshooting
 > Content-type: text/html; charset=UTF-8
 > No input file specified.
 
-This means that cachetool could not write to `/dev/shm` provide a directory that cachetool can write to through `php cachetool.phar --tmp-dir=/writable/dir` or configuration.
+This means that cachetool could not write to `/dev/shm` provide a directory that cachetool can write to through `php cachetool.phar --tmp-dir=/writable/dir` or configuration. This directory should also be readable by the web user running php-fpm/apache.
 
 License
 -------

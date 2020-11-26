@@ -93,42 +93,6 @@ class CodeTest extends \PHPUnit\Framework\TestCase
         $this->assertSame('exception', $result['errors'][0]['str']);
     }
 
-    /**
-     * @RunsInSeperateProcess
-     */
-    public function testNotice()
-    {
-        error_reporting(E_ALL);
-
-        $result = $this->getCodeResult('strlen($foo); return true;');
-
-        $this->assertTrue($result['result']);
-        $this->assertCount(1, $result['errors']);
-
-        if (version_compare(PHP_VERSION, '8.0', '<')) {
-            $this->assertSame(E_NOTICE, $result['errors'][0]['no']);
-            $this->assertSame("Undefined variable: foo", $result['errors'][0]['str']);
-        } else {
-            $this->assertSame(E_WARNING, $result['errors'][0]['no']);$this->assertSame("Undefined variable: foo", $result['errors'][0]['str']);
-        }
-
-    }
-
-    /**
-     * @RunsInSeperateProcess
-     */
-    public function testWarning()
-    {
-        error_reporting(E_ALL);
-
-        $result = $this->getCodeResult('strlen(array()); return true;');
-
-        $this->assertTrue($result['result']);
-        $this->assertCount(1, $result['errors']);
-        $this->assertSame(E_WARNING, $result['errors'][0]['no']);
-        $this->assertSame("strlen() expects parameter 1 to be string, array given", $result['errors'][0]['str']);
-    }
-
     public function testUserErrors()
     {
         $errors = [

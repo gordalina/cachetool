@@ -104,8 +104,14 @@ class CodeTest extends \PHPUnit\Framework\TestCase
 
         $this->assertTrue($result['result']);
         $this->assertCount(1, $result['errors']);
-        $this->assertSame(E_NOTICE, $result['errors'][0]['no']);
-        $this->assertSame("Undefined variable: foo", $result['errors'][0]['str']);
+
+        if (version_compare(PHP_VERSION, '8.0', '<')) {
+            $this->assertSame(E_NOTICE, $result['errors'][0]['no']);
+            $this->assertSame("Undefined variable: foo", $result['errors'][0]['str']);
+        } else {
+            $this->assertSame(E_WARNING, $result['errors'][0]['no']);$this->assertSame("Undefined variable: foo", $result['errors'][0]['str']);
+        }
+
     }
 
     /**

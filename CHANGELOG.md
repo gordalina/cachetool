@@ -2,6 +2,7 @@
 
 - [#159](https://github.com/gordalina/cachetool/issues/159) Fix missing curl redirect flag
 - [#166](https://github.com/gordalina/cachetool/issues/159) Add support to PHP 8.0
+- Remove support for PHP 7.2
 
 # 5.1.3
 

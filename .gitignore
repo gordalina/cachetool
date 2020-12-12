@@ -1,5 +1,4 @@
 .cachetool.yml
-composer.lock
 cachetool.phar
 .phpunit.result.cache
 vendor

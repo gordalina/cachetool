@@ -43,5 +43,6 @@
     },
     "bin": [
         "bin/cachetool"
-    ]
+    ],
+    "minimum-stability": "dev"
 }

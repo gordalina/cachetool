@@ -84,6 +84,8 @@ jobs:
 
       - name: Install Dependencies
         run: |
+          composer global config minimum-stability dev
+          composer global config prefer-stable true
           composer global require humbug/box
           composer install --prefer-dist --no-dev
 

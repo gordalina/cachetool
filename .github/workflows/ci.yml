@@ -16,12 +16,12 @@ jobs:
     strategy:
       max-parallel: 15
       matrix:
-        operating-system: [ubuntu-18.04, ubuntu-20.04, macOS-10.15]
+        operating-system: [ubuntu-20.04, macOS-10.15]
         php-versions: ["7.2", "7.3", "7.4", "8.0"]
     name: Test PHP ${{ matrix.php-versions }} on ${{ matrix.operating-system }}
     steps:
       - name: Checkout
-        uses: actions/checkout@master
+        uses: actions/checkout@v2
 
     - name: Setup PHP
       uses: shivammathur/setup-php@master
@@ -64,13 +64,13 @@ jobs:
           php ocular.phar code-coverage:upload --format=php-clover coverage.clover
 
   release:
-    runs-on: ubuntu-18.04
+    runs-on: ubuntu-20.04
     name: Create & Publish Release
     if: ${{ github.event_name == 'push' && startsWith(github.event.ref, 'refs/tags') }}
     needs: test
     steps:
       - name: Checkout
-        uses: actions/checkout@master
+        uses: actions/checkout@v2
         with:
           fetch-depth: 0
 

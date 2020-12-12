@@ -23,13 +23,13 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v2
 
-    - name: Setup PHP
-      uses: shivammathur/setup-php@master
-      with:
-        php-version: ${{ matrix.php-versions }}
-        extensions: apcu, mbstring, pcov
-        ini-values: apc.enabled=1, apc.enable_cli=1, opcache.enable=1, opcache.enable_cli=1
-        coverage: pcov
+      - name: Setup PHP
+        uses: shivammathur/setup-php@master
+        with:
+          php-version: ${{ matrix.php-versions }}
+          extensions: apcu, mbstring, pcov
+          ini-values: apc.enabled=1, apc.enable_cli=1, opcache.enable=1, opcache.enable_cli=1
+          coverage: pcov
 
       - name: Check PHP Version
         run: php -v

@@ -250,6 +250,10 @@ Troubleshooting
 
 This means that cachetool could not write to `/dev/shm` provide a directory that cachetool can write to through `php cachetool.phar --tmp-dir=/writable/dir` or configuration. This directory should also be readable by the web user running php-fpm/apache.
 
+## SELinux
+
+To have cachetool working with SELinux [read this comment by @driskell](https://github.com/gordalina/cachetool/issues/9#issuecomment-742669509).
+
 License
 -------
 

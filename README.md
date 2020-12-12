@@ -20,6 +20,7 @@ Note that, unlike APCu and Opcache, the file status cache is per-process rather 
 Compatibility
 -------------
 
+- CacheTool 6.x works with PHP `>=7.3`
 - CacheTool 5.x works with PHP `>=7.2`
 - CacheTool 4.x works with PHP `>=7.1`
 - CacheTool 3.x works with PHP `>=5.5.9`
@@ -248,6 +249,10 @@ Troubleshooting
 > No input file specified.
 
 This means that cachetool could not write to `/dev/shm` provide a directory that cachetool can write to through `php cachetool.phar --tmp-dir=/writable/dir` or configuration. This directory should also be readable by the web user running php-fpm/apache.
+
+## SELinux
+
+To have cachetool working with SELinux [read this comment by @driskell](https://github.com/gordalina/cachetool/issues/9#issuecomment-742669509).
 
 License
 -------

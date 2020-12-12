@@ -17,7 +17,7 @@ jobs:
       max-parallel: 15
       matrix:
         operating-system: [ubuntu-latest, macOS-latest]
-        php-versions: ['7.2', '7.3', '7.4']
+        php-versions: ['7.3', '7.4', '8.0']
     name: Test PHP ${{ matrix.php-versions }} on ${{ matrix.operating-system }}
     steps:
     - name: Checkout
@@ -27,9 +27,9 @@ jobs:
       uses: shivammathur/setup-php@master
       with:
         php-version: ${{ matrix.php-versions }}
-        extensions: apcu, xdebug, mbstring
+        extensions: apcu, mbstring, pcov
         ini-values: apc.enabled=1, apc.enable_cli=1, opcache.enable=1, opcache.enable_cli=1
-        coverage: xdebug
+        coverage: pcov
 
     - name: Check PHP Version
       run: php -v
@@ -58,8 +58,9 @@ jobs:
       run: $(composer config bin-dir)/phpunit --coverage-clover=coverage.clover
 
     - name: Upload coverage to scrutinizer
+      if: ${{ matrix.php-versions != '8.0' }}
       run: |
-        wget https://scrutinizer-ci.com/ocular.phar
+        wget --quiet https://scrutinizer-ci.com/ocular.phar
         php ocular.phar code-coverage:upload --format=php-clover coverage.clover
 
   release:

@@ -6,6 +6,7 @@ use CacheTool\Command\CommandTest;
 use Symfony\Component\Console\Input\StringInput;
 use Symfony\Component\Console\Output\NullOutput;
 use Symfony\Component\Console\Output\BufferedOutput;
+use PHPUnit\Framework\Constraint\RegularExpression;
 
 class ApplicationTest extends CommandTest
 {
@@ -105,7 +106,7 @@ class ApplicationTest extends CommandTest
         $this->assertStringContainsString('opcache:configuration', $content);
     }
 
-    public function testWithTmpDirArgNotWriable()
+    public function testWithTmpDirArgNotWritable()
     {
         $app = new Application(new Config());
         $app->setAutoExit(false);
@@ -115,13 +116,10 @@ class ApplicationTest extends CommandTest
         $content = $output->fetch();
 
         $this->assertSame(1, $code);
-        $this->assertRegExp(
-            '|Could not write to `/doesnotexist/cachetool-.*\.php`:|',
-            $content
-        );
+        $this->assertThat($content, new RegularExpression('|Could not write to `/doesnotexist/cachetool-.*\.php`:|'));
     }
 
-    public function testWithTmpDirConfigNotWriable()
+    public function testWithTmpDirConfigNotWritable()
     {
         $app = new Application(new Config(['temp_dir' => '/doesnotexist']));
         $app->setAutoExit(false);
@@ -131,9 +129,6 @@ class ApplicationTest extends CommandTest
         $content = $output->fetch();
 
         $this->assertSame(1, $code);
-        $this->assertRegExp(
-            '|Could not write to `/doesnotexist/cachetool-.*\.php`:|',
-            $content
-        );
+        $this->assertThat($content, new RegularExpression('|Could not write to `/doesnotexist/cachetool-.*\.php`:|'));
     }
 }

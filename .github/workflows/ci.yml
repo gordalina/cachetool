@@ -27,9 +27,9 @@ jobs:
       uses: shivammathur/setup-php@master
       with:
         php-version: ${{ matrix.php-versions }}
-        extensions: apcu, xdebug, mbstring
+        extensions: apcu, mbstring, pcov
         ini-values: apc.enabled=1, apc.enable_cli=1, opcache.enable=1, opcache.enable_cli=1
-        coverage: xdebug
+        coverage: pcov
 
     - name: Check PHP Version
       run: php -v
@@ -60,7 +60,6 @@ jobs:
     - name: Upload coverage to scrutinizer
       run: |
         wget https://scrutinizer-ci.com/ocular.phar
-        ls -lha .
         php ocular.phar code-coverage:upload --format=php-clover coverage.clover
 
   release:

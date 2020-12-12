@@ -59,7 +59,8 @@ jobs:
 
     - name: Upload coverage to scrutinizer
       run: |
-        wget https://scrutinizer-ci.com/ocular.phar
+        wget --quiet https://scrutinizer-ci.com/ocular.phar
+        cat coverage.clover
         php ocular.phar code-coverage:upload --format=php-clover coverage.clover
 
   release:

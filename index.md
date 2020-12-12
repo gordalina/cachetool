@@ -1,5 +1,4 @@
-CacheTool - Manage cache in the CLI
-===================================
+# CacheTool - Manage cache in the CLI
 
 [![Build Status](https://github.com/gordalina/cachetool/workflows/ci/badge.svg)](https://github.com/gordalina/cachetool/actions)
 [![Scrutinizer Code Quality](https://img.shields.io/scrutinizer/g/gordalina/cachetool.svg)](https://scrutinizer-ci.com/g/gordalina/cachetool/?branch=master)
@@ -10,6 +9,7 @@ through the CLI. It will connect to a FastCGI server (like PHP-FPM) and operate
 on its cache.
 
 Why is this useful?
+
 - Maybe you want to clear the bytecode cache without reloading php-fpm or using a web endpoint
 - Maybe you want to have a cron which deals with cache invalidation
 - Maybe you want to see some statistics right from the console
@@ -17,25 +17,34 @@ Why is this useful?
 
 Note that, unlike APCu and Opcache, the file status cache is per-process rather than stored in shared memory. This means that running `stat:clear` against PHP-FPM will only affect whichever FPM worker responds to the request, not the whole pool. [Julien Pauli has written a post](http://blog.jpauli.tech/2014-06-30-realpath-cache-html/) with more details on how the file status cache operates.
 
-Compatibility
--------------
+## Compatibility
 
+- CacheTool 6.x works with PHP `>=7.3`
 - CacheTool 5.x works with PHP `>=7.2`
 - CacheTool 4.x works with PHP `>=7.1`
 - CacheTool 3.x works with PHP `>=5.5.9`
 - CacheTool 2.x works with PHP `>=5.5.9`
 - CacheTool 1.x works with PHP `>=5.3.3`
 
-Installation - Latest version
------------------------------
+## Installation - Latest version
 
 ```sh
 curl -sLO https://github.com/gordalina/cachetool/releases/latest/download/cachetool.phar
 chmod +x cachetool.phar
 ```
 
-Installation - old versions
----------------------------
+You can alternatively download a compressed phar by using the URLs below.
+
+```sh
+# if your php installation has the zlib extension enabled
+https://github.com/gordalina/cachetool/releases/latest/download/cachetool.phar.gz
+
+# if your php installation has the bzip2 extension enabled
+https://github.com/gordalina/cachetool/releases/latest/download/cachetool.phar.bz2
+```
+
+## Installation - old versions
+
 Use tag name in the binary file name. E.g to download cachetool 3.2.2
 which is compatible with PHP `>=5.5.9` use: `cachetool-3.2.2.phar`
 
@@ -44,45 +53,44 @@ curl -sO https://gordalina.github.io/cachetool/downloads/cachetool-3.2.2.phar
 chmod +x cachetool-3.2.2.phar
 ```
 
-Usage
------
+## Usage
 
 CacheTool requires an adapter to connect to, it can be `cli`, `fcgi`, and `web`.
 The `fcgi` adapter is the most common, as it connects directly to php-fpm.
 
 You can pass an IP address or a unix socket to the `--fcgi` adapter, or leave it blank and CacheTool will try to find the php-fpm socket for you. If it can't find it, it will default to `127.0.0.1:9000`.
 
-  * You can let CacheTool find the unix socket for you, or default to IP.
+- You can let CacheTool find the unix socket for you, or default to IP.
 
 ```sh
 php cachetool.phar apcu:cache:info --fcgi
 ```
 
-  * You can connect to a fastcgi server using an IP address
+- You can connect to a fastcgi server using an IP address
 
 ```sh
 php cachetool.phar apcu:cache:info --fcgi=127.0.0.1:9000
 ```
 
-  * You can connect to a fastcgi server using a unix socket
+- You can connect to a fastcgi server using a unix socket
 
 ```sh
 php cachetool.phar opcache:status --fcgi=/var/run/php5-fpm.sock
 ```
 
-  * To connect to a chrooted fastcgi server you need to set `--fcgi-chroot` and `--tmp-dir` parameters
+- To connect to a chrooted fastcgi server you need to set `--fcgi-chroot` and `--tmp-dir` parameters
 
 ```sh
 php cachetool.phar opcache:status --fcgi=/var/run/php5-fpm.sock --fcgi-chroot=/path/to/chroot --tmp-dir=/path/to/chroot/tmp
 ```
 
-  * Using the CLI
+- Using the CLI
 
 ```sh
 php cachetool.phar opcache:status --cli
 ```
 
-  * Using an HTTP interface
+- Using an HTTP interface
 
 ```sh
 php cachetool.phar opcache:status --web --web-path=/path/to/your/document/root --web-url=http://url-to-your-document.root
@@ -116,8 +124,7 @@ You have some useful commands that you can use
   stat:realpath_size          Display size of realpath cache
 ```
 
-Usage via Docker
-----------------
+## Usage via Docker
 
 The great folks at @sbitio, namely @NITEMAN and @jonhattan wrote a docker image that you can invoke to run CacheTool. The images are hosted in https://hub.docker.com/r/sbitio/cachetool
 
@@ -132,8 +139,7 @@ docker run --rm -v $APPDIR:$APPDIR -w $DOCROOT sbitio/cachetool cachetool --web 
 
 Read more on their project page: https://github.com/sbitio/docker-cachetool
 
-Configuration File
-------------------
+## Configuration File
 
 You can have a configuration file with the adapter configuration, allowing you to
 call CacheTool without `--fcgi`, `--cli`, or `--web` option.
@@ -178,8 +184,7 @@ and `opcache` are enabled. To disable `apcu`, add this to your config file:
 extensions: [opcache]
 ```
 
-Usage (as a library)
---------------------
+## Usage (as a library)
 
 Add it as a dependency
 
@@ -210,8 +215,7 @@ $cache->apcu_clear_cache('both');
 $cache->opcache_reset();
 ```
 
-Proxies
--------
+## Proxies
 
 CacheTool depends on `Proxies` to provide functionality, by default when creating a CacheTool instance from the factory
 all proxies are enabled [`ApcuProxy`](https://github.com/gordalina/cachetool/blob/master/src/CacheTool/Proxy/ApcuProxy.php), [`OpcacheProxy`](https://github.com/gordalina/cachetool/blob/master/src/CacheTool/Proxy/OpcacheProxy.php) and [`PhpProxy`](https://github.com/gordalina/cachetool/blob/master/src/CacheTool/Proxy/PhpProxy.php), you can customize it or extend to your will like the example below:
@@ -228,18 +232,15 @@ $cache->addProxy(new Proxy\ApcuProxy());
 $cache->addProxy(new Proxy\PhpProxy());
 ```
 
-Updating CacheTool
-------------------
+## Updating CacheTool
 
 Running `php cachetool.phar self-update` will update a phar install with the latest version.
 
-Testing
--------
+## Testing
 
 After running `composer install`, run `./vendor/bin/phpunit`
 
-Troubleshooting
----------------
+## Troubleshooting
 
 > [RuntimeException]
 > Error: Unable to open primary script: /dev/shm/cachetool-584743c678dbb.php (No such file or directory)
@@ -247,9 +248,12 @@ Troubleshooting
 > Content-type: text/html; charset=UTF-8
 > No input file specified.
 
-This means that cachetool could not write to `/dev/shm` provide a directory that cachetool can write to through `php cachetool.phar --tmp-dir=/writable/dir` or configuration.
+This means that cachetool could not write to `/dev/shm` provide a directory that cachetool can write to through `php cachetool.phar --tmp-dir=/writable/dir` or configuration. This directory should also be readable by the web user running php-fpm/apache.
 
-License
--------
+## SELinux
+
+To have cachetool working with SELinux [read this comment by @driskell](https://github.com/gordalina/cachetool/issues/9#issuecomment-742669509).
+
+## License
 
 CacheTool is licensed under the MIT License - see the [LICENSE](LICENSE) for details

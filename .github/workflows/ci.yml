@@ -58,7 +58,7 @@ jobs:
       run: $(composer config bin-dir)/phpunit --coverage-clover=coverage.clover
 
     - name: Upload coverage to scrutinizer
-      if: ${{ matrix.php-versions }} != '8.0'
+      if: ${{ matrix.php-versions }} != 8.0
       run: |
         wget --quiet https://scrutinizer-ci.com/ocular.phar
         php ocular.phar code-coverage:upload --format=php-clover coverage.clover

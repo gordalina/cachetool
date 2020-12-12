@@ -3,12 +3,12 @@ name: ci
 on:
   push:
     branches:
-      - '*'
+      - "*"
     tags:
-      - '*'
+      - "*"
   pull_request:
     branches:
-      - '*'
+      - "*"
 
 jobs:
   test:
@@ -16,12 +16,12 @@ jobs:
     strategy:
       max-parallel: 15
       matrix:
-        operating-system: [ubuntu-latest, macOS-latest]
-        php-versions: ['7.3', '7.4', '8.0']
+        operating-system: [ubuntu-20.04, macOS-10.15]
+        php-versions: ["7.2", "7.3", "7.4", "8.0"]
     name: Test PHP ${{ matrix.php-versions }} on ${{ matrix.operating-system }}
     steps:
-    - name: Checkout
-      uses: actions/checkout@master
+      - name: Checkout
+        uses: actions/checkout@v2
 
     - name: Setup PHP
       uses: shivammathur/setup-php@master
@@ -31,46 +31,46 @@ jobs:
         ini-values: apc.enabled=1, apc.enable_cli=1, opcache.enable=1, opcache.enable_cli=1
         coverage: pcov
 
-    - name: Check PHP Version
-      run: php -v
+      - name: Check PHP Version
+        run: php -v
 
-    - name: Check Composer Version
-      run: composer -V
+      - name: Check Composer Version
+        run: composer -V
 
-    - name: Check PHP Extensions
-      run: php -m
+      - name: Check PHP Extensions
+        run: php -m
 
-    - name: Get Composer Cache Directory
-      id: composer-cache
-      run: echo "::set-output name=dir::$(composer config cache-files-dir)"
+      - name: Get Composer Cache Directory
+        id: composer-cache
+        run: echo "::set-output name=dir::$(composer config cache-files-dir)"
 
-    - name: Cache dependencies
-      uses: actions/cache@v1
-      with:
-        path: ${{ steps.composer-cache.outputs.dir }}
-        key: ${{ runner.os }}-composer-${{ hashFiles('composer.json') }}
-        restore-keys: ${{ runner.os }}-composer-${{ hashFiles('composer.json') }}
+      - name: Cache dependencies
+        uses: actions/cache@v1
+        with:
+          path: ${{ steps.composer-cache.outputs.dir }}
+          key: ${{ runner.os }}-composer-${{ hashFiles('composer.json') }}
+          restore-keys: ${{ runner.os }}-composer-${{ hashFiles('composer.json') }}
 
-    - name: Install Dependencies
-      run: composer install --prefer-dist
+      - name: Install Dependencies
+        run: composer install --prefer-dist
 
-    - name: Run test suite
-      run: $(composer config bin-dir)/phpunit --coverage-clover=coverage.clover
+      - name: Run test suite
+        run: $(composer config bin-dir)/phpunit --coverage-clover=coverage.clover
 
-    - name: Upload coverage to scrutinizer
-      if: ${{ matrix.php-versions != '8.0' }}
-      run: |
-        wget --quiet https://scrutinizer-ci.com/ocular.phar
-        php ocular.phar code-coverage:upload --format=php-clover coverage.clover
+      - name: Upload coverage to scrutinizer
+        if: ${{ matrix.php-versions != '8.0' }}
+        run: |
+          wget --quiet https://scrutinizer-ci.com/ocular.phar
+          php ocular.phar code-coverage:upload --format=php-clover coverage.clover
 
   release:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-20.04
     name: Create & Publish Release
     if: ${{ github.event_name == 'push' && startsWith(github.event.ref, 'refs/tags') }}
     needs: test
     steps:
       - name: Checkout
-        uses: actions/checkout@master
+        uses: actions/checkout@v2
         with:
           fetch-depth: 0
 
@@ -85,11 +85,15 @@ jobs:
       - name: Install Dependencies
         run: |
           composer global require humbug/box
-          composer install --prefer-dist
+          composer install --prefer-dist --no-dev
 
       - name: Create Release Assets
         run: |
-          $(composer config home)/vendor/bin/box compile
+          jq '. + {compression: "GZ", output: "cachetool.phar.gz"}' box.json > box.gz.json
+          jq '. + {compression: "BZ2", output: "cachetool.phar.bz2"}' box.json > box.bz2.json
+          $(composer config home)/vendor/bin/box compile --config=box.json
+          $(composer config home)/vendor/bin/box compile --config=box.gz.json
+          $(composer config home)/vendor/bin/box compile --config=box.bz2.json
 
       - name: Get tag version
         id: get_version
@@ -109,8 +113,7 @@ jobs:
             ## Changelog
             The full changelog can be found in our [changelog file](https://github.com/gordalina/cachetool/blob/${{ steps.get_version.outputs.VERSION }}/CHANGELOG.md)
 
-      - name: Upload Release Assets
-        id: upload-release-asset
+      - name: Upload cachetool.phar
         uses: actions/upload-release-asset@v1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -118,6 +121,26 @@ jobs:
           upload_url: ${{ steps.create_release.outputs.upload_url }}
           asset_path: ./cachetool.phar
           asset_name: cachetool.phar
+          asset_content_type: application/octet-stream
+
+      - name: Upload cachetool.phar.gz
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: ./cachetool.phar.gz
+          asset_name: cachetool.phar.gz
+          asset_content_type: application/octet-stream
+
+      - name: Upload cachetool.phar.bz2
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: ./cachetool.phar.bz2
+          asset_name: cachetool.phar.bz2
           asset_content_type: application/octet-stream
 
       - name: Update GitHub Pages

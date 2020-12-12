@@ -18,5 +18,6 @@
     "git-version": "package_version",
     "main": "bin/cachetool",
     "output": "cachetool.phar",
+    "compression": "NONE",
     "stub": true
 }

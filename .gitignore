@@ -1,4 +1,6 @@
 .cachetool.yml
-cachetool.phar
+composer.lock
+cachetool.phar*
 .phpunit.result.cache
 vendor
+box.*.json

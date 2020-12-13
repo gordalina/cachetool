@@ -1,3 +1,5 @@
+# Next
+
 # 6.0.0
 
 - [#159](https://github.com/gordalina/cachetool/issues/159) Fix missing curl redirect flag

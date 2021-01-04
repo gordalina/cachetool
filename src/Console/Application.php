@@ -19,6 +19,7 @@ use CacheTool\CacheTool;
 use CacheTool\Command as CacheToolCommand;
 use CacheTool\Monolog\ConsoleHandler;
 use Monolog\Logger;
+use SelfUpdate\SelfUpdateCommand;
 use Symfony\Component\Console\Application as BaseApplication;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputOption;
@@ -60,7 +61,7 @@ class Application extends BaseApplication
     protected function getDefaultCommands()
     {
         $commands = parent::getDefaultCommands();
-        $commands[] = new CacheToolCommand\SelfUpdateCommand();
+        $commands[] = new SelfUpdateCommand('gordalina/cachetool','@package_version@', 'gordalina/cachetool');
 
         if (in_array('apcu', $this->config['extensions'], true)) {
             $commands[] = new CacheToolCommand\ApcuCacheClearCommand();

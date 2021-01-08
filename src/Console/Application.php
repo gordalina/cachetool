@@ -61,7 +61,7 @@ class Application extends BaseApplication
     protected function getDefaultCommands()
     {
         $commands = parent::getDefaultCommands();
-        $commands[] = new SelfUpdateCommand('gordalina/cachetool','@package_version@', 'gordalina/cachetool');
+        $commands[] = new SelfUpdateCommand('gordalina/cachetool', '@package_version@', 'gordalina/cachetool');
 
         if (in_array('apcu', $this->config['extensions'], true)) {
             $commands[] = new CacheToolCommand\ApcuCacheClearCommand();

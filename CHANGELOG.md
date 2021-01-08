@@ -1,5 +1,8 @@
 # Next
 
+# 6.1.0
+- [#169](https://github.com/gordalina/cachetool/pull/169) Use consolidation/self-update instead of padraic/phar-updater
+
 # 6.0.0
 
 - [#159](https://github.com/gordalina/cachetool/issues/159) Fix missing curl redirect flag

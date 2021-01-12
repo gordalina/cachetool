@@ -1,5 +1,10 @@
 # Next
 
+# 6.1.1
+
+- [#172](https://github.com/gordalina/cachetool/pull/172) Use stable releases for consolidation/self-update
+- Remove dev minimum-stability in composer.json
+
 # 6.1.0
 - [#169](https://github.com/gordalina/cachetool/pull/169) Use consolidation/self-update instead of padraic/phar-updater
 

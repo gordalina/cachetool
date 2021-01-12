@@ -19,7 +19,7 @@
         "symfony/finder": "^4.0|^5.0",
         "symfony/process": "^4.0|^5.0",
         "symfony/yaml": "^4.0|^5.0",
-        "consolidation/self-update": "^1.0"
+        "consolidation/self-update": "^1.2.0"
     },
     "require-dev": {
         "phpunit/phpunit": "^8.0|^9.0"
@@ -43,6 +43,5 @@
     },
     "bin": [
         "bin/cachetool"
-    ],
-    "minimum-stability": "dev"
+    ]
 }

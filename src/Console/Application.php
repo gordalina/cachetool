@@ -13,7 +13,7 @@ namespace CacheTool\Console;
 
 use CacheTool\Adapter\FastCGI;
 use CacheTool\Adapter\Cli;
-use CacheTool\Adapter\Http\HttpClient;
+use CacheTool\Adapter\Http\SymfonyHttpClient;
 use CacheTool\Adapter\Web;
 use CacheTool\CacheTool;
 use CacheTool\Command as CacheToolCommand;
@@ -203,7 +203,7 @@ class Application extends BaseApplication
         }
 
         if ($this->config['adapter'] === 'web') {
-            $this->config['http'] = new HttpClient($this->config['webUrl'], $this->config['httpclient']);
+            $this->config['http'] = new SymfonyHttpClient($this->config['webUrl'], $this->config['httpclient']);
         }
 
         if ($input->hasParameterOption('--tmp-dir') || $input->hasParameterOption('-t')) {

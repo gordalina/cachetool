@@ -11,16 +11,16 @@
 
 namespace CacheTool\Adapter\Http;
 
+use Symfony\Component\HttpClient\HttpClient;
 use Symfony\Component\HttpFoundation\Response;
 
-class HttpClient extends AbstractHttp
+class SymfonyHttpClient extends AbstractHttp
 {
-    /** @var \Symfony\Contracts\HttpClient\HttpClientInterface */
     private $client;
 
     public function __construct($baseUrl, $httpClientConfig)
     {
-        $this->client = \Symfony\Component\HttpClient\HttpClient::create($httpClientConfig);
+        $this->client = HttpClient::create($httpClientConfig);
         parent::__construct($baseUrl);
     }
 

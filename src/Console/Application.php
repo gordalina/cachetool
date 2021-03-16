@@ -13,7 +13,7 @@ namespace CacheTool\Console;
 
 use CacheTool\Adapter\FastCGI;
 use CacheTool\Adapter\Cli;
-use CacheTool\Adapter\Http\FileGetContents;
+use CacheTool\Adapter\Http\HttpClient;
 use CacheTool\Adapter\Web;
 use CacheTool\CacheTool;
 use CacheTool\Command as CacheToolCommand;
@@ -106,6 +106,7 @@ class Application extends BaseApplication
         $definition->addOption(new InputOption('--web', null, InputOption::VALUE_NONE, 'If specified, forces adapter to web'));
         $definition->addOption(new InputOption('--web-path', null, InputOption::VALUE_OPTIONAL, 'If specified, used as a information for web adapter'));
         $definition->addOption(new InputOption('--web-url', null, InputOption::VALUE_OPTIONAL, 'If specified, used as a information for web adapter'));
+        $definition->addOption(new InputOption('--web-allow-insecure', null, InputOption::VALUE_OPTIONAL, 'If specified, verify_peer and verify_host are disabled.'));
         $definition->addOption(new InputOption('--tmp-dir', '-t', InputOption::VALUE_REQUIRED, 'Temporary directory to write files to'));
         $definition->addOption(new InputOption('--config', '-c', InputOption::VALUE_REQUIRED, 'If specified use this yaml configuration file'));
 
@@ -193,10 +194,16 @@ class Application extends BaseApplication
             $this->config['adapter'] = 'web';
             $this->config['webPath'] = $input->getParameterOption('--web-path');
             $this->config['webUrl'] = $input->getParameterOption('--web-url');
+            if($input->hasParameterOption('--web-allow-insecure')) {
+                $httpclient_config = $this->config['httpclient'];
+                $httpclient_config['verify_peer'] = false;
+                $httpclient_config['verify_host'] = false;
+                $this->config['httpclient'] = $httpclient_config;
+            }
         }
 
         if ($this->config['adapter'] === 'web') {
-            $this->config['http'] = new FileGetContents($this->config['webUrl']);
+            $this->config['http'] = new HttpClient($this->config['webUrl'], $this->config['httpclient']);
         }
 
         if ($input->hasParameterOption('--tmp-dir') || $input->hasParameterOption('-t')) {

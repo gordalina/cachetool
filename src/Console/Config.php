@@ -19,7 +19,10 @@ class Config implements \ArrayAccess
         'adapter' => 'fastcgi',
         'extensions' => ['apcu', 'opcache'],
         'fastcgi' => null,
-        'temp_dir' => null
+        'temp_dir' => null,
+        'httpclient' => [
+
+        ]
     ];
 
     public function __construct(array $config = [])

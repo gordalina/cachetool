@@ -2,14 +2,14 @@
 
 namespace CacheTool\Adapter;
 
+use CacheTool\Adapter\Http\HttpClient;
 use CacheTool\Code;
-use CacheTool\Adapter\Http\FileGetContents;
 
 class WebTest extends \PHPUnit\Framework\TestCase
 {
     public function testRun()
     {
-        $httpMock = $this->getMockBuilder(FileGetContents::class)->disableOriginalConstructor()->getMock();
+        $httpMock = $this->getMockBuilder(HttpClient::class)->disableOriginalConstructor()->getMock();
         $httpMock
             ->method('fetch')
             ->willReturn(serialize(['errors' => [], 'result' => true]));

@@ -1,5 +1,7 @@
 # Next
 
+- [#173](https://github.com/gordalina/cachetool/issues/172) Fix self update and add self-update alias command.
+
 # 6.1.1
 
 - [#172](https://github.com/gordalina/cachetool/pull/172) Use stable releases for consolidation/self-update

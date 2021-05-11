@@ -183,6 +183,16 @@ fastcgi: /var/run/php5-fpm.sock
 temp_dir: /dev/shm/cachetool
 ```
 
+Example for the web adapter:
+
+```yml
+adapter: web
+webClient: SymfonyHttpClient # defaults to FileGetContents
+webUrl: http://example.com
+webPath: /var/www/example.com/current/web
+webBasicAuth: user:password
+```
+
 You can define the supported extensions in the config file. By default, `apcu`,
 and `opcache` are enabled. To disable `apcu`, add this to your config file:
 

@@ -196,22 +196,27 @@ class Application extends BaseApplication
             }
         } elseif ($input->hasParameterOption('--web')) {
             $this->config['adapter'] = 'web';
+            $this->config['webClient'] = $input->hasParameterOption('--web') ?? 'FileGetContents';
             $this->config['webPath'] = $input->getParameterOption('--web-path');
             $this->config['webUrl'] = $input->getParameterOption('--web-url');
+            if($this->config['webClient'] === 'SymfonyHttpClient') {
+                if ($input->hasParameterOption('--web-allow-insecure')) {
+                    $this->config['webAllowInsecure'] = true;
+                }
 
-            switch ($input->getParameterOption('--web') ?? 'FileGetContents') {
+                if ($input->hasParameterOption('--web-basic-auth')) {
+                    $this->config['webBasicAuth'] = $input->getParameterOption('--web-basic-auth');
+                }
+            }
+        }
+
+        if ($this->config['adapter'] === 'web') {
+            switch ($this->config['webClient']) {
                 case 'FileGetContents':
                     $this->config['http'] = new FileGetContents($this->config['webUrl']);
                     break;
 
                 case 'SymfonyHttpClient':
-                    if ($input->hasParameterOption('--web-allow-insecure')) {
-                        $this->config['webAllowInsecure'] = true;
-                    }
-
-                    if ($input->hasParameterOption('--web-basic-auth')) {
-                        $this->config['webBasicAuth'] = $input->getParameterOption('--web-basic-auth');
-                    }
 
                     $symfonyHttpClientConfig = [];
 
@@ -228,8 +233,6 @@ class Application extends BaseApplication
                     break;
 
                 default:
-                    var_dump($this->config);
-                    var_dump($input->getParameterOption('--web', "LOL"));
                     throw new \RuntimeException("{$this->config["web"]} is not a valid adapter. Possible adapters: FileGetContents or SymfonyHttpClient");
             }
         }

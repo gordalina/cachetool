@@ -112,6 +112,27 @@ class ApplicationTest extends CommandTest
         $this->assertSame(42, $code);
     }
 
+    public function testWebSymfonyHttpClientCustomConfigFile()
+    {
+        $temp = tempnam(sys_get_temp_dir(), "cfg");
+        file_put_contents($temp, '
+adapter: web
+webClient: SymfonyHttpClient
+webUrl: http://example.com
+webPath: /var/www/example.com/current/web
+webBasicAuth: user:password
+');
+
+        $app = new Application(new Config());
+        $app->add(new DummyCommand);
+        $app->setAutoExit(false);
+
+        $output = new BufferedOutput();
+        $code = $app->run(new StringInput("dummy --config=$temp"), $output);
+
+        $this->assertSame(42, $code);
+    }
+
     public function testNoSupportedExtensions()
     {
         $app = new Application(new Config(['extensions' => []]));

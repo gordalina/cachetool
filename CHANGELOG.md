@@ -1,3 +1,7 @@
+# 6.2.0
+
+- [#176](https://github.com/gordalina/cachetool/issues/172) @marvinhinz: Add SymfonyHttpClient Adapter
+
 # 6.1.2
 
 - [#173](https://github.com/gordalina/cachetool/issues/172) Fix self update and add self-update alias command.

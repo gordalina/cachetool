@@ -107,8 +107,7 @@ class Application extends BaseApplication
         $definition->addOption(new InputOption('--fcgi', null, InputOption::VALUE_OPTIONAL, 'If specified, used as a connection string to FastCGI server.'));
         $definition->addOption(new InputOption('--fcgi-chroot', null, InputOption::VALUE_OPTIONAL, 'If specified, used for mapping script path to chrooted FastCGI server. --tmp-dir need to be chrooted too.'));
         $definition->addOption(new InputOption('--cli', null, InputOption::VALUE_NONE, 'If specified, forces adapter to cli'));
-        $definition->addOption(new InputOption('--web', null, InputOption::VALUE_NONE, 'If specified, forces adapter to web'));
-        $definition->addOption(new InputOption('--web-adapter', null, InputOption::VALUE_OPTIONAL, 'If specified, selects the used adapter'));
+        $definition->addOption(new InputOption('--web', null, InputOption::VALUE_OPTIONAL, 'If specified, uses web adapter, defaults to FileGetContents. Available adapters are: FileGetContents and SymfonyHttpClient', 'FileGetContents'));
         $definition->addOption(new InputOption('--web-path', null, InputOption::VALUE_OPTIONAL, 'If specified, used as a information for web adapter'));
         $definition->addOption(new InputOption('--web-url', null, InputOption::VALUE_OPTIONAL, 'If specified, used as a information for web adapter'));
         $definition->addOption(new InputOption('--web-allow-insecure', null, InputOption::VALUE_OPTIONAL, 'If specified, verify_peer and verify_host are disabled (only for SymfonyHttpClient)'));
@@ -199,46 +198,46 @@ class Application extends BaseApplication
             $this->config['adapter'] = 'web';
             $this->config['webPath'] = $input->getParameterOption('--web-path');
             $this->config['webUrl'] = $input->getParameterOption('--web-url');
-            $this->config['webAdapter'] = $input->getParameterOption('--web-adapter', 'fileGetContents');
 
-            if ($this->config['webAdapter'] === 'fileGetContents') {
-                $this->config['http'] = new FileGetContents($this->config['webUrl']);
+            switch ($input->getParameterOption('--web') ?? 'FileGetContents') {
+                case 'FileGetContents':
+                    $this->config['http'] = new FileGetContents($this->config['webUrl']);
+                    break;
+
+                case 'SymfonyHttpClient':
+                    if ($input->hasParameterOption('--web-allow-insecure')) {
+                        $this->config['webAllowInsecure'] = true;
+                    }
+
+                    if ($input->hasParameterOption('--web-basic-auth')) {
+                        $this->config['webBasicAuth'] = $input->getParameterOption('--web-basic-auth');
+                    }
+
+                    $symfonyHttpClientConfig = [];
+
+                    if ($this->config['webAllowInsecure']) {
+                        $symfonyHttpClientConfig['verify_peer'] = false;
+                        $symfonyHttpClientConfig['verify_host'] = false;
+                    }
+
+                    if ($this->config['webBasicAuth']) {
+                        $symfonyHttpClientConfig['auth_basic'] = $this->config['webBasicAuth'];
+                    }
+
+                    $this->config['http'] = new SymfonyHttpClient($this->config['webUrl'], $symfonyHttpClientConfig);
+                    break;
+
+                default:
+                    var_dump($this->config);
+                    var_dump($input->getParameterOption('--web', "LOL"));
+                    throw new \RuntimeException("{$this->config["web"]} is not a valid adapter. Possible adapters: FileGetContents or SymfonyHttpClient");
             }
-            elseif ($this->config['webAdapter'] === 'symfonyHttpClient') {
-                if($input->hasParameterOption('--web-allow-insecure')) {
-                    $this->config['webAllowInsecure'] = true;
-                }
-
-                if($input->hasParameterOption('--web-basic-auth')) {
-                    $this->config['webBasicAuth'] = $input->getParameterOption('--web-basic-auth');
-                }
-
-                $symfonyHttpClientConfig = [];
-
-                if($this->config['webAllowInsecure']) {
-                    $symfonyHttpClientConfig['verify_peer'] = false;
-                    $symfonyHttpClientConfig['verify_host'] = false;
-                }
-
-                if($this->config['webBasicAuth']) {
-                    $symfonyHttpClientConfig['auth_basic'] = $this->config['webBasicAuth'];
-                }
-
-                $this->config['http'] = new SymfonyHttpClient($this->config['webUrl'], $symfonyHttpClientConfig);
-            }
-            else {
-                throw new \RuntimeException("{$this->config["webAdapter"]} is not a valid web adapter. Possible values: fileGetContents or symfonyHttpClient");
-            }
-
         }
-
-
 
         if ($input->hasParameterOption('--tmp-dir') || $input->hasParameterOption('-t')) {
             $this->config['temp_dir'] = $input->getParameterOption('--tmp-dir') ?: $input->getParameterOption('-t');
         }
     }
-
 
     /**
      * @return null|\CacheTool\Adapter\AbstractAdapter

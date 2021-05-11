@@ -36,6 +36,42 @@ class ApplicationTest extends CommandTest
         $this->assertSame(42, $code);
     }
 
+    public function testWebAdapter()
+    {
+        $app = new Application(new Config());
+        $app->add(new DummyCommand);
+        $app->setAutoExit(false);
+
+        $output = new BufferedOutput();
+        $code = $app->run(new StringInput("dummy --web"), $output);
+
+        $this->assertSame(42, $code);
+    }
+
+    public function testWebFileGetContentsAdapter()
+    {
+        $app = new Application(new Config());
+        $app->add(new DummyCommand);
+        $app->setAutoExit(false);
+
+        $output = new BufferedOutput();
+        $code = $app->run(new StringInput("dummy --web=FileGetContents"), $output);
+
+        $this->assertSame(42, $code);
+    }
+
+    public function testWebSymfonyHttpClientAdapter()
+    {
+        $app = new Application(new Config());
+        $app->add(new DummyCommand);
+        $app->setAutoExit(false);
+
+        $output = new BufferedOutput();
+        $code = $app->run(new StringInput("dummy --web=SymfonyHttpClient"), $output);
+
+        $this->assertSame(42, $code);
+    }
+
     public function testWrongAdapter()
     {
         $app = new Application(new Config(['adapter' => 'err']));

@@ -1,3 +1,7 @@
+# 6.3.1
+
+- [#178](https://github.com/gordalina/cachetool/pull/178) Fix web cli parameter option (@nlemoine)
+
 # 6.3.0
 
 - [#177](https://github.com/gordalina/cachetool/pull/177) Add SymfonyHttpClient file configuration (@nlemoine)

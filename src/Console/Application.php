@@ -196,7 +196,7 @@ class Application extends BaseApplication
             }
         } elseif ($input->hasParameterOption('--web')) {
             $this->config['adapter'] = 'web';
-            $this->config['webClient'] = $input->hasParameterOption('--web') ?? 'FileGetContents';
+            $this->config['webClient'] = $input->getParameterOption('--web') ?? 'FileGetContents';
             $this->config['webPath'] = $input->getParameterOption('--web-path');
             $this->config['webUrl'] = $input->getParameterOption('--web-url');
             if($this->config['webClient'] === 'SymfonyHttpClient') {

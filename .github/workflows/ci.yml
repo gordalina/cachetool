@@ -109,39 +109,15 @@ jobs:
           release_name: ${{ github.ref }}
           draft: false
           prerelease: ${{ contains(github.ref, '-') }}
+          files: |
+            cachetool.phar
+            cachetool.phar.gz
+            cachetool.phar.bz2
+            CHANGELOG.md
+            LICENSE
           body: |
             ## Changelog
             The full changelog can be found in our [changelog file](https://github.com/gordalina/cachetool/blob/${{ steps.get_version.outputs.VERSION }}/CHANGELOG.md)
-
-      - name: Upload cachetool.phar
-        uses: softprops/action-gh-release@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: ./cachetool.phar
-          asset_name: cachetool.phar
-          asset_content_type: application/octet-stream
-
-      - name: Upload cachetool.phar.gz
-        uses: softprops/action-gh-release@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: ./cachetool.phar.gz
-          asset_name: cachetool.phar.gz
-          asset_content_type: application/gzip
-
-      - name: Upload cachetool.phar.bz2
-        uses: softprops/action-gh-release@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: ./cachetool.phar.bz2
-          asset_name: cachetool.phar.bz2
-          asset_content_type: application/x-bzip2
 
       - name: Update GitHub Pages
         if: ${{ !contains(github.ref, '-') }}

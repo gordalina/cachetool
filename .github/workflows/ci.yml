@@ -77,10 +77,7 @@ jobs:
       - name: Setup PHP
         uses: shivammathur/setup-php@master
         with:
-          php-version: 7.4
-          extensions: apcu, xdebug, mbstring
-          ini-values: apc.enabled=1, apc.enable_cli=1, opcache.enable=1, opcache.enable_cli=1
-          coverage: xdebug
+          php-version: 8.0
 
       - name: Install Dependencies
         run: |

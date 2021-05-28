@@ -57,6 +57,13 @@ jobs:
       - name: Run test suite
         run: $(composer config bin-dir)/phpunit --coverage-clover=coverage.clover
 
+      - name: Upload coverage to coveralls
+        env:
+          COVERALLS_REPO_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          wget https://github.com/php-coveralls/php-coveralls/releases/download/v2.4.3/php-coveralls.phar
+          php php-coveralls.phar --coverage_clover=coverage.clover --json_path=coveralls-upload.json -v
+
   release:
     runs-on: ubuntu-20.04
     name: Create & Publish Release

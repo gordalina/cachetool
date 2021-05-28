@@ -95,9 +95,9 @@ jobs:
           $(composer config home)/vendor/bin/box compile --config=box.gz.json
           $(composer config home)/vendor/bin/box compile --config=box.bz2.json
 
-      - name: Get tag version
-        id: get_version
-        run: echo ::set-output name=VERSION::$(echo $GITHUB_REF | cut -d / -f 3)
+      - name: Tag
+        id: tag
+        run: echo ::set-output name=VERSION::${GITHUB_REF/refs\/tags\//}
 
       - name: Create GitHub Release
         id: create_release
@@ -105,8 +105,8 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          tag_name: ${{ github.ref }}
-          release_name: ${{ github.ref }}
+          name: ${{ steps.tag.outputs.VERSION }}
+          tag_name: ${{ steps.tag.outputs.VERSION }}
           draft: false
           prerelease: ${{ contains(github.ref, '-') }}
           files: |
@@ -117,7 +117,7 @@ jobs:
             LICENSE
           body: |
             ## Changelog
-            The full changelog can be found in our [changelog file](https://github.com/gordalina/cachetool/blob/${{ steps.get_version.outputs.VERSION }}/CHANGELOG.md)
+            The full changelog can be found in our [changelog file](https://github.com/gordalina/cachetool/blob/${{ steps.tag.outputs.VERSION }}/CHANGELOG.md)
 
       - name: Update GitHub Pages
         if: ${{ !contains(github.ref, '-') }}
@@ -125,4 +125,4 @@ jobs:
           REF="${{ github.ref }}"
           git config --global user.email "actions@github.com"
           git config --global user.name "GitHub Actions"
-          bin/update-gh-pages.sh ${REF/refs\/tags\//}
+          bin/update-gh-pages.sh ${{ steps.tag.outputs.VERSION }}

@@ -24,7 +24,7 @@
         "consolidation/self-update": "^1.2.0"
     },
     "require-dev": {
-        "phpunit/phpunit": "^8.0|^9.0"
+        "phpunit/phpunit": "^9.0"
     },
     "license": "MIT",
     "authors": [

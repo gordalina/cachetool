@@ -103,7 +103,7 @@ jobs:
 
       - name: Create GitHub Release
         id: create_release
-        uses: actions/create-release@v1
+        uses: softprops/action-gh-release@v1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
@@ -116,7 +116,7 @@ jobs:
             The full changelog can be found in our [changelog file](https://github.com/gordalina/cachetool/blob/${{ steps.get_version.outputs.VERSION }}/CHANGELOG.md)
 
       - name: Upload cachetool.phar
-        uses: actions/upload-release-asset@v1
+        uses: softprops/action-gh-release@v1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
@@ -126,24 +126,24 @@ jobs:
           asset_content_type: application/octet-stream
 
       - name: Upload cachetool.phar.gz
-        uses: actions/upload-release-asset@v1
+        uses: softprops/action-gh-release@v1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           upload_url: ${{ steps.create_release.outputs.upload_url }}
           asset_path: ./cachetool.phar.gz
           asset_name: cachetool.phar.gz
-          asset_content_type: application/octet-stream
+          asset_content_type: application/gzip
 
       - name: Upload cachetool.phar.bz2
-        uses: actions/upload-release-asset@v1
+        uses: softprops/action-gh-release@v1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           upload_url: ${{ steps.create_release.outputs.upload_url }}
           asset_path: ./cachetool.phar.bz2
           asset_name: cachetool.phar.bz2
-          asset_content_type: application/octet-stream
+          asset_content_type: application/x-bzip2
 
       - name: Update GitHub Pages
         if: ${{ !contains(github.ref, '-') }}

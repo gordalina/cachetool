@@ -10,17 +10,18 @@
         "fpm"
     ],
     "require": {
-        "hollodotme/fast-cgi-client": "^3.0",
-        "monolog/monolog": "^2.0",
+        "hollodotme/fast-cgi-client": "^3.1",
+        "monolog/monolog": "^2.2",
         "php": "^8.0",
-        "psr/log": "^1.0",
-        "symfony/console": "^5.3-RC1",
-        "symfony/dependency-injection": "^5.3-RC1",
-        "symfony/finder": "^5.3-RC1",
-        "symfony/process": "^5.3-RC1",
-        "symfony/yaml": "^5.3-RC1",
-        "symfony/http-client": "^5.3-RC1",
-        "symfony/http-foundation": "^5.3-RC1",
+        "psr/log": "^1.1",
+        "psr/container": "1.0.0",
+        "symfony/console": "~5.2",
+        "symfony/dependency-injection": "~5.2",
+        "symfony/finder": "~5.2",
+        "symfony/process": "~5.2",
+        "symfony/yaml": "~5.2",
+        "symfony/http-client": "~5.2",
+        "symfony/http-foundation": "~5.2",
         "consolidation/self-update": "^1.2.0"
     },
     "require-dev": {

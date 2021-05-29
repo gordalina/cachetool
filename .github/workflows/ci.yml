@@ -57,11 +57,12 @@ jobs:
       - name: Run test suite
         run: $(composer config bin-dir)/phpunit --coverage-clover=coverage.clover
 
-      - name: Upload coverage to scrutinizer
-        if: ${{ matrix.php-versions != '8.0' }}
+      - name: Upload coverage to coveralls
+        env:
+          COVERALLS_REPO_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          wget --quiet https://scrutinizer-ci.com/ocular.phar
-          php ocular.phar code-coverage:upload --format=php-clover coverage.clover
+          wget https://github.com/php-coveralls/php-coveralls/releases/download/v2.4.3/php-coveralls.phar
+          php php-coveralls.phar --coverage_clover=coverage.clover --json_path=coveralls-upload.json -v
 
   release:
     runs-on: ubuntu-20.04
@@ -77,10 +78,7 @@ jobs:
       - name: Setup PHP
         uses: shivammathur/setup-php@master
         with:
-          php-version: 7.4
-          extensions: apcu, xdebug, mbstring
-          ini-values: apc.enabled=1, apc.enable_cli=1, opcache.enable=1, opcache.enable_cli=1
-          coverage: xdebug
+          php-version: 8.0
 
       - name: Install Dependencies
         run: |
@@ -97,53 +95,29 @@ jobs:
           $(composer config home)/vendor/bin/box compile --config=box.gz.json
           $(composer config home)/vendor/bin/box compile --config=box.bz2.json
 
-      - name: Get tag version
-        id: get_version
-        run: echo ::set-output name=VERSION::$(echo $GITHUB_REF | cut -d / -f 3)
+      - name: Tag
+        id: tag
+        run: echo ::set-output name=VERSION::${GITHUB_REF/refs\/tags\//}
 
       - name: Create GitHub Release
         id: create_release
-        uses: actions/create-release@v1
+        uses: softprops/action-gh-release@v1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          tag_name: ${{ github.ref }}
-          release_name: ${{ github.ref }}
+          name: ${{ steps.tag.outputs.VERSION }}
+          tag_name: ${{ steps.tag.outputs.VERSION }}
           draft: false
           prerelease: ${{ contains(github.ref, '-') }}
+          files: |
+            cachetool.phar
+            cachetool.phar.gz
+            cachetool.phar.bz2
+            CHANGELOG.md
+            LICENSE
           body: |
             ## Changelog
-            The full changelog can be found in our [changelog file](https://github.com/gordalina/cachetool/blob/${{ steps.get_version.outputs.VERSION }}/CHANGELOG.md)
-
-      - name: Upload cachetool.phar
-        uses: actions/upload-release-asset@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: ./cachetool.phar
-          asset_name: cachetool.phar
-          asset_content_type: application/octet-stream
-
-      - name: Upload cachetool.phar.gz
-        uses: actions/upload-release-asset@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: ./cachetool.phar.gz
-          asset_name: cachetool.phar.gz
-          asset_content_type: application/octet-stream
-
-      - name: Upload cachetool.phar.bz2
-        uses: actions/upload-release-asset@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: ./cachetool.phar.bz2
-          asset_name: cachetool.phar.bz2
-          asset_content_type: application/octet-stream
+            The full changelog can be found in our [changelog file](https://github.com/gordalina/cachetool/blob/${{ steps.tag.outputs.VERSION }}/CHANGELOG.md)
 
       - name: Update GitHub Pages
         if: ${{ !contains(github.ref, '-') }}
@@ -151,4 +125,4 @@ jobs:
           REF="${{ github.ref }}"
           git config --global user.email "actions@github.com"
           git config --global user.name "GitHub Actions"
-          bin/update-gh-pages.sh ${REF/refs\/tags\//}
+          bin/update-gh-pages.sh ${{ steps.tag.outputs.VERSION }}

@@ -1,8 +1,7 @@
 # CacheTool - Manage cache in the CLI
 
 [![Build Status](https://github.com/gordalina/cachetool/workflows/ci/badge.svg)](https://github.com/gordalina/cachetool/actions)
-[![Scrutinizer Code Quality](https://img.shields.io/scrutinizer/g/gordalina/cachetool.svg)](https://scrutinizer-ci.com/g/gordalina/cachetool/?branch=master)
-[![Code Coverage](https://img.shields.io/scrutinizer/coverage/g/gordalina/cachetool.svg)](https://scrutinizer-ci.com/g/gordalina/cachetool/?branch=master)
+[![Coverage Status](https://coveralls.io/repos/github/gordalina/cachetool/badge.svg?branch=master)](https://coveralls.io/github/gordalina/cachetool?branch=master)
 
 CacheTool allows you to work with APCu, OPcache, and the file status cache
 through the CLI. It will connect to a FastCGI server (like PHP-FPM) and operate

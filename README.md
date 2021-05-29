@@ -18,7 +18,6 @@ Note that, unlike APCu and Opcache, the file status cache is per-process rather 
 
 ## Compatibility
 
-- CacheTool 7.x works with PHP `>=8.0`
 - CacheTool 6.x works with PHP `>=7.3`
 - CacheTool 5.x works with PHP `>=7.2`
 - CacheTool 4.x works with PHP `>=7.1`

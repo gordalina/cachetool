@@ -51,8 +51,13 @@ class Web extends AbstractAdapter
     {
         $file = sprintf("%s/%s", $this->path, $filename);
 
-        touch($file);
-        chmod($file, 0664);
+        if (!touch($file)) {
+            throw new \RuntimeException(sprintf("Could not create file: %s", $filename));
+        }
+
+        if (!chmod($file, 0664)) {
+            throw new \RuntimeException(sprintf("Could not chmod file: %s", $filename));
+        }
 
         return $file;
     }

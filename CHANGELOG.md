@@ -1,3 +1,7 @@
+# 6.4.0
+
+- [#183](https://github.com/gordalina/cachetool/pull/183) Pin psr/container to 1.0.0 & Throw error if files can't be written
+
 # 6.3.1
 
 - [#178](https://github.com/gordalina/cachetool/pull/178) Fix web cli parameter option (@nlemoine)

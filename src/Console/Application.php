@@ -112,6 +112,7 @@ class Application extends BaseApplication
         $definition->addOption(new InputOption('--web-url', null, InputOption::VALUE_OPTIONAL, 'If specified, used as a information for web adapter'));
         $definition->addOption(new InputOption('--web-allow-insecure', null, InputOption::VALUE_OPTIONAL, 'If specified, verify_peer and verify_host are disabled (only for SymfonyHttpClient)'));
         $definition->addOption(new InputOption('--web-basic-auth', null, InputOption::VALUE_OPTIONAL, 'If specified, used for basic authorization (only for SymfonyHttpClient)'));
+        $definition->addOption(new InputOption('--web-host', null, InputOption::VALUE_OPTIONAL, 'If specified, adds a Host header to web adapter request (only for SymfonyHttpClient)'));
         $definition->addOption(new InputOption('--tmp-dir', '-t', InputOption::VALUE_REQUIRED, 'Temporary directory to write files to'));
         $definition->addOption(new InputOption('--config', '-c', InputOption::VALUE_REQUIRED, 'If specified use this yaml configuration file'));
         return $definition;
@@ -207,6 +208,10 @@ class Application extends BaseApplication
                 if ($input->hasParameterOption('--web-basic-auth')) {
                     $this->config['webBasicAuth'] = $input->getParameterOption('--web-basic-auth');
                 }
+
+                if ($input->hasParameterOption('--web-host')) {
+                    $this->config['webHost'] = $input->getParameterOption('--web-host');
+                }
             }
         }
 
@@ -218,7 +223,9 @@ class Application extends BaseApplication
 
                 case 'SymfonyHttpClient':
 
-                    $symfonyHttpClientConfig = [];
+                    $symfonyHttpClientConfig = [
+                        'headers' => [],
+                    ];
 
                     if ($this->config['webAllowInsecure']) {
                         $symfonyHttpClientConfig['verify_peer'] = false;
@@ -227,6 +234,10 @@ class Application extends BaseApplication
 
                     if ($this->config['webBasicAuth']) {
                         $symfonyHttpClientConfig['auth_basic'] = $this->config['webBasicAuth'];
+                    }
+
+                    if (isset($this->config['webHost'])) {
+                        $symfonyHttpClientConfig['headers']['Host'] = $this->config['webHost'];
                     }
 
                     $this->config['http'] = new SymfonyHttpClient($this->config['webUrl'], $symfonyHttpClientConfig);

@@ -23,4 +23,11 @@ class ConfigTest extends \PHPUnit\Framework\TestCase
         unset($config['test']);
         $this->assertFalse(isset($config['test']));
     }
+
+    public function testFactoryNoFiles()
+    {
+        $config = Config::factory();
+
+        $this->assertEquals($config, new Config());
+    }
 }

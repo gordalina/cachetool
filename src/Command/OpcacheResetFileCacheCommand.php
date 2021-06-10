@@ -36,12 +36,10 @@ class OpcacheResetFileCacheCommand extends AbstractOpcacheCommand
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $this->ensureExtensionLoaded('Zend OPcache');
+        $fileCache = $this->getCacheTool()->ini_get('opcache.file_cache');
 
-        $info = $this->getCacheTool()->opcache_get_status();
-        $fileCache = $info['file_cache'] ?? false;
-
-        if (!$fileCache) {
-            throw new \RuntimeException('opcache.file_cache is not set.');
+        if (!is_dir($fileCache)) {
+            throw new \RuntimeException('opcache.file_cache is not set or is not a directory.');
         }
 
         if (!$input->getOption('force')) {

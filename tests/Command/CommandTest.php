@@ -43,11 +43,4 @@ abstract class CommandTest extends \PHPUnit\Framework\TestCase
             return $this->markTestSkipped('OPcache extension is in file_cache_only mode. (opcache.enable_cli)');
         }
     }
-
-    protected function assertNoHHVM()
-    {
-        if (defined('HHVM_VERSION')) {
-            $this->markTestSkipped('Not supported in HHVM');
-        }
-    }
 }

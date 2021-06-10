@@ -1,3 +1,8 @@
+# 6.5.0
+
+- [#185](https://github.com/gordalina/cachetool/pull/185) Support adding host header to web adapter (@jorissteyn)
+- Default web Http adapter to `FileGetContents` if none is provided.
+
 # 6.4.0
 
 - [#183](https://github.com/gordalina/cachetool/pull/183) Pin psr/container to 1.0.0 & Throw error if files can't be written

@@ -163,6 +163,19 @@ webBasicAuth: user:password
         $this->assertStringContainsString('opcache:configuration', $content);
     }
 
+    public function testWithInexistentConfigFile()
+    {
+        $app = new Application(new Config());
+        $app->setAutoExit(false);
+
+        $output = new BufferedOutput();
+        $code = $app->run(new StringInput('opcache:reset --config=/doesnotexist'), $output);
+        $content = $output->fetch();
+
+        $this->assertSame(1, $code);
+        $this->assertThat($content, new RegularExpression('|Could not read configuration file: /doesnotexist|'));
+    }
+
     public function testWithTmpDirArgNotWritable()
     {
         $app = new Application(new Config());

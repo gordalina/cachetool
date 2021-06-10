@@ -37,4 +37,15 @@ abstract class ProxyTest extends \PHPUnit\Framework\TestCase
 
         $this->assertSame($code, $result->getCode());
     }
+
+    protected function assertFailedProxyCode($code, $function, $arguments)
+    {
+        $mock = $this->createMock('CacheTool\Adapter\Cli');
+        $proxy = $this->createProxyInstance();
+        $proxy->setAdapter($mock);
+
+        $result = $proxy->$function(...$arguments);
+
+        $this->assertSame($code, $result->getCode());
+    }
 }

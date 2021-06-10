@@ -22,6 +22,12 @@ class CacheToolTest extends \PHPUnit\Framework\TestCase
         $this->assertNull($cachetool->getAdapter());
     }
 
+    public function testTempDir()
+    {
+        $cachetool = new CacheTool("/tmp");
+        $this->assertSame("/tmp", $cachetool->getTempDir());
+    }
+
     public function testFactoryWithAdapter()
     {
         $adapter = new Adapter\FastCGI();
@@ -40,6 +46,7 @@ class CacheToolTest extends \PHPUnit\Framework\TestCase
         $this->assertCount(3, $cachetool->getProxies());
         $this->assertSame($adapter, $cachetool->getAdapter());
         $this->assertSame($logger, $cachetool->getLogger());
+        $this->assertSame($logger, $cachetool->getAdapter()->getLogger());
     }
 
     public function testInexistentFunction()
@@ -66,6 +73,24 @@ class CacheToolTest extends \PHPUnit\Framework\TestCase
         $this->assertTrue(file_exists($dir));
 
         rmdir($dir);
+    }
+
+    public function testWithSetAdapterAndLogger()
+    {
+        $logger = $this->getLogger();
+        $cachetool = new CacheTool();
+        $cachetool->setLogger($this->getLogger());
+
+        $adapter = new Adapter\FastCGI();
+        $logger = $this->getLogger();
+
+        $cachetool = new CacheTool();
+        $cachetool->setAdapter($adapter);
+        $cachetool->setLogger($logger);
+
+        $this->assertSame($adapter, $cachetool->getAdapter());
+        $this->assertSame($logger, $cachetool->getLogger());
+        $this->assertSame($logger, $cachetool->getAdapter()->getLogger());
     }
 
     protected function getLogger()

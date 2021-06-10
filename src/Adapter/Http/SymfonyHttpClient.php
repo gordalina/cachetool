@@ -18,7 +18,7 @@ class SymfonyHttpClient extends AbstractHttp
 {
     private $client;
 
-    public function __construct($baseUrl, $httpClientConfig)
+    public function __construct($baseUrl, $httpClientConfig = [])
     {
         $this->client = HttpClient::create($httpClientConfig);
         parent::__construct($baseUrl);

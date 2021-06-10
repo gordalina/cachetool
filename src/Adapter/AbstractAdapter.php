@@ -82,6 +82,14 @@ abstract class AbstractAdapter
     }
 
     /**
+     * @return LoggerInterface
+     */
+    public function getLogger()
+    {
+        return $this->logger;
+    }
+
+    /**
      * @param  LoggerInterface $logger
      * @return AbstractAdapter
      */

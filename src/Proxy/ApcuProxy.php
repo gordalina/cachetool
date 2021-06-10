@@ -131,40 +131,6 @@ class ApcuProxy implements ProxyInterface
     }
 
     /**
-     * Retrieves caches keys & TTL from APCu's data store
-     *
-     * @since  3.1.1
-     *
-     * @param  null|string $regexp If is regex the return contains keys & ttl of entries found by regex, otherwise -
-     *                             keys & ttl of all entries
-     *
-     * @return boolean|array       Array of cached data's keys and ttl or FALSE on failure
-     */
-    public function apcu_regexp_get_keys($regexp = null)
-    {
-        if ($regexp && preg_match("/^\/.+\/[a-z]*$/i", $regexp) !== null) {
-            throw new \RuntimeException("{$regexp} is not a valid Regex");
-        }
-        $code = new Code();
-        $code->addStatement(sprintf(
-            '$keys = new \APCIterator("user", %s, APC_ITER_ALL, 10);',
-            var_export($regexp, true)
-        ));
-        $code->addStatement('$result = [];');
-        $code->addStatement('
-          if ($keys->getTotalCount()){
-            foreach ($keys as $key){
-              $result[] = [
-              "key" => $key["key"],
-              "ttl" => $key["ttl"]
-              ];
-            }
-          }');
-        $code->addStatement('return $result;');
-        return $this->adapter->run($code);
-    }
-
-    /**
      * Clears the user/system cache
      *
      * @since  2.0.0
@@ -222,31 +188,6 @@ class ApcuProxy implements ProxyInterface
             var_export($key, true)
         ));
 
-        return $this->adapter->run($code);
-    }
-
-    /**
-     * Retrieves caches keys & TTL from APCu's data store
-     *
-     * @since  3.1.1
-     *
-     * @param  null|string $regexp If is regex removes caches with keys found by regex,
-     *                             otherwise - removes all entries
-     *
-     * @return boolean    Return result
-     */
-    public function apcu_regexp_delete($regexp = null)
-    {
-        if ($regexp && preg_match("/^\/.+\/[a-z]*$/i", $regexp) !== null) {
-            throw new \RuntimeException("{$regexp} is not a valid Regex");
-        }
-
-        $code = new Code();
-        $code->addStatement(sprintf(
-            '$keys = new \APCIterator("user", %s, APC_ITER_KEY, 10);',
-            var_export($regexp, true)
-        ));
-        $code->addStatement('return apc_delete($keys);');
         return $this->adapter->run($code);
     }
 
@@ -320,6 +261,55 @@ class ApcuProxy implements ProxyInterface
         }
 
         return $result;
+    }
+
+    /**
+     * Retrieves caches keys & TTL from APCu's data store
+     *
+     * @since  3.1.1
+     *
+     * @param  null|string $regexp If is regex removes caches with keys found by regex,
+     *                             otherwise - removes all entries
+     *
+     * @return boolean    Return result
+     */
+    public function apcu_regexp_delete($regexp = null)
+    {
+        if ($regexp && preg_match("/^\/.+\/[a-z]*$/i", $regexp) !== 1) {
+            throw new \InvalidArgumentException("{$regexp} is not a valid Regex");
+        }
+
+        $code = new Code();
+        $code->addStatement(sprintf(
+            '$keys = new \APCUIterator(%s, APC_ITER_KEY, 10);',
+            var_export($regexp, true)
+        ));
+        $code->addStatement('return apcu_delete($keys);');
+        return $this->adapter->run($code);
+    }
+
+    /**
+     * Retrieves caches keys & TTL from APCu's data store
+     *
+     * @since  3.1.1
+     *
+     * @param  null|string $regexp If is regex the return contains keys & ttl of entries found by regex, otherwise -
+     *                             keys & ttl of all entries
+     *
+     * @return boolean|array       Array of cached data's keys and ttl or FALSE on failure
+     */
+    public function apcu_regexp_get_keys($regexp = null)
+    {
+        if ($regexp && preg_match("/^\/.+\/[a-z]*$/i", $regexp) !== 1) {
+            throw new \InvalidArgumentException("{$regexp} is not a valid Regex");
+        }
+
+        $code = new Code();
+        $code->addStatement(sprintf(
+            'return iterator_to_array(new \APCUIterator(%s, APC_ITER_ALL, 10));',
+            var_export($regexp, true)
+        ));
+        return $this->adapter->run($code);
     }
 
     /**

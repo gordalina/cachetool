@@ -233,7 +233,7 @@ $cache->opcache_reset();
 ## Proxies
 
 CacheTool depends on `Proxies` to provide functionality, by default when creating a CacheTool instance from the factory
-all proxies are enabled [`ApcuProxy`](https://github.com/gordalina/cachetool/blob/master/src/CacheTool/Proxy/ApcuProxy.php), [`OpcacheProxy`](https://github.com/gordalina/cachetool/blob/master/src/CacheTool/Proxy/OpcacheProxy.php) and [`PhpProxy`](https://github.com/gordalina/cachetool/blob/master/src/CacheTool/Proxy/PhpProxy.php), you can customize it or extend to your will like the example below:
+all proxies are enabled [`ApcuProxy`](https://github.com/gordalina/cachetool/blob/master/src/Proxy/ApcuProxy.php), [`OpcacheProxy`](https://github.com/gordalina/cachetool/blob/master/src/Proxy/OpcacheProxy.php) and [`PhpProxy`](https://github.com/gordalina/cachetool/blob/master/src/Proxy/PhpProxy.php), you can customize it or extend to your will like the example below:
 
 ```php
 use CacheTool\Adapter\FastCGI;

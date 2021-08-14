@@ -1,3 +1,8 @@
+# 7.0.0
+
+- Add compatibility to Symfony 5.3
+- Removes dependency pin on `psr/container@1.0.0`
+
 # 6.6.0
 
 - Add `opcache_invalidate_many()` to invalidate many scripts within the same request.

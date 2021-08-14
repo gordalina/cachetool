@@ -1,3 +1,7 @@
+# Next
+
+- Remove pin to psr/container
+
 # 6.5.0
 
 - [#185](https://github.com/gordalina/cachetool/pull/185) Support adding host header to web adapter (@jorissteyn)

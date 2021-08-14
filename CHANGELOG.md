@@ -1,3 +1,8 @@
+# Next
+
+- Add `opcache_invalidate_many()` to invalidate many scripts within the same request.
+- Update `opcache:invalidate:scripts` now issues only one request instead of one per file to be invalidated.
+
 # 6.5.0
 
 - [#185](https://github.com/gordalina/cachetool/pull/185) Support adding host header to web adapter (@jorissteyn)

@@ -11,6 +11,6 @@ class OpcacheInvalidateScriptsCommandTest extends CommandTest
         $result = $this->runCommand('opcache:invalidate:scripts src -v');
 
         $this->assertStringContainsString('opcache_get_status(', $result);
-        $this->assertStringContainsString('Cleaned | Filename', $result);
+        $this->assertStringContainsString('Invalidated | Filename', $result);
     }
 }

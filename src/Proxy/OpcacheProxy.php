@@ -32,6 +32,7 @@ class OpcacheProxy implements ProxyInterface
             'opcache_get_configuration',
             'opcache_get_status',
             'opcache_invalidate',
+            'opcache_invalidate_many',
             'opcache_reset',
 
             'opcache_version'
@@ -139,7 +140,7 @@ class OpcacheProxy implements ProxyInterface
     }
 
     /**
-     * Get status information about the cache
+     * Invalidates a cached script
      *
      * @since  5.5.0
      * @since  7.0.0
@@ -157,6 +158,27 @@ class OpcacheProxy implements ProxyInterface
             var_export($script, true),
             var_export($force, true)
         ));
+
+        return $this->adapter->run($code);
+    }
+
+    /**
+     * Invalidates many cached scripts
+     *
+     * @param  string[] $scripts The path to the scripts being invalidated.
+     * @param  boolean  $force   If set to TRUE, the script will be invalidated regardless of whether invalidation is
+     *                         necessary.
+     * @return boolean[]         Returns an array of TRUE if the opcode cache for the script was invalidated or if there was nothing to
+     *                         invalidate, or FALSE if the opcode cache is disabled.
+     */
+    public function opcache_invalidate_many(array $scripts, $force = false)
+    {
+        $code = new Code();
+        $code->addStatements([
+            'return array_map(function ($script) {',
+            sprintf('    return opcache_invalidate($script, %s);', var_export($force, true)),
+            sprintf('}, %s);', var_export($scripts, true)),
+        ]);
 
         return $this->adapter->run($code);
     }

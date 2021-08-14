@@ -6,7 +6,7 @@ class OpcacheProxyTest extends ProxyTest
 {
     public function testGetFunctions()
     {
-        $this->assertCount(7, $this->createProxyInstance()->getFunctions());
+        $this->assertCount(8, $this->createProxyInstance()->getFunctions());
     }
 
     public function testFunctions()
@@ -28,6 +28,15 @@ class OpcacheProxyTest extends ProxyTest
         $this->assertProxyCode("return opcache_get_configuration();", 'opcache_get_configuration', []);
         $this->assertProxyCode("return opcache_get_status(true);", 'opcache_get_status', [true]);
         $this->assertProxyCode("return opcache_invalidate('key', true);", 'opcache_invalidate', ['key', true]);
+        $this->assertProxyCode(join(PHP_EOL, [
+            'return array_map(function ($script) {',
+            '    return opcache_invalidate($script, true);',
+            '}, array (',
+            "  0 => 'key',",
+            "  1 => 'key2',",
+            '));',
+        ]), 'opcache_invalidate_many', [['key', 'key2'], true]);
+
         $this->assertProxyCode("opcache_reset();\nreturn true;", 'opcache_reset', []);
         $this->assertProxyCode('return phpversion("Zend OPcache");', 'opcache_version', []);
     }

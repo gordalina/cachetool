@@ -47,7 +47,7 @@ class OpcacheInvalidateScriptsCommand extends AbstractOpcacheCommand
         $table = new Table($output);
         $table
             ->setHeaders([
-                'Cleaned',
+                'Invalidated',
                 'Filename'
             ])
             ->setRows($this->processFilelist($info['scripts'], $path, $force))
@@ -60,21 +60,25 @@ class OpcacheInvalidateScriptsCommand extends AbstractOpcacheCommand
 
     protected function processFileList(array $cacheList, $path, $force)
     {
-        $list = [];
+        $processed = [];
+        $toInvalidate = [];
 
         sort($cacheList);
 
         foreach ($cacheList as $item) {
             $filename = $this->processFilename($item['full_path']);
             if (preg_match('|' . $path . '|', $filename)) {
-                $list[] = [
-                    $this->getCacheTool()->opcache_invalidate($filename, $force),
-                    $filename
-                ];
+                $toInvalidate[] = $filename;
             }
         }
 
-        return $list;
+        $result = $this->getCacheTool()->opcache_invalidate_many($toInvalidate, $force);
+
+        foreach ($toInvalidate as $idx => $filename) {
+            $processed[] = [var_export($result[$idx], true), $filename];
+        }
+
+        return $processed;
     }
 
     protected function processFilename($filename)

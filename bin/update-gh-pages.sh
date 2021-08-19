@@ -65,9 +65,9 @@ git add manifest.json
 git commit -m "Bump version ${TAG}"
 
 #
-# Go back to master
+# Go back to main 
 #
-git checkout master
+git checkout main
 
 git push origin gh-pages
 

@@ -1,7 +1,7 @@
-# Next
+# 6.6.0
 
 - Add `opcache_invalidate_many()` to invalidate many scripts within the same request.
-- Update `opcache:invalidate:scripts` now issues only one request instead of one per file to be invalidated.
+- Update `opcache:invalidate:scripts` to issue only one request for all files to be invalidated.
 
 # 6.5.0
 

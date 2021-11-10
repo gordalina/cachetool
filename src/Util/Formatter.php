@@ -43,7 +43,7 @@ class Formatter
             } else {
                 $date = new \DateTime($date);
             }
-            $date->setTimezone(new DateTimeZone(date_default_timezone_get()));
+            $date->setTimezone(new \DateTimeZone(date_default_timezone_get()));
         }
 
         return $date->format(\DateTime::RFC2822);

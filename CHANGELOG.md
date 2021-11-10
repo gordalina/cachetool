@@ -1,3 +1,7 @@
+# Next
+
+- [#190](https://github.com/gordalina/cachetool/pull/190) Use server timezone when displaying dates (@LeoShivas)
+
 # 7.0.0
 
 - Add compatibility to Symfony 5.3

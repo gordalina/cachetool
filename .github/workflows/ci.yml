@@ -13,12 +13,24 @@ on:
 jobs:
   test:
     runs-on: ${{ matrix.operating-system }}
+    continue-on-error: ${{ matrix.allow-failure }}
     strategy:
       max-parallel: 15
       matrix:
-        operating-system: [ubuntu-20.04, macOS-10.15]
-        php-versions: ["7.3", "7.4", "8.0", "8.1", "8.2"]
-    name: Test PHP ${{ matrix.php-versions }} on ${{ matrix.operating-system }}
+        operating-system: [ubuntu-20.04, macos-10.15, macos-11]
+        php-version: ["8.0", "8.1"]
+        allow-failure: [false]
+        include:
+          - php-version: 8.2
+            operating-system: ubuntu-20.04
+            allow-failure: true
+          - php-version: 8.2
+            operating-system: macos-10.15
+            allow-failure: true
+          - php-version: 8.2
+            operating-system: macos-11
+            allow-failure: true
+    name: Test PHP ${{ matrix.php-version }} on ${{ matrix.operating-system }}
     steps:
       - name: Checkout
         uses: actions/checkout@v2
@@ -26,7 +38,7 @@ jobs:
       - name: Setup PHP
         uses: shivammathur/setup-php@master
         with:
-          php-version: ${{ matrix.php-versions }}
+          php-version: ${{ matrix.php-version }}
           extensions: apcu, mbstring, pcov
           ini-values: apc.enabled=1, apc.enable_cli=1, opcache.enable=1, opcache.enable_cli=1, opcache.jit=disable
           coverage: pcov

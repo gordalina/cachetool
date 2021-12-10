@@ -1,6 +1,7 @@
-# Next
+# 8.0.0
 
 - [#190](https://github.com/gordalina/cachetool/pull/190) Use server timezone when displaying dates (@LeoShivas)
+- Removed support for PHP 7.x
 
 # 7.0.0
 

@@ -97,7 +97,7 @@ jobs:
       - name: Login to DockerHub
         uses: docker/login-action@v1
         with:
-          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          username: cachetool
           password: ${{ secrets.DOCKERHUB_TOKEN }}
 
       - name: Login to GitHub Container Registry
@@ -145,8 +145,15 @@ jobs:
             ghcr.io/gordalina/cachetool:${{ steps.info.outputs.VERSION }}
 
       - name: Push images
-        run: docker push gordalina/cachetool:${{ steps.info.outputs.VERSION }}
+        run: |
+          docker push gordalina/cachetool:${{ steps.info.outputs.VERSION }}
           docker push ghcr.io/gordalina/cachetool:${{ steps.info.outputs.VERSION }}
+
+      - name: Push latest images
+        if: ${{ !contains(github.ref, '-') }}
+        run: |
+          docker push gordalina/cachetool:latest
+          docker push ghcr.io/gordalina/cachetool:latest
 
       - name: Create GitHub Release
         id: create_release
@@ -175,9 +182,3 @@ jobs:
           git config --global user.email "actions@github.com"
           git config --global user.name "GitHub Actions"
           bin/update-gh-pages.sh ${{ steps.info.outputs.VERSION }}
-
-      - name: Push latest images
-        if: ${{ !contains(github.ref, '-') }}
-        run: |
-          docker push gordalina/cachetool:latest
-          docker push ghcr.io/gordalina/cachetool:latest

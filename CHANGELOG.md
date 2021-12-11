@@ -1,3 +1,7 @@
+# 8.0.2
+
+- Added building amd64 and arm64 docker images
+
 # 8.0.1
 
 - Changed dependency to PHP >=8.0.0

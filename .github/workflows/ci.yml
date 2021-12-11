@@ -87,6 +87,26 @@ jobs:
         with:
           fetch-depth: 0
 
+      - name: Get tag & commit hash
+        id: info
+        run: |
+          echo ::set-output name=VERSION::${GITHUB_REF/refs\/tags\//}
+          echo ::set-output name=COMMIT_SHA::$(git rev-parse --short HEAD)
+          echo ::set-output name=BUILD_DATE::$(date -u +'%Y-%m-%dT%H:%M:%SZ')
+
+      - name: Login to DockerHub
+        uses: docker/login-action@v1
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+
+      - name: Login to GitHub Container Registry
+        uses: docker/login-action@v1
+        with:
+          registry: ghcr.io
+          username: ${{ github.repository_owner }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
       - name: Setup PHP
         uses: shivammathur/setup-php@master
         with:
@@ -107,9 +127,26 @@ jobs:
           $(composer config home)/vendor/bin/box compile --config=box.gz.json
           $(composer config home)/vendor/bin/box compile --config=box.bz2.json
 
-      - name: Tag
-        id: tag
-        run: echo ::set-output name=VERSION::${GITHUB_REF/refs\/tags\//}
+      - name: Build & tag image
+        uses: docker/build-push-action@v2
+        with:
+          build-args: |
+            BUILD_DATE=${{ steps.info.outputs.BUILD_DATE }}
+            CACHETOOL_VERSION=${{ steps.info.outputs.VERSION }}
+            COMMIT_SHA=${{ steps.info.outputs.COMMIT_SHA }}
+            PHP_VERSION=8.0
+          context: .
+          load: true
+          push: false
+          tags: |
+            gordalina/cachetool:latest
+            gordalina/cachetool:${{ steps.info.outputs.VERSION }}
+            ghcr.io/gordalina/cachetool:latest
+            ghcr.io/gordalina/cachetool:${{ steps.info.outputs.VERSION }}
+
+      - name: Push images
+        run: docker push gordalina/cachetool:${{ steps.info.outputs.VERSION }}
+          docker push ghcr.io/gordalina/cachetool:${{ steps.info.outputs.VERSION }}
 
       - name: Create GitHub Release
         id: create_release
@@ -117,8 +154,8 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          name: ${{ steps.tag.outputs.VERSION }}
-          tag_name: ${{ steps.tag.outputs.VERSION }}
+          name: ${{ steps.info.outputs.VERSION }}
+          tag_name: ${{ steps.info.outputs.VERSION }}
           draft: false
           prerelease: ${{ contains(github.ref, '-') }}
           files: |
@@ -129,7 +166,7 @@ jobs:
             LICENSE
           body: |
             ## Changelog
-            The full changelog can be found in our [changelog file](https://github.com/gordalina/cachetool/blob/${{ steps.tag.outputs.VERSION }}/CHANGELOG.md)
+            The full changelog can be found in our [changelog file](https://github.com/gordalina/cachetool/blob/${{ steps.info.outputs.VERSION }}/CHANGELOG.md)
 
       - name: Update GitHub Pages
         if: ${{ !contains(github.ref, '-') }}
@@ -137,4 +174,10 @@ jobs:
           REF="${{ github.ref }}"
           git config --global user.email "actions@github.com"
           git config --global user.name "GitHub Actions"
-          bin/update-gh-pages.sh ${{ steps.tag.outputs.VERSION }}
+          bin/update-gh-pages.sh ${{ steps.info.outputs.VERSION }}
+
+      - name: Push latest images
+        if: ${{ !contains(github.ref, '-') }}
+        run: |
+          docker push gordalina/cachetool:latest
+          docker push ghcr.io/gordalina/cachetool:latest

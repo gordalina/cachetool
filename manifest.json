@@ -346,5 +346,11 @@
     "sha1": "b8ce86d5150f676f82650669d694f47e018b2528",
     "url": "https://github.com/gordalina/cachetool/releases/download/cachetool-8.0.1-alpha.0.phar",
     "version": "8.0.1-alpha.0"
+  },
+  {
+    "name": "cachetool.phar",
+    "sha1": "d0619d4e8cfc0fb34c89b918b7f8365ba2373b4b",
+    "url": "https://github.com/gordalina/cachetool/releases/download/cachetool-8.0.1.phar",
+    "version": "8.0.1"
   }
 ]

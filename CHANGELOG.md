@@ -1,3 +1,8 @@
+# 8.0.1
+
+- Changed dependency to PHP >=8.0.0
+- Added docker builds
+
 # 8.0.0
 
 - [#190](https://github.com/gordalina/cachetool/pull/190) Use server timezone when displaying dates (@LeoShivas)

@@ -44,6 +44,10 @@ https://github.com/gordalina/cachetool/releases/latest/download/cachetool.phar.g
 https://github.com/gordalina/cachetool/releases/latest/download/cachetool.phar.bz2
 ```
 
+CacheTool is also packaged as a docker container available in [docker hub](https://hub.docker.com/r/gordalina/cachetool) and [github](https://github.com/gordalina/cachetool/pkgs/container/cachetool) container registries.
+
+See below for [docker usage instructions](#usage-via-docker).
+
 ## Installation - old versions
 
 Use tag name in the binary file name. E.g to download cachetool 3.2.2
@@ -133,7 +137,10 @@ You have some useful commands that you can use
 
 ## Usage via Docker
 
-The great folks at @sbitio, namely @NITEMAN and @jonhattan wrote a docker image that you can invoke to run CacheTool. The images are hosted in https://hub.docker.com/r/sbitio/cachetool
+Images are available in docker hub and github container registries:
+
+- `gordalina/cachetool:latest`
+- `ghcr.io/gordalina/cachetool:latest`
 
 This is an example run with the `web` adapter:
 
@@ -141,10 +148,24 @@ This is an example run with the `web` adapter:
 APPDIR="/var/www/example.com"
 DOCROOT="/var/www/example.com/current/web"
 URL="http://example.com"
-docker run --rm -v $APPDIR:$APPDIR -w $DOCROOT sbitio/cachetool cachetool --web --web-url=$URL [options] [arguments]
+
+docker run --rm -v $APPDIR:$APPDIR -w $DOCROOT gordalina/cachetool cachetool --web --web-url=$URL [options] [arguments]
 ```
 
-Read more on their project page: https://github.com/sbitio/docker-cachetool
+If the website is behind a proxy and/or load balancer you may want to ask directly the webserver instead of the public facing ip. Additionally, the webserver may be listening in another port. This is an example for running cachetool from the webserver host in such a setup:
+
+```sh
+DOMAIN="example.com"
+PORT="8008"
+APPDIR="/var/www/example.com"
+DOCROOT="/var/www/example.com/current/web"
+URL="http://$DOMAIN:$PORT"
+
+docker run --rm --add-host $DOMAIN:172.17.0.1 -v $APPDIR:$APPDIR -w $DOCROOT sbitio/cachetool --web --web-url=$URL [options] [arguments]
+```
+
+Thank you to @jonhattan and @NITEMAN for the [work with docker](https://github.com/sbitio/docker-cachetool).
+
 
 ## Configuration File
 

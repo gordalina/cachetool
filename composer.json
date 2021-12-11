@@ -12,7 +12,7 @@
     "require": {
         "hollodotme/fast-cgi-client": "^3.0",
         "monolog/monolog": "^1.0|^2.0",
-        "php": "^7.3|^8.0",
+        "php": ">=8.0.0",
         "psr/log": "^1.0",
         "symfony/console": "^4.0|^5.0",
         "symfony/dependency-injection": "^4.0|^5.0",
@@ -45,10 +45,5 @@
     },
     "bin": [
         "bin/cachetool"
-    ],
-    "config": {
-        "platform": {
-            "php": "8.0.0"
-        }
-    }
+    ]
 }

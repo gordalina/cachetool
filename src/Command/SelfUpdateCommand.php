@@ -31,7 +31,7 @@ class SelfUpdateCommand extends \SelfUpdate\SelfUpdateCommand
             );
     }
 
-    protected function execute(InputInterface $input, OutputInterface $output) {
+    protected function execute(InputInterface $input, OutputInterface $output): int {
         $result = parent::execute($input, $output);
 
         if (is_int($result)) {

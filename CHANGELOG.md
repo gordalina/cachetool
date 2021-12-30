@@ -1,6 +1,7 @@
 # 8.1.0
 
 - Added support for Symfony 6.x
+- Added support for preview self-updates
 - Updated dependencies
 
 # 8.0.2

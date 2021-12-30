@@ -19,6 +19,7 @@ jobs:
       matrix:
         operating-system: [ubuntu-20.04, macos-10.15, macos-11]
         php-version: ["8.0", "8.1"]
+        symfony-version: ["^4.0", "^5.0"]
         allow-failure: [false]
         include:
           - php-version: 8.2
@@ -63,8 +64,11 @@ jobs:
           key: ${{ runner.os }}-composer-${{ hashFiles('composer.json') }}
           restore-keys: ${{ runner.os }}-composer-${{ hashFiles('composer.json') }}
 
+      - name: Set Symfony version
+        run: composer config extra.symfony.require ${{ matrix.symfony-version }}
+
       - name: Install Dependencies
-        run: composer install --prefer-dist
+        run: composer install --prefer-dist --no-interaction
 
       - name: Run test suite
         run: $(composer config bin-dir)/phpunit --coverage-clover=coverage.clover

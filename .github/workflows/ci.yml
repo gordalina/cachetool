@@ -31,7 +31,7 @@ jobs:
           - php-version: 8.2
             operating-system: macos-11
             allow-failure: true
-    name: Test PHP ${{ matrix.php-version }} on ${{ matrix.operating-system }}
+    name: Test PHP ${{ matrix.php-version }} on ${{ matrix.operating-system }} with symfony ${{ matrix.symfony-version }}
     steps:
       - name: Checkout
         uses: actions/checkout@v2
@@ -65,7 +65,9 @@ jobs:
           restore-keys: ${{ runner.os }}-composer-${{ hashFiles('composer.json') }}
 
       - name: Set Symfony version
-        run: composer config extra.symfony.require ${{ matrix.symfony-version }}
+        run: |
+          composer config extra.symfony.require ${{ matrix.symfony-version }}
+          composer update "symfony/*"
 
       - name: Install Dependencies
         run: composer install --prefer-dist --no-interaction

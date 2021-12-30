@@ -1,3 +1,8 @@
+# 8.1.0
+
+- Added support for Symfony 6.x
+- Updated dependencies
+
 # 8.0.2
 
 - Added building amd64 and arm64 docker images

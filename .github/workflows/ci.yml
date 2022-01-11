@@ -64,7 +64,12 @@ jobs:
           restore-keys: ${{ runner.os }}-composer-${{ hashFiles('composer.json') }}
 
       - name: Install Dependencies
+        if: ${{ !matrix.allow-failure }}
         run: composer install --prefer-dist
+
+      - name: Install Dependencies (ignoring platform requirements)
+        if: ${{ matrix.allow-failure }}
+        run: composer install --prefer-dist --ignore-platform-req=php+
 
       - name: Run test suite
         run: $(composer config bin-dir)/phpunit --coverage-clover=coverage.clover

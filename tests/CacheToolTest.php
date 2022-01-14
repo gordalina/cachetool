@@ -4,7 +4,6 @@ namespace CacheTool;
 
 use CacheTool\CacheTool;
 use CacheTool\Adapter;
-use Monolog\Logger;
 
 class CacheToolTest extends \PHPUnit\Framework\TestCase
 {

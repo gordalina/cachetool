@@ -3,7 +3,6 @@
 namespace CacheTool\Adapter\Http;
 
 use CacheTool\Adapter\Http\FileGetContents;
-use CacheTool\Code;
 use Symfony\Component\Process\Process;
 
 class FileGetContentsTest extends \PHPUnit\Framework\TestCase

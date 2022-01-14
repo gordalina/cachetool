@@ -23,6 +23,7 @@ use Monolog\Logger;
 use SelfUpdate\SelfUpdateCommand;
 use Symfony\Component\Console\Application as BaseApplication;
 use Symfony\Component\Console\Command\Command;
+use Symfony\Component\Console\Input\InputDefinition;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -59,7 +60,7 @@ class Application extends BaseApplication
     /**
      * {@inheritdoc}
      */
-    protected function getDefaultCommands()
+    protected function getDefaultCommands(): array
     {
         $commands = parent::getDefaultCommands();
         $commands[] = new SelfUpdateCommand(
@@ -102,7 +103,7 @@ class Application extends BaseApplication
     /**
      * {@inheritDoc}
      */
-    protected function getDefaultInputDefinition()
+    protected function getDefaultInputDefinition(): InputDefinition
     {
         $definition = parent::getDefaultInputDefinition();
         $definition->addOption(new InputOption('--fcgi', null, InputOption::VALUE_OPTIONAL, 'If specified, used as a connection string to FastCGI server.'));

@@ -1,3 +1,8 @@
+# Next
+
+- [#201](https://github.com/gordalina/cachetool/pull/201) Cleanup unused use statements
+- [#201](https://github.com/gordalina/cachetool/pull/200) Preserve Symfony 6 compatibility
+
 # 8.1.0
 
 - Added support for Symfony 6.x

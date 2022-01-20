@@ -3,7 +3,6 @@
 namespace CacheTool\Adapter\Http;
 
 use CacheTool\Adapter\Http\SymfonyHttpClient;
-use CacheTool\Code;
 use Symfony\Component\Process\Process;
 
 class SymfonyHttpClientTest extends \PHPUnit\Framework\TestCase

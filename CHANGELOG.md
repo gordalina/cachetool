@@ -1,7 +1,8 @@
-# Next
+# 8.2.0
 
+- [#203](https://github.com/gordalina/cachetool/pull/203) Update psr/log requirements to ^1|^2|^3
 - [#201](https://github.com/gordalina/cachetool/pull/201) Cleanup unused use statements
-- [#201](https://github.com/gordalina/cachetool/pull/200) Preserve Symfony 6 compatibility
+- [#200](https://github.com/gordalina/cachetool/pull/200) Preserve Symfony 6 compatibility
 
 # 8.1.0
 

@@ -13,7 +13,7 @@ class SymfonyHttpClientTest extends \PHPUnit\Framework\TestCase
 
     public static function setUpBeforeClass(): void
     {
-        self::$process = new Process(['php', '-S', 'localhost:9999', '-t', '.']);
+        self::$process = new Process(['php', '-S', '127.0.0.1:9999', '-t', '.']);
         self::$process->start();
 
         usleep(100000); //wait for server to get going
@@ -27,6 +27,12 @@ class SymfonyHttpClientTest extends \PHPUnit\Framework\TestCase
     public function testFetch()
     {
         $client = new SymfonyHttpClient('http://localhost:9999');
+        $this->assertStringStartsWith('# CacheTool', $client->fetch('README.md'));
+    }
+
+    public function testFetchUnderscores()
+    {
+        $client = new SymfonyHttpClient('http://_.127.0.0.1.sslip.io:9999');
         $this->assertStringStartsWith('# CacheTool', $client->fetch('README.md'));
     }
 

@@ -1,3 +1,8 @@
+# 8.3.0
+
+- Allow underscores in web url
+- Display realpath stat expiration in human-readable UTC date
+
 # 8.2.0
 
 - [#203](https://github.com/gordalina/cachetool/pull/203) Update psr/log requirements to ^1|^2|^3
@@ -23,6 +28,10 @@
 
 - [#190](https://github.com/gordalina/cachetool/pull/190) Use server timezone when displaying dates (@LeoShivas)
 - Removed support for PHP 7.x
+
+# 7.1.0
+
+- Allow underscores in web url
 
 # 7.0.0
 

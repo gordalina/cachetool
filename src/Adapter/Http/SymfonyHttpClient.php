@@ -29,7 +29,7 @@ class SymfonyHttpClient extends AbstractHttp
         try {
             $url = "{$this->baseUrl}/{$filename}";
 
-            if (!filter_var($url, FILTER_VALIDATE_URL)) {
+            if (!parse_url($url, PHP_URL_HOST)) {
                 throw new \RuntimeException(
                     sprintf(
                         "The given url is not valid: %s, did you forget to specify the --web-url option?",

@@ -62,7 +62,7 @@ class StatRealpathGetCommand extends AbstractCommand
                $item['key'],
                $item['is_dir'],
                $item['realpath'],
-               $item['expires'],
+               gmdate(DATE_RFC2822, $item['expires']),
             ];
         }
 

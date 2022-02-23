@@ -1,3 +1,7 @@
+# 8.4.0
+
+- PHP 8.1 compatibility
+
 # 8.3.0
 
 - Allow underscores in web url

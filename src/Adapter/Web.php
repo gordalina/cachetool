@@ -34,6 +34,10 @@ class Web extends AbstractAdapter
         $file = $this->createWebFile($filename);
         $code->writeTo($file);
 
+        // @todo this is so far only for testing if this solves issues with that URL not 
+        // being immediately available (404 is returned in that case).
+        sleep(3);
+
         $content = $this->http->fetch($filename);
 
         if (!@unlink($file)) {

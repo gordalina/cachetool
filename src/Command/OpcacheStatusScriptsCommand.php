@@ -62,21 +62,10 @@ class OpcacheStatusScriptsCommand extends AbstractOpcacheCommand
             $list[] = [
                 number_format($item['hits']),
                 Formatter::bytes($item['memory_consumption']),
-                $this->processFilename($item['full_path']),
+                $item['full_path'],
             ];
         }
 
         return $list;
-    }
-
-    protected function processFilename($filename)
-    {
-        $dir = getcwd();
-
-        if (0 === strpos($filename, $dir)) {
-            return "." . substr($filename, strlen($dir));
-        }
-
-        return $filename;
     }
 }

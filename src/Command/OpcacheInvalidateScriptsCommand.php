@@ -66,7 +66,7 @@ class OpcacheInvalidateScriptsCommand extends AbstractOpcacheCommand
         sort($cacheList);
 
         foreach ($cacheList as $item) {
-            $filename = $this->processFilename($item['full_path']);
+            $filename = $item['full_path'];
             if (preg_match('|' . $path . '|', $filename)) {
                 $toInvalidate[] = $filename;
             }
@@ -79,16 +79,5 @@ class OpcacheInvalidateScriptsCommand extends AbstractOpcacheCommand
         }
 
         return $processed;
-    }
-
-    protected function processFilename($filename)
-    {
-        $dir = getcwd();
-
-        if (0 === strpos($filename, $dir)) {
-            return "." . substr($filename, strlen($dir));
-        }
-
-        return $filename;
     }
 }

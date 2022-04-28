@@ -16,11 +16,16 @@ use CacheTool\Code;
 
 class Web extends AbstractAdapter
 {
+    // try for 120s (the default php.ini realpath_cache_ttl setting) + 6s
+    private const maxTries = 42;
+    private const retryDelayS = 3;
     private $path;
     private $http;
 
     public function __construct($path, HttpInterface $http)
     {
+        // clear CLI realpath cache
+        clearstatcache(true);
         $this->path = realpath($path);
         $this->http = $http;
     }
@@ -34,11 +39,27 @@ class Web extends AbstractAdapter
         $file = $this->createWebFile($filename);
         $code->writeTo($file);
 
-        // @todo this is so far only for testing if this solves issues with that URL not 
-        // being immediately available (404 is returned in that case).
-        sleep(3);
+        // Some storage setups lead to created files not immediately being accessible via HTTP.
+        // Try fetching up to self::maxTries times in self::retryDelay seconds intervals:
+        for ($i = 0; $i < self::maxTries; $i++) {
+            $content = $this->http->fetch($filename);
+            $result = @unserialize($content);
 
-        $content = $this->http->fetch($filename);
+            // HttpInterface::fetch() returns errors in this structure:
+            if (count($result['result']['errors'] ?? []) === 0) {
+                break;
+            }
+
+            // echo the erroring result to stderr
+            fwrite(
+                STDERR,
+                printf(
+                    '%s\n',
+                    json_encode($result)
+                )
+            );
+            sleep(self::retryDelayS);
+        }
 
         if (!@unlink($file)) {
             $this->logger->debug(sprintf('Web: Could not delete file: %s', $file));
@@ -49,6 +70,7 @@ class Web extends AbstractAdapter
 
     /**
      * @param string $filename
+     *
      * @return string
      */
     protected function createWebFile($filename)

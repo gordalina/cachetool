@@ -242,14 +242,14 @@ Create instance
 use CacheTool\Adapter\FastCGI;
 use CacheTool\CacheTool;
 
-$adapter = new FastCGI('127.0.0.1:9000', $tempDir = '/tmp');
-$cache = CacheTool::factory($adapter);
+$adapter = new FastCGI('127.0.0.1:9000');
+$cache = CacheTool::factory($adapter, '/tmp);
 ```
 
 You can use `apcu` and `opcache` functions
 
 ```php
-$cache->apcu_clear_cache('both');
+$cache->apcu_clear_cache();
 $cache->opcache_reset();
 ```
 

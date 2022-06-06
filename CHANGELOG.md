@@ -1,3 +1,8 @@
+# 8.4.1
+
+- [#211](https://github.com/gordalina/cachetool/pull/211) Always use full paths in `opcache:*:scripts` commands
+- [#206](https://github.com/gordalina/cachetool/pull/206) Typo & documentation fixes
+
 # 8.4.0
 
 - PHP 8.1 compatibility

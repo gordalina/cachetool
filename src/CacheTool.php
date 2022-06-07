@@ -16,6 +16,38 @@ use CacheTool\Proxy\ProxyInterface;
 use Psr\Log\LoggerInterface;
 use Monolog\Logger;
 
+/**
+ * @method mixed apcu_add(mixed $key, mixed $var, int $ttl = 0)
+ * @method boolean apcu_cache_info(boolean $limited = false)
+ * @method boolean|array apcu_regexp_get_keys(?string $regexp = null)
+ * @method boolean apcu_cas(string $key, int $old, int $new)
+ * @method boolean apcu_clear_cache()
+ * @method mixed apcu_dec(string $key, int $step = 1, \stdClass $ref = false)
+ * @method mixed apcu_delete(mixed $key)
+ * @method boolean apcu_regexp_delete(?string $regexp = null)
+ * @method mixed apcu_exists(mixed $regexp = null)
+ * @method mixed apcu_fetch(mixed $key, \stdClass $ref = false)
+ * @method mixed apcu_inc(string $key, int $step = 1, \stdClass $ref = false)
+ * @method boolean apcu_sma_info(boolean $limited = false)
+ * @method boolean apcu_store(mixed $key, mixed $var = null, int $ttl = 0)
+ * @method string apcu_version()
+ * @method boolean opcache_compile_file(string $file)
+ * @method boolean opcache_compile_files(array $files)
+ * @method array opcache_get_configuration()
+ * @method array opcache_get_status(boolean $get_scripts = true)
+ * @method boolean opcache_invalidate(string $filename, boolean $force)
+ * @method array<boolean> opcache_invalidate_many(array $scripts, boolean $force)
+ * @method boolean opcache_reset()
+ * @method string opcache_version()
+ * @method boolean extension_loaded(string $name)
+ * @method string ini_get(string $varname)
+ * @method string ini_set(string $varname, string $newvalue)
+ * @method string phpversion(string $extension = null)
+ * @method array stat_realpath_get()
+ * @method int stat_realpath_size()
+ * @method void stat_cache_clear()
+ * @method mixed _eval(string $expression)
+ */
 class CacheTool
 {
     /**

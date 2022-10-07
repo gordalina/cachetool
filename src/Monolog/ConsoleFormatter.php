@@ -12,7 +12,9 @@
 namespace CacheTool\Monolog;
 
 use Monolog\Formatter\LineFormatter;
+use Monolog\Level;
 use Monolog\Logger;
+use Monolog\LogRecord;
 
 /**
  * Formats incoming records for console output by coloring them depending on log level.
@@ -21,27 +23,45 @@ use Monolog\Logger;
  */
 class ConsoleFormatter extends LineFormatter
 {
-    const SIMPLE_FORMAT = "%start_tag%[%datetime%] %channel%.%level_name%:%end_tag% %message% %context% %extra%\n";
+    const SIMPLE_FORMAT = "%extra.start_tag%[%datetime%] %channel%.%level_name%:%extra.end_tag% %message% %context% %extra%\n";
 
     /**
      * {@inheritdoc}
      */
-    public function format(array $record): string
+    public function format(array|LogRecord $record): string
     {
-        if ($record['level'] >= Logger::ERROR) {
-            $record['start_tag'] = '<error>';
-            $record['end_tag'] = '</error>';
-        } elseif ($record['level'] >= Logger::NOTICE) {
-            $record['start_tag'] = '<comment>';
-            $record['end_tag'] = '</comment>';
-        } elseif ($record['level'] >= Logger::INFO) {
-            $record['start_tag'] = '<info>';
-            $record['end_tag'] = '</info>';
+        if (Logger::API < 3) {
+            if ($record['level'] >= Logger::ERROR) {
+                $record = $this->addTags($record, 'error');
+            } elseif ($record['level'] >= Logger::NOTICE) {
+                $record = $this->addTags($record, 'comment');
+            } elseif ($record['level'] >= Logger::INFO) {
+                $record = $this->addTags($record, 'info');
+            } else {
+                $record = $this->addTags($record);
+            }
+
+            return parent::format($record);
+        }
+
+        if (Level::Error->includes($record->level)) {
+            $this->addTags($record, 'error');
+        } elseif (Level::Notice->includes($record->level)) {
+            $this->addTags($record, 'comment');
+        } elseif (Level::Info->includes($record->level)) {
+            $this->addTags($record, 'info');
         } else {
-            $record['start_tag'] = '';
-            $record['end_tag'] = '';
+            $this->addTags($record);
         }
 
         return parent::format($record);
+    }
+
+    private function addTags(array|LogRecord $record, ?string $tag = null): array|LogRecord
+    {
+        $record['extra']['start_tag'] = $tag ? sprintf('<%s>', $tag) : '';
+        $record['extra']['end_tag'] = $tag ? sprintf('</%s>', $tag) : '';
+
+        return $record;
     }
 }

@@ -1,4 +1,4 @@
-# Next
+# 8.5.0
 
 - [#206](https://github.com/gordalina/cachetool/pull/206) Add phpdoc for proxy classes (@myfluxi)
 - [#212](https://github.com/gordalina/cachetool/issues/212) Fix inconsistency when setting temp dir.

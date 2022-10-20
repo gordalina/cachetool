@@ -16,17 +16,6 @@ Why is this useful?
 
 Note that, unlike APCu and Opcache, the file status cache is per-process rather than stored in shared memory. This means that running `stat:clear` against PHP-FPM will only affect whichever FPM worker responds to the request, not the whole pool. [Julien Pauli has written a post](http://blog.jpauli.tech/2014-06-30-realpath-cache-html/) with more details on how the file status cache operates.
 
-## Compatibility
-
-- CacheTool 8.x works with PHP `>=8.0`
-- CacheTool 7.x works with PHP `>=7.3`
-- CacheTool 6.x works with PHP `>=7.3`
-- CacheTool 5.x works with PHP `>=7.2`
-- CacheTool 4.x works with PHP `>=7.1`
-- CacheTool 3.x works with PHP `>=5.5.9`
-- CacheTool 2.x works with PHP `>=5.5.9`
-- CacheTool 1.x works with PHP `>=5.3.3`
-
 ## Installation - Latest version
 
 ```sh
@@ -277,6 +266,17 @@ Running `php cachetool.phar self-update` will update a phar install with the lat
 ## Testing
 
 After running `composer install`, run `./vendor/bin/phpunit`
+
+## Compatibility
+
+- CacheTool 8.x works with PHP `>=8.0`
+- CacheTool 7.x works with PHP `>=7.3`
+- CacheTool 6.x works with PHP `>=7.3`
+- CacheTool 5.x works with PHP `>=7.2`
+- CacheTool 4.x works with PHP `>=7.1`
+- CacheTool 3.x works with PHP `>=5.5.9`
+- CacheTool 2.x works with PHP `>=5.5.9`
+- CacheTool 1.x works with PHP `>=5.3.3`
 
 ## Troubleshooting
 

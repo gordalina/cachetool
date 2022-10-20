@@ -19,6 +19,9 @@ if (!$loaded) {
     );
 }
 
+ini_set('display_errors', '0');
+error_reporting(0);
+
 use CacheTool\Console\Application;
 use CacheTool\Console\Config;
 

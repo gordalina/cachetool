@@ -1,3 +1,7 @@
+# Next
+
+- [#216](https://github.com/gordalina/cachetool/issues/216) Do not display errors when running the CLI.
+
 # 8.4.1
 
 - [#211](https://github.com/gordalina/cachetool/pull/211) Always use full paths in `opcache:*:scripts` commands

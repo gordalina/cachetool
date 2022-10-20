@@ -33,7 +33,7 @@ class OpcacheCompileScriptsCommand extends AbstractCommand
                 'exclude',
                 null,
                 InputOption::VALUE_IS_ARRAY | InputOption::VALUE_OPTIONAL,
-                'Exclude files from given path'
+                'Exclude files from given path, this is relative to the path argument.'
             )
             ->addOption(
                 'batch',

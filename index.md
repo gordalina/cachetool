@@ -1,7 +1,9 @@
 # CacheTool - Manage cache in the CLI
 
-[![Build Status](https://github.com/gordalina/cachetool/workflows/ci/badge.svg)](https://github.com/gordalina/cachetool/actions)
-[![Coverage Status](https://coveralls.io/repos/github/gordalina/cachetool/badge.svg?branch=master)](https://coveralls.io/github/gordalina/cachetool?branch=master)
+[![Build Status](https://img.shields.io/github/workflow/status/gordalina/cachetool/ci?style=flat-square)](https://github.com/gordalina/cachetool/actions)
+[![Coverage Status](https://img.shields.io/coveralls/github/gordalina/cachetool/master?style=flat-square)](https://coveralls.io/github/gordalina/cachetool?branch=master)
+[![Version](https://img.shields.io/github/v/tag/gordalina/cachetool?sort=semver&style=flat-square)](https://github.com/gordalina/cachetool/releases)
+[![Downloads](https://img.shields.io/packagist/dt/gordalina/cachetool?style=flat-square)](https://packagist.org/packages/gordalina/cachetool)
 
 CacheTool allows you to work with APCu, OPcache, and the file status cache
 through the CLI. It will connect to a FastCGI server (like PHP-FPM) and operate
@@ -15,17 +17,6 @@ Why is this useful?
 - And many more...
 
 Note that, unlike APCu and Opcache, the file status cache is per-process rather than stored in shared memory. This means that running `stat:clear` against PHP-FPM will only affect whichever FPM worker responds to the request, not the whole pool. [Julien Pauli has written a post](http://blog.jpauli.tech/2014-06-30-realpath-cache-html/) with more details on how the file status cache operates.
-
-## Compatibility
-
-- CacheTool 8.x works with PHP `>=8.0`
-- CacheTool 7.x works with PHP `>=7.3`
-- CacheTool 6.x works with PHP `>=7.3`
-- CacheTool 5.x works with PHP `>=7.2`
-- CacheTool 4.x works with PHP `>=7.1`
-- CacheTool 3.x works with PHP `>=5.5.9`
-- CacheTool 2.x works with PHP `>=5.5.9`
-- CacheTool 1.x works with PHP `>=5.3.3`
 
 ## Installation - Latest version
 
@@ -243,7 +234,7 @@ use CacheTool\Adapter\FastCGI;
 use CacheTool\CacheTool;
 
 $adapter = new FastCGI('127.0.0.1:9000');
-$cache = CacheTool::factory($adapter, '/tmp);
+$cache = CacheTool::factory($adapter, '/tmp');
 ```
 
 You can use `apcu` and `opcache` functions
@@ -277,6 +268,17 @@ Running `php cachetool.phar self-update` will update a phar install with the lat
 ## Testing
 
 After running `composer install`, run `./vendor/bin/phpunit`
+
+## Compatibility
+
+- CacheTool 8.x works with PHP `>=8.0`
+- CacheTool 7.x works with PHP `>=7.3`
+- CacheTool 6.x works with PHP `>=7.3`
+- CacheTool 5.x works with PHP `>=7.2`
+- CacheTool 4.x works with PHP `>=7.1`
+- CacheTool 3.x works with PHP `>=5.5.9`
+- CacheTool 2.x works with PHP `>=5.5.9`
+- CacheTool 1.x works with PHP `>=5.3.3`
 
 ## Troubleshooting
 

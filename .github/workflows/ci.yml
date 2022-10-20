@@ -17,18 +17,12 @@ jobs:
     strategy:
       max-parallel: 15
       matrix:
-        operating-system: [ubuntu-22.04, ubuntu-20.04, macos-10.15, macos-11]
-        php-version: ["8.0", "8.1"]
+        operating-system: [ubuntu-22.04, macos-11]
+        php-version: ["8.1"]
         allow-failure: [false]
         include:
           - php-version: 8.2
             operating-system: ubuntu-22.04
-            allow-failure: true
-          - php-version: 8.2
-            operating-system: ubuntu-20.04
-            allow-failure: true
-          - php-version: 8.2
-            operating-system: macos-10.15
             allow-failure: true
           - php-version: 8.2
             operating-system: macos-11
@@ -149,7 +143,7 @@ jobs:
             BUILD_DATE=${{ steps.info.outputs.BUILD_DATE }}
             CACHETOOL_VERSION=${{ steps.info.outputs.VERSION }}
             COMMIT_SHA=${{ steps.info.outputs.COMMIT_SHA }}
-            PHP_VERSION=8.0
+            PHP_VERSION=8.1
           context: .
           platforms: linux/amd64,linux/arm64
           push: true
@@ -167,7 +161,7 @@ jobs:
             BUILD_DATE=${{ steps.info.outputs.BUILD_DATE }}
             CACHETOOL_VERSION=${{ steps.info.outputs.VERSION }}
             COMMIT_SHA=${{ steps.info.outputs.COMMIT_SHA }}
-            PHP_VERSION=8.0
+            PHP_VERSION=8.1
           context: .
           platforms: linux/amd64,linux/arm64
           push: true

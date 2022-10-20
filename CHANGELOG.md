@@ -1,6 +1,9 @@
-# Next
+# 9.0.0
 
-- [#215](https://github.com/gordalina/cachetool/pull/215) **Breaking Change:** Remove support for Monolog & PSR/Log 1.x
+- **Breaking Change:** Remove support for PHP 8.0
+- **Breaking Change:** Remove support for Symfony < 6.x
+- **Breaking Change:** Remove support for Monolog < 3.x
+- **Breaking Change:** Remove support for psr/log < 2.x
 - [#215](https://github.com/gordalina/cachetool/pull/215) Add support for monolog 3.0
 
 # 8.5.0

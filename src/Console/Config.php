@@ -26,10 +26,6 @@ class Config implements \ArrayAccess
     {
         if (!empty($config)) {
             $this->config = array_replace($this->config, $config);
-
-            if (!isset($this->config['temp_dir'])) {
-                $this->config['temp_dir'] = sys_get_temp_dir();
-            }
         }
     }
 

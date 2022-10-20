@@ -1,3 +1,8 @@
+# Next
+
+- [#215](https://github.com/gordalina/cachetool/pull/215) **Breaking Change:** Remove support for Monolog & PSR/Log 1.x
+- [#215](https://github.com/gordalina/cachetool/pull/215) Add support for monolog 3.0
+
 # 8.5.0
 
 - [#206](https://github.com/gordalina/cachetool/pull/206) Add phpdoc for proxy classes (@myfluxi)

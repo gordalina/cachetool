@@ -243,7 +243,7 @@ use CacheTool\Adapter\FastCGI;
 use CacheTool\CacheTool;
 
 $adapter = new FastCGI('127.0.0.1:9000');
-$cache = CacheTool::factory($adapter, '/tmp);
+$cache = CacheTool::factory($adapter, '/tmp');
 ```
 
 You can use `apcu` and `opcache` functions

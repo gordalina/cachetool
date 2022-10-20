@@ -13,7 +13,9 @@ namespace CacheTool\Monolog;
 
 use Monolog\Formatter\FormatterInterface;
 use Monolog\Handler\AbstractProcessingHandler;
+use Monolog\Level;
 use Monolog\Logger;
+use Monolog\LogRecord;
 use Symfony\Component\Console\Output\ConsoleOutputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
@@ -36,15 +38,9 @@ use Symfony\Component\Console\Output\OutputInterface;
  */
 class ConsoleHandler extends AbstractProcessingHandler
 {
-    /**
-     * @var OutputInterface|null
-     */
-    private $output;
+    private OutputInterface|null $output;
 
-    /**
-     * @var array
-     */
-    private $verbosityLevelMap = [
+    private array $verbosityLevelMap = [
         OutputInterface::VERBOSITY_NORMAL => Logger::WARNING,
         OutputInterface::VERBOSITY_VERBOSE => Logger::NOTICE,
         OutputInterface::VERBOSITY_VERY_VERBOSE => Logger::INFO,
@@ -54,11 +50,11 @@ class ConsoleHandler extends AbstractProcessingHandler
     /**
      * Constructor.
      *
-     * @param OutputInterface|null $output            The console output to use (the handler remains disabled when passing null
-     *                                                until the output is set, e.g. by using console events)
-     * @param bool                 $bubble            Whether the messages that are handled can bubble up the stack
-     * @param array                $verbosityLevelMap Array that maps the OutputInterface verbosity to a minimum logging
-     *                                                level (leave empty to use the default mapping)
+     * @param OutputInterface|null       $output       The console output to use (the handler remains disabled when passing null
+     *                                                 until the output is set, e.g. by using console events)
+     * @param bool                       $bubble       Whether the messages that are handled can bubble up the stack
+     * @param array<int, int|Level> $verbosityLevelMap Array that maps the OutputInterface verbosity to a minimum logging
+     *                                                 level (leave empty to use the default mapping)
      */
     public function __construct(OutputInterface $output = null, $bubble = true, array $verbosityLevelMap = [])
     {
@@ -73,7 +69,7 @@ class ConsoleHandler extends AbstractProcessingHandler
     /**
      * {@inheritdoc}
      */
-    public function isHandling(array $record): bool
+    public function isHandling(array|LogRecord $record): bool
     {
         return $this->updateLevel() && parent::isHandling($record);
     }
@@ -81,7 +77,7 @@ class ConsoleHandler extends AbstractProcessingHandler
     /**
      * {@inheritdoc}
      */
-    public function handle(array $record): bool
+    public function handle(array|LogRecord $record): bool
     {
         // we have to update the logging level each time because the verbosity of the
         // console output might have changed in the meantime (it is not immutable)
@@ -111,9 +107,9 @@ class ConsoleHandler extends AbstractProcessingHandler
     /**
      * {@inheritdoc}
      */
-    protected function write(array $record): void
+    protected function write(array|LogRecord $record): void
     {
-        if ($record['level'] >= Logger::ERROR && $this->output instanceof ConsoleOutputInterface) {
+        if ($this->isError($record) && $this->output instanceof ConsoleOutputInterface) {
             $this->output->getErrorOutput()->write((string) $record['formatted']);
         } else {
             $this->output->write((string) $record['formatted']);
@@ -146,5 +142,14 @@ class ConsoleHandler extends AbstractProcessingHandler
         }
 
         return true;
+    }
+
+    private function isError(array|LogRecord $record): bool
+    {
+        if (Logger::API < 3) {
+            return $record['level'] >= Logger::ERROR;
+        }
+
+        return Level::Error->includes($record->level);
     }
 }

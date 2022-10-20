@@ -271,6 +271,7 @@ After running `composer install`, run `./vendor/bin/phpunit`
 
 ## Compatibility
 
+- CacheTool 9.x works with PHP `>=8.1`
 - CacheTool 8.x works with PHP `>=8.0`
 - CacheTool 7.x works with PHP `>=7.3`
 - CacheTool 6.x works with PHP `>=7.3`

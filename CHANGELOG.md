@@ -4,6 +4,7 @@
 - [#212](https://github.com/gordalina/cachetool/issues/212) Fix inconsistency when setting temp dir.
 - [#214](https://github.com/gordalina/cachetool/issues/214) Update documentation of exclude path in opcache:invalidate:scripts.
 - [#216](https://github.com/gordalina/cachetool/issues/216) Do not display errors when running the CLI.
+- Update GitHub actions & add Ubuntu 22.04 as a target
 
 # 8.4.1
 

@@ -265,9 +265,19 @@ $cache->addProxy(new Proxy\PhpProxy());
 
 Running `php cachetool.phar self-update` will update a phar install with the latest version.
 
+## Building cachetool.phar
+
+Cachetool uses [box](https://github.com/box-project/box) to built the phar, see [box-project/installation.md](https://github.com/box-project/box/blob/main/doc/installation.md) on the best way to install it in your situation. To built run `box compile`, which will output `cachetool.phar` in the project root directory.
+
 ## Testing
 
 After running `composer install`, run `./vendor/bin/phpunit`
+
+### Troubleshooting test failures
+
+#### sslip.io
+
+Tests in `tests/Adapter/Http/FileGetContentsTest` and `tests/Adapter/Http/SymfonyHttpClientTest` rely on [sslip.io](https://sslip.io/) to resolve hostnames containing an IP to the IP contained. For this to work a nameserver from sslip.io needs to be in the DNS servers configured on the host which runs thoses tests, otherwise hostnames like `_.127.0.0.1.sslip.io` used for testing will not resolve. The IP addresses for the DNS servers can be found on [sslip.io](https://sslip.io), how to configure them depends on the system used to run the tests.
 
 ## Compatibility
 

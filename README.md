@@ -1,6 +1,6 @@
 # CacheTool - Manage cache in the CLI
 
-[![Build Status](https://img.shields.io/github/workflow/status/gordalina/cachetool/ci?style=flat-square)](https://github.com/gordalina/cachetool/actions)
+[![Build Status](https://img.shields.io/github/actions/workflow/status/gordalina/cachetool/ci.yml?branch=main&style=flat-square)](https://github.com/gordalina/cachetool/actions)
 [![Coverage Status](https://img.shields.io/coveralls/github/gordalina/cachetool/master?style=flat-square)](https://coveralls.io/github/gordalina/cachetool?branch=master)
 [![Version](https://img.shields.io/github/v/tag/gordalina/cachetool?sort=semver&style=flat-square)](https://github.com/gordalina/cachetool/releases)
 [![Downloads](https://img.shields.io/packagist/dt/gordalina/cachetool?style=flat-square)](https://packagist.org/packages/gordalina/cachetool)

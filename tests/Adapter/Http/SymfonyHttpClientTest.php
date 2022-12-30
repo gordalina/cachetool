@@ -31,7 +31,13 @@ class SymfonyHttpClientTest extends \PHPUnit\Framework\TestCase
 
     public function testFetchUnderscores()
     {
-        $client = new SymfonyHttpClient('http://_.127.0.0.1.sslip.io:9999');
+        $sslipHostname = '_.127.0.0.1.sslip.io';
+        if (!gethostbynamel($sslipHostname)) {
+            $this->markTestSkipped(
+                "{$sslipHostname} does not resolve, sslip  DNS is not configured correctly, skipping."
+            );
+        }
+        $client = new SymfonyHttpClient("http://{$sslipHostname}:9999");
         $this->assertStringStartsWith('# CacheTool', $client->fetch('README.md'));
     }
 

@@ -279,17 +279,20 @@ After running `composer install`, run `./vendor/bin/phpunit`
 
 Tests in `tests/Adapter/Http/FileGetContentsTest` and `tests/Adapter/Http/SymfonyHttpClientTest` rely on [sslip.io](https://sslip.io/) to resolve hostnames containing an IP to the IP contained. For this to work a nameserver from sslip.io needs to be in the DNS servers configured on the host which runs thoses tests, otherwise hostnames like `_.127.0.0.1.sslip.io` used for testing will not resolve. The IP addresses for the DNS servers can be found on [sslip.io](https://sslip.io), how to configure them depends on the system used to run the tests.
 
-## Compatibility
+## Version Compatibility
 
-- CacheTool 9.x works with PHP `>=8.1`
-- CacheTool 8.x works with PHP `>=8.0`
-- CacheTool 7.x works with PHP `>=7.3`
-- CacheTool 6.x works with PHP `>=7.3`
-- CacheTool 5.x works with PHP `>=7.2`
-- CacheTool 4.x works with PHP `>=7.1`
-- CacheTool 3.x works with PHP `>=5.5.9`
-- CacheTool 2.x works with PHP `>=5.5.9`
-- CacheTool 1.x works with PHP `>=5.3.3`
+| CacheTool | PHP
+| - | -
+| `9.x` | `>=8.1`
+| `9.x` | `>=8.1`
+| `8.x` | `>=8.0`
+| `7.x` | `>=7.3`
+| `6.x` | `>=7.3`
+| `5.x` | `>=7.2`
+| `4.x` | `>=7.1`
+| `3.x` | `>=5.5.9`
+| `2.x` | `>=5.5.9`
+| `1.x` | `>=5.3.3`
 
 ## Troubleshooting
 

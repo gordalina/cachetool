@@ -198,7 +198,7 @@ class Application extends BaseApplication
             }
         } elseif ($input->hasParameterOption('--web')) {
             $this->config['adapter'] = 'web';
-            $this->config['webClient'] = $input->getParameterOption('--web');
+            $this->config['webClient'] = $input->getOption('web') ?? 'FileGetContents';
             $this->config['webPath'] = $input->getParameterOption('--web-path');
             $this->config['webUrl'] = $input->getParameterOption('--web-url');
 

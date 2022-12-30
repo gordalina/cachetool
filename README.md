@@ -294,20 +294,6 @@ Tests in `tests/Adapter/Http/FileGetContentsTest` and `tests/Adapter/Http/Symfon
 | `2.x` | `>=5.5.9`
 | `1.x` | `>=5.3.3`
 
-## Troubleshooting
-
-> [RuntimeException]
-> Error: Unable to open primary script: /dev/shm/cachetool-584743c678dbb.php (No such file or directory)
-> Status: 404 Not Found
-> Content-type: text/html; charset=UTF-8
-> No input file specified.
-
-This means that cachetool could not write to `/dev/shm` provide a directory that cachetool can write to through `php cachetool.phar --tmp-dir=/writable/dir` or configuration. This directory should also be readable by the web user running php-fpm/apache.
-
-## SELinux
-
-To have cachetool working with SELinux [read this comment by @driskell](https://github.com/gordalina/cachetool/issues/9#issuecomment-742669509).
-
 ## License
 
 CacheTool is licensed under the MIT License - see the [LICENSE](LICENSE) for details

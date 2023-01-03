@@ -111,7 +111,7 @@ class Application extends BaseApplication
         $definition->addOption(new InputOption('--web', null, InputOption::VALUE_OPTIONAL, 'If specified, uses web adapter, defaults to FileGetContents. Available adapters are: FileGetContents and SymfonyHttpClient'));
         $definition->addOption(new InputOption('--web-path', null, InputOption::VALUE_OPTIONAL, 'If specified, used as a information for web adapter'));
         $definition->addOption(new InputOption('--web-url', null, InputOption::VALUE_OPTIONAL, 'If specified, used as a information for web adapter'));
-        $definition->addOption(new InputOption('--web-allow-insecure', null, InputOption::VALUE_OPTIONAL, 'If specified, verify_peer and verify_host are disabled (only for SymfonyHttpClient)'));
+        $definition->addOption(new InputOption('--web-allow-insecure', null, InputOption::VALUE_NONE, 'If specified, verify_peer and verify_host are disabled (only for SymfonyHttpClient)'));
         $definition->addOption(new InputOption('--web-basic-auth', null, InputOption::VALUE_OPTIONAL, 'If specified, used for basic authorization (only for SymfonyHttpClient)'));
         $definition->addOption(new InputOption('--web-host', null, InputOption::VALUE_OPTIONAL, 'If specified, adds a Host header to web adapter request (only for SymfonyHttpClient)'));
         $definition->addOption(new InputOption('--tmp-dir', '-t', InputOption::VALUE_REQUIRED, 'Temporary directory to write files to'));

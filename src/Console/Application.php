@@ -111,7 +111,7 @@ class Application extends BaseApplication
         $definition->addOption(new InputOption('--web', null, InputOption::VALUE_OPTIONAL, 'If specified, uses web adapter, defaults to FileGetContents. Available adapters are: FileGetContents and SymfonyHttpClient'));
         $definition->addOption(new InputOption('--web-path', null, InputOption::VALUE_OPTIONAL, 'If specified, used as a information for web adapter'));
         $definition->addOption(new InputOption('--web-url', null, InputOption::VALUE_OPTIONAL, 'If specified, used as a information for web adapter'));
-        $definition->addOption(new InputOption('--web-allow-insecure', null, InputOption::VALUE_OPTIONAL, 'If specified, verify_peer and verify_host are disabled (only for SymfonyHttpClient)'));
+        $definition->addOption(new InputOption('--web-allow-insecure', null, InputOption::VALUE_NONE, 'If specified, verify_peer and verify_host are disabled (only for SymfonyHttpClient)'));
         $definition->addOption(new InputOption('--web-basic-auth', null, InputOption::VALUE_OPTIONAL, 'If specified, used for basic authorization (only for SymfonyHttpClient)'));
         $definition->addOption(new InputOption('--web-host', null, InputOption::VALUE_OPTIONAL, 'If specified, adds a Host header to web adapter request (only for SymfonyHttpClient)'));
         $definition->addOption(new InputOption('--tmp-dir', '-t', InputOption::VALUE_REQUIRED, 'Temporary directory to write files to'));
@@ -177,8 +177,8 @@ class Application extends BaseApplication
      */
     private function parseConfiguration(InputInterface $input)
     {
-        if ($input->hasParameterOption('--config')) {
-            $path = $input->getParameterOption('--config');
+        if ($input->getOption('config')) {
+            $path = $input->getOption('config');
 
             if (!is_file($path)) {
                 throw new \RuntimeException("Could not read configuration file: {$path}");
@@ -187,33 +187,22 @@ class Application extends BaseApplication
             $this->config = Config::fromFile($path);
         }
 
-        if ($input->hasParameterOption('--cli')) {
+        if ($input->getOption('cli')) {
             $this->config['adapter'] = 'cli';
         } elseif ($input->hasParameterOption('--fcgi')) {
             $this->config['adapter'] = 'fastcgi';
-            $this->config['fastcgiChroot'] = $input->getParameterOption('--fcgi-chroot');
-
-            if (!is_null($input->getParameterOption('--fcgi'))) {
-                $this->config['fastcgi'] = $input->getParameterOption('--fcgi');
-            }
+            $this->config['fastcgiChroot'] = $input->getOption('fcgi-chroot') ?? $this->config['fastcgiChroot'];
+            $this->config['fastcgi'] = $input->getOption('fcgi') ?? $this->config['fastcgi'];
         } elseif ($input->hasParameterOption('--web')) {
             $this->config['adapter'] = 'web';
             $this->config['webClient'] = $input->getOption('web') ?? 'FileGetContents';
-            $this->config['webPath'] = $input->getParameterOption('--web-path');
-            $this->config['webUrl'] = $input->getParameterOption('--web-url');
+            $this->config['webPath'] = $input->getOption('web-path') ?? $this->config['webPath'];
+            $this->config['webUrl'] = $input->getOption('web-url') ?? $this->config['webUrl'];
 
             if ($this->config['webClient'] === 'SymfonyHttpClient') {
-                if ($input->hasParameterOption('--web-allow-insecure')) {
-                    $this->config['webAllowInsecure'] = true;
-                }
-
-                if ($input->hasParameterOption('--web-basic-auth')) {
-                    $this->config['webBasicAuth'] = $input->getParameterOption('--web-basic-auth');
-                }
-
-                if ($input->hasParameterOption('--web-host')) {
-                    $this->config['webHost'] = $input->getParameterOption('--web-host');
-                }
+                $this->config['webAllowInsecure'] = $input->getOption('web-allow-insecure');
+                $this->config['webBasicAuth'] = $input->getOption('web-basic-auth') ?? $this->config['webBasicAuth'];
+                $this->config['webHost'] = $input->getOption('web-host') ?? $this->config['webHost'];
             }
         }
 
@@ -221,9 +210,7 @@ class Application extends BaseApplication
             $this->config['http'] = $this->buildHttpClient();
         }
 
-        if ($input->hasParameterOption('--tmp-dir') || $input->hasParameterOption('-t')) {
-            $this->config['temp_dir'] = $input->getParameterOption('--tmp-dir') ?: $input->getParameterOption('-t');
-        }
+        $this->config['temp_dir'] = $input->getOption('tmp-dir') ?? $this->config['temp_dir'];
     }
 
     /**

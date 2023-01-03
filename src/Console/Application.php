@@ -210,9 +210,7 @@ class Application extends BaseApplication
             $this->config['http'] = $this->buildHttpClient();
         }
 
-        if ($input->hasParameterOption('--tmp-dir') || $input->hasParameterOption('-t')) {
-            $this->config['temp_dir'] = $input->getParameterOption('--tmp-dir') ?: $input->getParameterOption('-t');
-        }
+        $this->config['temp_dir'] = $input->getOption('tmp-dir') ?? $this->config['temp_dir'];
     }
 
     /**

@@ -196,21 +196,13 @@ class Application extends BaseApplication
         } elseif ($input->hasParameterOption('--web')) {
             $this->config['adapter'] = 'web';
             $this->config['webClient'] = $input->getOption('web') ?? 'FileGetContents';
-            $this->config['webPath'] = $input->getParameterOption('--web-path');
-            $this->config['webUrl'] = $input->getParameterOption('--web-url');
+            $this->config['webPath'] = $input->getOption('web-path') ?? $this->config['webPath'];
+            $this->config['webUrl'] = $input->getOption('web-url') ?? $this->config['webUrl'];
 
             if ($this->config['webClient'] === 'SymfonyHttpClient') {
-                if ($input->hasParameterOption('--web-allow-insecure')) {
-                    $this->config['webAllowInsecure'] = true;
-                }
-
-                if ($input->hasParameterOption('--web-basic-auth')) {
-                    $this->config['webBasicAuth'] = $input->getParameterOption('--web-basic-auth');
-                }
-
-                if ($input->hasParameterOption('--web-host')) {
-                    $this->config['webHost'] = $input->getParameterOption('--web-host');
-                }
+                $this->config['webAllowInsecure'] = $input->getOption('web-allow-insecure');
+                $this->config['webBasicAuth'] = $input->getOption('web-basic-auth') ?? $this->config['webBasicAuth'];
+                $this->config['webHost'] = $input->getOption('web-host') ?? $this->config['webHost'];
             }
         }
 

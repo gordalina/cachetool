@@ -18,8 +18,19 @@ class Config implements \ArrayAccess
     private $config = [
         'adapter' => 'fastcgi',
         'extensions' => ['apcu', 'opcache'],
+        'temp_dir' => null,
+
         'fastcgi' => null,
-        'temp_dir' => null
+        'fastcgiChroot' => null,
+
+        'webClient' => null,
+        'webPath' => null,
+        'webUrl' => null,
+        'webAllowInsecure' => null,
+        'webBasicAuth' => null,
+        'webHost' => null,
+
+        'http' => null,
     ];
 
     public function __construct(array $config = [])

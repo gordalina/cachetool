@@ -187,7 +187,7 @@ class Application extends BaseApplication
             $this->config = Config::fromFile($path);
         }
 
-        if ($input->hasParameterOption('--cli')) {
+        if ($input->getOption('cli')) {
             $this->config['adapter'] = 'cli';
         } elseif ($input->hasParameterOption('--fcgi')) {
             $this->config['adapter'] = 'fastcgi';

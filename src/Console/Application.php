@@ -177,8 +177,8 @@ class Application extends BaseApplication
      */
     private function parseConfiguration(InputInterface $input)
     {
-        if ($input->hasParameterOption('--config')) {
-            $path = $input->getParameterOption('--config');
+        if ($input->getOption('config')) {
+            $path = $input->getOption('config');
 
             if (!is_file($path)) {
                 throw new \RuntimeException("Could not read configuration file: {$path}");

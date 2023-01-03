@@ -1,3 +1,9 @@
+# 9.0.1
+
+- [#223](https://github.com/gordalina/cachetool/pull/223) Refactored parsing command line arguments (@sideshowcoder)
+- [#222](https://github.com/gordalina/cachetool/pull/222) Skip running tests if sslip dns isn't configured (@sideshowcoder)
+- [#221](https://github.com/gordalina/cachetool/pull/221) Parse --web option correctly (@sideshowcoder)
+
 # 9.0.0
 
 - **Breaking Change:** Remove support for PHP 8.0

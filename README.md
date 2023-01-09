@@ -284,7 +284,6 @@ Tests in `tests/Adapter/Http/FileGetContentsTest` and `tests/Adapter/Http/Symfon
 | CacheTool | PHP
 | - | -
 | `9.x` | `>=8.1`
-| `9.x` | `>=8.1`
 | `8.x` | `>=8.0`
 | `7.x` | `>=7.3`
 | `6.x` | `>=7.3`

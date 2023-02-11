@@ -44,7 +44,7 @@ class OpcacheResetFileCacheCommand extends AbstractOpcacheCommand
 
         if (!$input->getOption('force')) {
             $question = new ConfirmationQuestion(
-                "Are you sure you want to delete the contents of <comment>${fileCache}</comment>? [no] ",
+                "Are you sure you want to delete the contents of <comment>{$fileCache}</comment>? [no] ",
                 false,
                 '/^y/i'
             );

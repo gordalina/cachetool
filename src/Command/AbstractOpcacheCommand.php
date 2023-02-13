@@ -24,7 +24,7 @@ abstract class AbstractOpcacheCommand extends AbstractCommand
 
         if ($info['restart_pending'] ?? false) {
             $cacheStatus = $info['cache_full'] ? 'Also, you cache is full.' : '';
-            throw new \RuntimeException("OPCache is restart, as such files can't be invalidated. Try again later. ${cacheStatus}");
+            throw new \RuntimeException("OPCache is restart, as such files can't be invalidated. Try again later. {$cacheStatus}");
         }
 
         $file_cache_only = $info['file_cache_only'] ?? false;

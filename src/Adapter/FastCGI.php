@@ -79,7 +79,7 @@ class FastCGI extends AbstractAdapter
             if (preg_match($IPv6, $host) === 1) {
                 // IPv6 addresses need to be surrounded by brackets
                 // see: https://www.php.net/manual/en/function.stream-socket-client.php#refsect1-function.stream-socket-client-notes
-                $host = "[${host}]";
+                $host = "[{$host}]";
             }
 
             $this->connection = new NetworkSocket(

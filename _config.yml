@@ -1,8 +1,12 @@
 title: Cachetool
 description: Manage your caches through the cli
-google_analytics: UA-56319856-1
 show_downloads: true
 theme: jekyll-theme-architect
 
 gems:
   - jekyll-mentions
+
+analytics:
+  provider: "google-gtag"
+  google:
+    measurement_id: "G-88T05SDN7N"

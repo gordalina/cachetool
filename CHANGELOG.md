@@ -1,3 +1,7 @@
+# 9.0.2
+
+- Overwrite v8 as latest
+
 # 9.0.1
 
 - [#223](https://github.com/gordalina/cachetool/pull/223) Refactored parsing command line arguments (@sideshowcoder)

@@ -12,6 +12,10 @@
 - **Breaking Change:** Remove support for psr/log < 2.x
 - [#215](https://github.com/gordalina/cachetool/pull/215) Add support for monolog 3.0
 
+# 8.5.1
+
+- [#229](https://github.com/gordalina/cachetool/pull/229) Fix deprecated string interpolation in PHP 8.
+
 # 8.5.0
 
 - [#206](https://github.com/gordalina/cachetool/pull/206) Add phpdoc for proxy classes (@myfluxi)

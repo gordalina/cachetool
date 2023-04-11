@@ -24,7 +24,7 @@ class FileGetContents extends AbstractHttp
                 'errors' => [
                     [
                         'no' => 0,
-                        'str' => "file_get_contents() call failed with url: ${url}",
+                        'str' => "file_get_contents() call failed with url: {$url}",
                     ],
                 ],
             ]);

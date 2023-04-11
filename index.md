@@ -1,6 +1,6 @@
 # CacheTool - Manage cache in the CLI
 
-[![Build Status](https://img.shields.io/github/workflow/status/gordalina/cachetool/ci?style=flat-square)](https://github.com/gordalina/cachetool/actions)
+[![Build Status](https://img.shields.io/github/actions/workflow/status/gordalina/cachetool/ci.yml?branch=main&style=flat-square)](https://github.com/gordalina/cachetool/actions)
 [![Coverage Status](https://img.shields.io/coveralls/github/gordalina/cachetool/master?style=flat-square)](https://coveralls.io/github/gordalina/cachetool?branch=master)
 [![Version](https://img.shields.io/github/v/tag/gordalina/cachetool?sort=semver&style=flat-square)](https://github.com/gordalina/cachetool/releases)
 [![Downloads](https://img.shields.io/packagist/dt/gordalina/cachetool?style=flat-square)](https://packagist.org/packages/gordalina/cachetool)
@@ -265,34 +265,33 @@ $cache->addProxy(new Proxy\PhpProxy());
 
 Running `php cachetool.phar self-update` will update a phar install with the latest version.
 
+## Building cachetool.phar
+
+Cachetool uses [box](https://github.com/box-project/box) to built the phar, see [box-project/installation.md](https://github.com/box-project/box/blob/main/doc/installation.md) on the best way to install it in your situation. To built run `box compile`, which will output `cachetool.phar` in the project root directory.
+
 ## Testing
 
 After running `composer install`, run `./vendor/bin/phpunit`
 
-## Compatibility
+### Troubleshooting test failures
 
-- CacheTool 8.x works with PHP `>=8.0`
-- CacheTool 7.x works with PHP `>=7.3`
-- CacheTool 6.x works with PHP `>=7.3`
-- CacheTool 5.x works with PHP `>=7.2`
-- CacheTool 4.x works with PHP `>=7.1`
-- CacheTool 3.x works with PHP `>=5.5.9`
-- CacheTool 2.x works with PHP `>=5.5.9`
-- CacheTool 1.x works with PHP `>=5.3.3`
+#### sslip.io
 
-## Troubleshooting
+Tests in `tests/Adapter/Http/FileGetContentsTest` and `tests/Adapter/Http/SymfonyHttpClientTest` rely on [sslip.io](https://sslip.io/) to resolve hostnames containing an IP to the IP contained. For this to work a nameserver from sslip.io needs to be in the DNS servers configured on the host which runs thoses tests, otherwise hostnames like `_.127.0.0.1.sslip.io` used for testing will not resolve. The IP addresses for the DNS servers can be found on [sslip.io](https://sslip.io), how to configure them depends on the system used to run the tests.
 
-> [RuntimeException]
-> Error: Unable to open primary script: /dev/shm/cachetool-584743c678dbb.php (No such file or directory)
-> Status: 404 Not Found
-> Content-type: text/html; charset=UTF-8
-> No input file specified.
+## Version Compatibility
 
-This means that cachetool could not write to `/dev/shm` provide a directory that cachetool can write to through `php cachetool.phar --tmp-dir=/writable/dir` or configuration. This directory should also be readable by the web user running php-fpm/apache.
-
-## SELinux
-
-To have cachetool working with SELinux [read this comment by @driskell](https://github.com/gordalina/cachetool/issues/9#issuecomment-742669509).
+| CacheTool | PHP
+| - | -
+| `9.x` | `>=8.1`
+| `8.x` | `>=8.0`
+| `7.x` | `>=7.3`
+| `6.x` | `>=7.3`
+| `5.x` | `>=7.2`
+| `4.x` | `>=7.1`
+| `3.x` | `>=5.5.9`
+| `2.x` | `>=5.5.9`
+| `1.x` | `>=5.3.3`
 
 ## License
 

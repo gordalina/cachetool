@@ -1,3 +1,7 @@
+# 9.0.3
+
+- Lock `consolidation/self-update` dependency to `~2.1.0`
+
 # 9.0.2
 
 - Overwrite v8 as latest

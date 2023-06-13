@@ -17,7 +17,7 @@ jobs:
     strategy:
       max-parallel: 15
       matrix:
-        operating-system: [ubuntu-22.04, macos-11, macos-12]
+        operating-system: [ubuntu-22.04, macos-12, macos-13]
         php-version: ["8.1", "8.2"]
         allow-failure: [false]
         include:
@@ -25,10 +25,10 @@ jobs:
             operating-system: ubuntu-22.04
             allow-failure: true
           - php-version: 8.3
-            operating-system: macos-11
+            operating-system: macos-12
             allow-failure: true
           - php-version: 8.3
-            operating-system: macos-12
+            operating-system: macos-13
             allow-failure: true
     name: Test PHP ${{ matrix.php-version }} on ${{ matrix.operating-system }}
     steps:

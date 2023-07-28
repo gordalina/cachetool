@@ -17,7 +17,7 @@ jobs:
     strategy:
       max-parallel: 15
       matrix:
-        operating-system: [ubuntu-22.04, macos-12, macos-13]
+        operating-system: [ubuntu-22.04, macos-12]
         php-version: ["8.1", "8.2"]
         allow-failure: [false]
         include:

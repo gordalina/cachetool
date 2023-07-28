@@ -1,3 +1,7 @@
+# 9.1.0
+
+- Fixed an issue where SELinux would prevent writing files to the temp directory.
+
 # 9.0.3
 
 - Lock `consolidation/self-update` dependency to `~2.1.0`

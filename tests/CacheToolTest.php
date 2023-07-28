@@ -74,6 +74,11 @@ class CacheToolTest extends \PHPUnit\Framework\TestCase
         rmdir($dir);
     }
 
+    public function testWithExistentTempDir() {
+        $cachetool = new CacheTool(null);
+        $this->assertDirectoryExists($cachetool->getTempDir());
+    }
+
     public function testWithSetAdapterAndLogger()
     {
         $logger = $this->getLogger();

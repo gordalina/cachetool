@@ -235,7 +235,7 @@ class CacheTool
         if (is_null($tempDir)) {
             $tempDirs = ['/dev/shm', '/var/run', sys_get_temp_dir()];
             foreach ($tempDirs as $dir) {
-                if (is_dir($dir) && is_writable($dir)) {
+                if ($this->isWritable($dir)) {
                     $tempDir = $dir;
                     break;
                 }
@@ -247,5 +247,20 @@ class CacheTool
         }
 
         return $tempDir;
+    }
+
+    protected function isWritable($tempDir) {
+        if (!is_dir($tempDir) || !is_writable($tempDir)) {
+            return false;
+        }
+
+        $tempFile = tempnam($tempDir, 'cachetool-test');
+
+        if ($tempFile === false) {
+            return false;
+        }
+
+        @unlink($tempFile);
+        return true;
     }
 }

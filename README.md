@@ -49,6 +49,12 @@ curl -sO https://gordalina.github.io/cachetool/downloads/cachetool-3.2.2.phar
 chmod +x cachetool-3.2.2.phar
 ```
 
+## Installation - Composer
+
+```sh
+composer require gordalina/cachetool
+```
+
 ## Usage
 
 CacheTool requires an adapter to connect to, it can be `cli`, `fcgi`, and `web`.

@@ -19,6 +19,7 @@ use CacheTool\Adapter\Web;
 use CacheTool\CacheTool;
 use CacheTool\Command as CacheToolCommand;
 use CacheTool\Monolog\ConsoleHandler;
+use Composer\InstalledVersions;
 use Monolog\Logger;
 use SelfUpdate\SelfUpdateCommand;
 use Symfony\Component\Console\Application as BaseApplication;
@@ -33,8 +34,6 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 
 class Application extends BaseApplication
 {
-    const VERSION = '@package_version@';
-
     /**
      * @var Config
      */
@@ -50,7 +49,7 @@ class Application extends BaseApplication
      */
     public function __construct(Config $config)
     {
-        parent::__construct('CacheTool', self::VERSION);
+        parent::__construct('CacheTool', InstalledVersions::getVersion('gordalina/cachetool'));
 
         $this->config = $config;
         $this->logger = new Logger('cachetool');
@@ -64,7 +63,7 @@ class Application extends BaseApplication
         $commands = parent::getDefaultCommands();
         $commands[] = new SelfUpdateCommand(
             'gordalina/cachetool',
-            '@package_version@',
+             $this->getVersion(),
             'gordalina/cachetool'
         );
 

@@ -18,6 +18,7 @@ use CacheTool\Adapter\Http\SymfonyHttpClient;
 use CacheTool\Adapter\Web;
 use CacheTool\CacheTool;
 use CacheTool\Command as CacheToolCommand;
+use CacheTool\DependencyInjection\ContainerAwareInterface;
 use CacheTool\Monolog\ConsoleHandler;
 use Monolog\Logger;
 use SelfUpdate\SelfUpdateCommand;
@@ -27,7 +28,6 @@ use Symfony\Component\Console\Input\InputDefinition;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
-use Symfony\Component\DependencyInjection\ContainerAwareInterface;
 use Symfony\Component\DependencyInjection\Container;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 

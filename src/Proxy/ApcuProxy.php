@@ -117,7 +117,7 @@ class ApcuProxy implements ProxyInterface
      * @since  2.0.0
      * @param  boolean $limited    If limited is TRUE, the return value will exclude the individual list of cache
      *                             entries. This is useful when trying to optimize calls for statistics gathering.
-     * @return boolean             Array of cached data (and meta-data) or FALSE on failure
+     * @return false|array             Array of cached data (and meta-data) or FALSE on failure
      */
     public function apcu_cache_info($limited = false)
     {

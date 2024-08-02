@@ -277,7 +277,7 @@ After running `composer install`, run `./vendor/bin/phpunit`
 
 #### sslip.io
 
-Tests in `tests/Adapter/Http/FileGetContentsTest` and `tests/Adapter/Http/SymfonyHttpClientTest` rely on [sslip.io](https://sslip.io/) to resolve hostnames containing an IP to the IP contained. For this to work a nameserver from sslip.io needs to be in the DNS servers configured on the host which runs thoses tests, otherwise hostnames like `_.127.0.0.1.sslip.io` used for testing will not resolve. The IP addresses for the DNS servers can be found on [sslip.io](https://sslip.io), how to configure them depends on the system used to run the tests.
+Tests in `tests/Adapter/Http/FileGetContentsTest` and `tests/Adapter/Http/SymfonyHttpClientTest` rely on [sslip.io](https://sslip.io/) to resolve hostnames containing an IP to the IP contained. For this to work a nameserver from sslip.io needs to be in the DNS servers configured on the host which runs those tests, otherwise hostnames like `_.127.0.0.1.sslip.io` used for testing will not resolve. The IP addresses for the DNS servers can be found on [sslip.io](https://sslip.io), how to configure them depends on the system used to run the tests.
 
 ## Version Compatibility
 

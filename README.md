@@ -35,13 +35,13 @@ https://github.com/gordalina/cachetool/releases/latest/download/cachetool.phar.g
 https://github.com/gordalina/cachetool/releases/latest/download/cachetool.phar.bz2
 ```
 
-CacheTool is also packaged as a docker container available in [docker hub](https://hub.docker.com/r/gordalina/cachetool) and [github](https://github.com/gordalina/cachetool/pkgs/container/cachetool) container registries.
+CacheTool is also packaged as a docker container available in [docker hub](https://hub.docker.com/r/gordalina/cachetool) and [GitHub](https://github.com/gordalina/cachetool/pkgs/container/cachetool) container registries.
 
 See below for [docker usage instructions](#usage-via-docker).
 
 ## Installation - old versions
 
-Use tag name in the binary file name. E.g to download cachetool 3.2.2
+Use tag name in the binary file name, E.g. to download cachetool 3.2.2
 which is compatible with PHP `>=5.5.9` use: `cachetool-3.2.2.phar`
 
 ```sh
@@ -128,7 +128,7 @@ You have some useful commands that you can use
 
 ## Usage via Docker
 
-Images are available in docker hub and github container registries:
+Images are available in docker hub and GitHub container registries:
 
 - `gordalina/cachetool:latest`
 - `ghcr.io/gordalina/cachetool:latest`
@@ -163,8 +163,8 @@ Thank you to @jonhattan and @NITEMAN for the [work with docker](https://github.c
 You can have a configuration file with the adapter configuration, allowing you to
 call CacheTool without `--fcgi`, `--cli`, or `--web` option.
 
-You can pass a `--config <file>` option to the application or it will choose to load
-a file automaically.
+You can pass a `--config <file>` option to the application, otherwise it will choose to load
+a file automatically.
 
 The file must be named `.cachetool.yml` or `.cachetool.yaml`. CacheTool will look for
 this file on the current directory and in any parent directory until it finds one.
@@ -261,13 +261,9 @@ $cache->addProxy(new Proxy\ApcuProxy());
 $cache->addProxy(new Proxy\PhpProxy());
 ```
 
-## Updating CacheTool
-
-Running `php cachetool.phar self-update` will update a phar install with the latest version.
-
 ## Building cachetool.phar
 
-Cachetool uses [box](https://github.com/box-project/box) to built the phar, see [box-project/installation.md](https://github.com/box-project/box/blob/main/doc/installation.md) on the best way to install it in your situation. To built run `box compile`, which will output `cachetool.phar` in the project root directory.
+Cachetool uses [box](https://github.com/box-project/box) to build the phar, see [box-project/installation.md](https://github.com/box-project/box/blob/main/doc/installation.md) on the best way to install it in your situation. To built run `box compile`, which will output `cachetool.phar` in the project root directory.
 
 ## Testing
 

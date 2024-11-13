@@ -19,12 +19,12 @@ abstract class AbstractOpcacheCommand extends AbstractCommand
     protected function ensureSuccessfulOpcacheCall($info)
     {
         if ($info === false) {
-           throw new \RuntimeException('opcache_get_status(): No Opcache status info available.  Perhaps Opcache is disabled via opcache.enable or opcache.enable_cli?');
+           throw new \RuntimeException('opcache_get_status(): No Opcache status info available. Perhaps Opcache is disabled via opcache.enable or opcache.enable_cli?');
         }
 
         if ($info['restart_pending'] ?? false) {
-            $cacheStatus = $info['cache_full'] ? 'Also, you cache is full.' : '';
-            throw new \RuntimeException("OPCache is restart, as such files can't be invalidated. Try again later. {$cacheStatus}");
+            $cacheStatus = $info['cache_full'] ? 'Also, your cache is full.' : '';
+            throw new \RuntimeException("OPCache is restarting, as such files can't be invalidated. Try again later. {$cacheStatus}");
         }
 
         $file_cache_only = $info['file_cache_only'] ?? false;

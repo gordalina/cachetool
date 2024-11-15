@@ -11,6 +11,7 @@
 
 namespace CacheTool\Command;
 
+use CacheTool\CacheTool;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\DependencyInjection\ContainerAwareInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;

@@ -14,6 +14,7 @@ namespace CacheTool\Command;
 use CacheTool\Util\Formatter;
 use Symfony\Component\Console\Helper\Table;
 use Symfony\Component\Console\Input\InputInterface;
+use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 
 class OpcacheStatusScriptsCommand extends AbstractOpcacheCommand
@@ -26,7 +27,13 @@ class OpcacheStatusScriptsCommand extends AbstractOpcacheCommand
         $this
             ->setName('opcache:status:scripts')
             ->setDescription('Show scripts in the opcode cache')
-            ->setHelp('');
+            ->setHelp('')
+            ->addOption(
+                'exclude',
+                'e',
+                InputOption::VALUE_OPTIONAL,
+                'Exclude scripts that match this regex. Example: `.*vendor.*`. Delimiters are not needed.'
+            );
     }
 
     /**
@@ -39,6 +46,8 @@ class OpcacheStatusScriptsCommand extends AbstractOpcacheCommand
         $info = $this->getCacheTool()->opcache_get_status(true);
         $this->ensureSuccessfulOpcacheCall($info);
 
+        $exclude = $input->getOption('exclude') ?? null;
+
         $table = new Table($output);
         $table
             ->setHeaders([
@@ -46,7 +55,7 @@ class OpcacheStatusScriptsCommand extends AbstractOpcacheCommand
                 'Memory',
                 'Filename'
             ])
-            ->setRows($this->processFilelist($info['scripts']))
+            ->setRows($this->processFilelist($info['scripts'], $exclude))
         ;
 
         $table->render();
@@ -54,11 +63,14 @@ class OpcacheStatusScriptsCommand extends AbstractOpcacheCommand
         return 0;
     }
 
-    protected function processFileList(array $cacheList)
-    {
+    protected function processFileList(
+        array $cacheList,
+        string $exclude = null
+    ) {
         $list = [];
 
-        foreach ($cacheList as $item) {
+        $filteredList = $exclude ? $this->excludeFiles($cacheList, $exclude) : $cacheList;
+        foreach ($filteredList as $item) {
             $list[] = [
                 number_format($item['hits']),
                 Formatter::bytes($item['memory_consumption']),
@@ -67,5 +79,10 @@ class OpcacheStatusScriptsCommand extends AbstractOpcacheCommand
         }
 
         return $list;
+    }
+
+    protected function excludeFiles(array $cacheList, string $exclude = null): array
+    {
+        return array_intersect_key($cacheList, array_flip(preg_grep("({$exclude})", array_keys($cacheList), \PREG_GREP_INVERT)));
     }
 }

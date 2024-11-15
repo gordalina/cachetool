@@ -1,3 +1,7 @@
+# 9.2.1
+
+- Nothing changed
+
 # 9.2.0
 
 - [#254](https://github.com/gordalina/cachetool/pull/254) Allow excluding files in opcache:status:scripts command

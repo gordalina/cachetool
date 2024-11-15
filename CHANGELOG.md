@@ -5,6 +5,7 @@
 - Bump symfony/http-foundation from 6.1.6 to 6.4.14
 - Bump symfony/process from 6.1.3 to 6.4.14
 - [#252](https://github.com/gordalina/cachetool/pull/252) Fix some typos
+
 # 9.1.0
 
 - Fixed an issue where SELinux would prevent writing files to the temp directory.

@@ -79,7 +79,7 @@ jobs:
           php php-coveralls.phar --coverage_clover=coverage.clover --json_path=coveralls-upload.json -v
 
   release:
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-latest
     name: Create & Publish Release
     if: ${{ github.event_name == 'push' && startsWith(github.event.ref, 'refs/tags') }}
     needs: test
@@ -118,7 +118,7 @@ jobs:
       - name: Setup PHP
         uses: shivammathur/setup-php@v2
         with:
-          php-version: 8.3
+          php-version: 8.1
 
       - name: Install Dependencies
         run: |

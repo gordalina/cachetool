@@ -17,18 +17,15 @@ jobs:
     strategy:
       max-parallel: 15
       matrix:
-        operating-system: [ubuntu-22.04, macos-12]
-        php-version: ["8.1", "8.2"]
+        operating-system: [ubuntu-latest, macos-latest]
+        php-version: ["8.1", "8.2", "8.3"]
         allow-failure: [false]
         include:
-          - php-version: 8.3
-            operating-system: ubuntu-22.04
+          - php-version: 8.4
+            operating-system: ubuntu-latest
             allow-failure: true
-          - php-version: 8.3
-            operating-system: macos-12
-            allow-failure: true
-          - php-version: 8.3
-            operating-system: macos-13
+          - php-version: 8.4
+            operating-system: macos-latest
             allow-failure: true
     name: Test PHP ${{ matrix.php-version }} on ${{ matrix.operating-system }}
     steps:
@@ -36,7 +33,7 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Setup PHP
-        uses: shivammathur/setup-php@master
+        uses: shivammathur/setup-php@v2
         with:
           php-version: ${{ matrix.php-version }}
           extensions: apcu, mbstring, pcov
@@ -119,9 +116,9 @@ jobs:
           password: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Setup PHP
-        uses: shivammathur/setup-php@master
+        uses: shivammathur/setup-php@v2
         with:
-          php-version: 8.2
+          php-version: 8.3
 
       - name: Install Dependencies
         run: |

@@ -17,26 +17,23 @@ jobs:
     strategy:
       max-parallel: 15
       matrix:
-        operating-system: [ubuntu-22.04, macos-12]
-        php-version: ["8.1", "8.2"]
+        operating-system: [ubuntu-latest, macos-latest]
+        php-version: ["8.1", "8.2", "8.3"]
         allow-failure: [false]
         include:
-          - php-version: 8.3
-            operating-system: ubuntu-22.04
+          - php-version: 8.4
+            operating-system: ubuntu-latest
             allow-failure: true
-          - php-version: 8.3
-            operating-system: macos-12
-            allow-failure: true
-          - php-version: 8.3
-            operating-system: macos-13
+          - php-version: 8.4
+            operating-system: macos-latest
             allow-failure: true
     name: Test PHP ${{ matrix.php-version }} on ${{ matrix.operating-system }}
     steps:
       - name: Checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: Setup PHP
-        uses: shivammathur/setup-php@master
+        uses: shivammathur/setup-php@v2
         with:
           php-version: ${{ matrix.php-version }}
           extensions: apcu, mbstring, pcov
@@ -57,7 +54,7 @@ jobs:
         run: echo "dir=$(composer config cache-files-dir)" >> $GITHUB_OUTPUT
 
       - name: Cache dependencies
-        uses: actions/cache@v3
+        uses: actions/cache@v4
         with:
           path: ${{ steps.composer-cache.outputs.dir }}
           key: ${{ runner.os }}-composer-${{ hashFiles('composer.json') }}
@@ -82,13 +79,13 @@ jobs:
           php php-coveralls.phar --coverage_clover=coverage.clover --json_path=coveralls-upload.json -v
 
   release:
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-latest
     name: Create & Publish Release
     if: ${{ github.event_name == 'push' && startsWith(github.event.ref, 'refs/tags') }}
     needs: test
     steps:
       - name: Checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
         with:
           fetch-depth: 0
 
@@ -119,9 +116,9 @@ jobs:
           password: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Setup PHP
-        uses: shivammathur/setup-php@master
+        uses: shivammathur/setup-php@v2
         with:
-          php-version: 8.2
+          php-version: 8.1
 
       - name: Install Dependencies
         run: |

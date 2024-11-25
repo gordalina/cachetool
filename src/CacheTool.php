@@ -18,7 +18,7 @@ use Monolog\Logger;
 
 /**
  * @method mixed apcu_add(mixed $key, mixed $var, int $ttl = 0)
- * @method boolean apcu_cache_info(boolean $limited = false)
+ * @method false|array apcu_cache_info(boolean $limited = false)
  * @method boolean|array apcu_regexp_get_keys(?string $regexp = null)
  * @method boolean apcu_cas(string $key, int $old, int $new)
  * @method boolean apcu_clear_cache()

@@ -13,23 +13,32 @@ namespace CacheTool\Adapter\Http;
 
 class FileGetContents extends AbstractHttp
 {
+    public function __construct($baseUrl, protected int $maxRetries = 0, protected int $delayMs = self::DEFAULT_DELAY_MS)
+    {
+        parent::__construct($baseUrl);
+    }
+
     public function fetch($filename)
     {
         $url = "{$this->baseUrl}/{$filename}";
-        $contents = @file_get_contents($url);
+        $retry = $this->maxRetries;
 
-        if (false === $contents) {
-            return serialize([
-                'result' => false,
-                'errors' => [
-                    [
-                        'no' => 0,
-                        'str' => "file_get_contents() call failed with url: {$url}",
-                    ],
+        do {
+            $contents = @file_get_contents($url);
+            if (false !== $contents) {
+                return $contents;
+            }
+            usleep($this->delayMs * 1000);
+        } while ($retry--);
+
+        return serialize([
+            'result' => false,
+            'errors' => [
+                [
+                    'no' => 0,
+                    'str' => "file_get_contents() call failed with url: {$url}",
                 ],
-            ]);
-        }
-
-        return $contents;
+            ],
+        ]);
     }
 }

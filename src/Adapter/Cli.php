@@ -12,6 +12,7 @@
 namespace CacheTool\Adapter;
 
 use CacheTool\Code;
+use CacheTool\Exception\RetryableException;
 use Symfony\Component\Process\Process;
 
 class Cli extends AbstractAdapter
@@ -26,6 +27,11 @@ class Cli extends AbstractAdapter
 
         $process = new Process([PHP_BINARY ?: "php", $file]);
         $process->run();
+
+        if (!$process->isSuccessful()) {
+            $this->logger->error(sprintf('CLI: Could not run code: %s', $process->getErrorOutput()));
+            throw new RetryableException('Process failed: ' . $process->getErrorOutput());
+        }
 
         if (!@unlink($file)) {
             $this->logger->error(sprintf('CLI: Could not delete file: %s', $file));

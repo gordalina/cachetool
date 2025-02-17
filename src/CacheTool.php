@@ -71,6 +71,11 @@ class CacheTool
     protected $tempDir;
 
     /**
+     * @var string
+     */
+    protected $retries = 3;
+
+    /**
      * @var LoggerInterface
      */
     protected $logger;
@@ -117,6 +122,7 @@ class CacheTool
         $this->adapter = $adapter;
         $this->adapter->setLogger($this->logger);
         $this->adapter->setTempDir($this->tempDir);
+        $this->adapter->setRetries($this->retries);
 
         return $this;
     }
@@ -182,6 +188,24 @@ class CacheTool
     }
 
     /**
+     * @param  int $retries
+     * @return CacheTool
+     */
+    public function setRetries(int $retries)
+    {
+        $this->retries = $retries;
+        return $this;
+    }
+
+    /**
+     * @return int
+     */
+    public function getRetries()
+    {
+        return $this->retries;
+    }
+
+    /**
      * Calls proxy functions
      *
      * @param  string $name
@@ -193,9 +217,12 @@ class CacheTool
         $this->logger->notice(sprintf('Executing: %s(%s)', $name, implode(', ', array_map('json_encode', $arguments))));
 
         $function = $this->getFunction($name);
-        if ($function) {
-            return $function(...$arguments);
+
+        if (!$function) {
+            throw new \BadMethodCallException("Function with name: {$name} does not exist.");
         }
+
+        return $function(...$arguments);
     }
 
     /**

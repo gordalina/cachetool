@@ -12,6 +12,7 @@
 namespace CacheTool\Adapter;
 
 use CacheTool\Code;
+use CacheTool\Exception\RetryableException;
 use Psr\Log\LoggerInterface;
 
 abstract class AbstractAdapter
@@ -20,6 +21,11 @@ abstract class AbstractAdapter
      * @var string
      */
     protected $tempDir;
+
+    /**
+     * @var int
+     */
+    protected $retries = 3;
 
     /**
      * @var LoggerInterface
@@ -39,8 +45,17 @@ abstract class AbstractAdapter
      */
     public function run(Code $code)
     {
+        $data = null;
         $this->logger->debug(sprintf('Executing code: %s', $code->getCode()));
-        $data = $this->doRun($code);
+
+        for ($retries = $this->retries; $retries > 0; $retries--) {
+            try {
+                $data = $this->doRun($code);
+            } catch (RetryableException $e) {
+                $this->logger->error(sprintf('Could not run function, retrying %d more time%s.', $retries, $retries > 1 ? 's' : ''));
+                continue;
+            }
+        }
 
         $result = @unserialize($data);
 
@@ -77,6 +92,24 @@ abstract class AbstractAdapter
     public function setTempDir($tempDir)
     {
         $this->tempDir = $tempDir;
+
+        return $this;
+    }
+
+    /**
+     * @return int
+     */
+    public function getRetries()
+    {
+        return $this->retries;
+    }
+
+    /**
+     * @param int $retries
+     */
+    public function setRetries($retries)
+    {
+        $this->retries = $retries;
 
         return $this;
     }

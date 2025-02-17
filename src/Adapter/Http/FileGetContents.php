@@ -11,6 +11,8 @@
 
 namespace CacheTool\Adapter\Http;
 
+use CacheTool\Exception\RetryableException;
+
 class FileGetContents extends AbstractHttp
 {
     public function fetch($filename)
@@ -19,15 +21,9 @@ class FileGetContents extends AbstractHttp
         $contents = @file_get_contents($url);
 
         if (false === $contents) {
-            return serialize([
-                'result' => false,
-                'errors' => [
-                    [
-                        'no' => 0,
-                        'str' => "file_get_contents() call failed with url: {$url}",
-                    ],
-                ],
-            ]);
+            throw new RetryableException(
+                sprintf("file_get_contents() call failed with url: %s", $url)
+            );
         }
 
         return $contents;

@@ -23,6 +23,8 @@ class Config implements \ArrayAccess
         'fastcgi' => null,
         'fastcgiChroot' => null,
 
+        'retries' => 3,
+
         'webClient' => null,
         'webPath' => null,
         'webUrl' => null,

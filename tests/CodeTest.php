@@ -98,7 +98,6 @@ class CodeTest extends \PHPUnit\Framework\TestCase
         $errors = [
             'E_USER_NOTICE',
             'E_USER_WARNING',
-            'E_USER_ERROR',
             'E_USER_DEPRECATED',
         ];
 

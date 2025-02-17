@@ -12,6 +12,7 @@
 namespace CacheTool\Adapter;
 
 use CacheTool\Code;
+use CacheTool\Exception\RetryableException;
 use hollodotme\FastCGI\Client;
 use hollodotme\FastCGI\Interfaces\ConfiguresSocketConnection;
 use hollodotme\FastCGI\SocketConnections\NetworkSocket;
@@ -140,7 +141,7 @@ class FastCGI extends AbstractAdapter
                 $this->logger->debug(sprintf('FastCGI: Could not delete file: %s', $file));
             }
 
-            throw new \RuntimeException(
+            throw new RetryableException(
                 sprintf('FastCGI error: %s (%s)', $e->getMessage(), $this->host),
                 $e->getCode(),
                 $e

@@ -108,6 +108,7 @@ class Application extends BaseApplication
         $definition->addOption(new InputOption('--fcgi', null, InputOption::VALUE_OPTIONAL, 'If specified, used as a connection string to FastCGI server.'));
         $definition->addOption(new InputOption('--fcgi-chroot', null, InputOption::VALUE_OPTIONAL, 'If specified, used for mapping script path to chrooted FastCGI server. --tmp-dir need to be chrooted too.'));
         $definition->addOption(new InputOption('--cli', null, InputOption::VALUE_NONE, 'If specified, forces adapter to cli'));
+        $definition->addOption(new InputOption('--retries', null, InputOption::VALUE_OPTIONAL, 'How many times to retry a failed command.', 3));
         $definition->addOption(new InputOption('--web', null, InputOption::VALUE_OPTIONAL, 'If specified, uses web adapter, defaults to FileGetContents. Available adapters are: FileGetContents and SymfonyHttpClient'));
         $definition->addOption(new InputOption('--web-path', null, InputOption::VALUE_OPTIONAL, 'If specified, used as a information for web adapter'));
         $definition->addOption(new InputOption('--web-url', null, InputOption::VALUE_OPTIONAL, 'If specified, used as a information for web adapter'));
@@ -164,6 +165,7 @@ class Application extends BaseApplication
             $this->config['temp_dir'],
             $this->logger
         );
+        $cacheTool->setRetries($this->config['retries']);
 
         $container = new Container();
         $container->set('cachetool', $cacheTool);
@@ -211,6 +213,7 @@ class Application extends BaseApplication
         }
 
         $this->config['temp_dir'] = $input->getOption('tmp-dir') ?? $this->config['temp_dir'];
+        $this->config['retries'] = $input->getOption('retries') ?? $this->config['retries'];
     }
 
     /**

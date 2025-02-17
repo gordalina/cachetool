@@ -41,7 +41,7 @@ class SymfonyHttpClient extends AbstractHttp
             $response = $this->client->request('GET', $url);
 
             if ($response->getStatusCode() !== Response::HTTP_OK) {
-                throw new \RuntimeException(
+                throw new \RetryableException(
                     sprintf(
                         "HTTP Response Code for URL %s is not 200, it is: %s",
                         $url,

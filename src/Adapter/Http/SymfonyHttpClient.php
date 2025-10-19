@@ -12,15 +12,24 @@
 namespace CacheTool\Adapter\Http;
 
 use Symfony\Component\HttpClient\HttpClient;
+use Symfony\Component\HttpClient\Retry\GenericRetryStrategy;
+use Symfony\Component\HttpClient\RetryableHttpClient;
 use Symfony\Component\HttpFoundation\Response;
 
 class SymfonyHttpClient extends AbstractHttp
 {
     private $client;
 
-    public function __construct($baseUrl, $httpClientConfig = [])
+    public function __construct($baseUrl, $httpClientConfig = [], int $maxRetries = 0, int $delayMs = self::DEFAULT_DELAY_MS)
     {
         $this->client = HttpClient::create($httpClientConfig);
+        if ($maxRetries > 0) {
+            $this->client = new RetryableHttpClient(
+                $this->client,
+                new GenericRetryStrategy(GenericRetryStrategy::DEFAULT_RETRY_STATUS_CODES, $delayMs),
+                $maxRetries,
+            );
+        }
         parent::__construct($baseUrl);
     }
 

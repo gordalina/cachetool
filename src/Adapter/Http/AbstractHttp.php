@@ -13,6 +13,9 @@ namespace CacheTool\Adapter\Http;
 
 abstract class AbstractHttp implements HttpInterface
 {
+    // Default delay between HTTP retries
+    protected const DEFAULT_DELAY_MS = 100;
+
     protected $baseUrl;
 
     public function __construct($baseUrl)

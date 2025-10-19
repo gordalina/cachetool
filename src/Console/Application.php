@@ -114,6 +114,7 @@ class Application extends BaseApplication
         $definition->addOption(new InputOption('--web-allow-insecure', null, InputOption::VALUE_NONE, 'If specified, verify_peer and verify_host are disabled (only for SymfonyHttpClient)'));
         $definition->addOption(new InputOption('--web-basic-auth', null, InputOption::VALUE_OPTIONAL, 'If specified, used for basic authorization (only for SymfonyHttpClient)'));
         $definition->addOption(new InputOption('--web-host', null, InputOption::VALUE_OPTIONAL, 'If specified, adds a Host header to web adapter request (only for SymfonyHttpClient)'));
+        $definition->addOption(new InputOption('--web-retry', null, InputOption::VALUE_REQUIRED, 'If specified, failed HTTP requests will be retried for the specified amount of times'));
         $definition->addOption(new InputOption('--tmp-dir', '-t', InputOption::VALUE_REQUIRED, 'Temporary directory to write files to'));
         $definition->addOption(new InputOption('--config', '-c', InputOption::VALUE_REQUIRED, 'If specified use this yaml configuration file'));
         return $definition;
@@ -198,6 +199,7 @@ class Application extends BaseApplication
             $this->config['webClient'] = $input->getOption('web') ?? 'FileGetContents';
             $this->config['webPath'] = $input->getOption('web-path') ?? $this->config['webPath'];
             $this->config['webUrl'] = $input->getOption('web-url') ?? $this->config['webUrl'];
+            $this->config['webRetry'] = $input->getOption('web-retry') ?? $this->config['webRetry'];
 
             if ($this->config['webClient'] === 'SymfonyHttpClient') {
                 $this->config['webAllowInsecure'] = $input->getOption('web-allow-insecure');
@@ -214,7 +216,7 @@ class Application extends BaseApplication
     }
 
     /**
-     * @return \CacheTool\Adapter\HttpInterface
+     * @return \CacheTool\Adapter\Http\HttpInterface
      */
     private function buildHttpClient()
     {
@@ -236,7 +238,7 @@ class Application extends BaseApplication
                 $options['headers']['Host'] = $this->config['webHost'];
             }
 
-            return new SymfonyHttpClient($this->config['webUrl'], $options);
+            return new SymfonyHttpClient($this->config['webUrl'], $options, $this->config['webRetry']);
         }
 
         if ($this->config['webClient'] !== 'FileGetContents') {
@@ -246,7 +248,7 @@ class Application extends BaseApplication
             ));
         }
 
-        return new FileGetContents($this->config['webUrl']);
+        return new FileGetContents($this->config['webUrl'], $this->config['webRetry']);
     }
 
     /**

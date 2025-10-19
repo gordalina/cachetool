@@ -29,6 +29,7 @@ class Config implements \ArrayAccess
         'webAllowInsecure' => null,
         'webBasicAuth' => null,
         'webHost' => null,
+        'webRetry' => 3,
 
         'http' => null,
     ];

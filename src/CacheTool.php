@@ -79,7 +79,7 @@ class CacheTool
      * @param string          $tempDir
      * @param LoggerInterface $logger
      */
-    public function __construct($tempDir = null, LoggerInterface $logger = null)
+    public function __construct(?string $tempDir = null, ?LoggerInterface $logger = null)
     {
         $this->logger = $logger ?: new Logger('cachetool');
         $this->tempDir = $this->getWritableTempDir($tempDir);
@@ -91,7 +91,7 @@ class CacheTool
      * @param  LoggerInterface $logger
      * @return CacheTool
      */
-    public static function factory(AbstractAdapter $adapter = null, $tempDir = null, LoggerInterface $logger = null)
+    public static function factory(?AbstractAdapter $adapter = null, ?string $tempDir = null, ?LoggerInterface $logger = null)
     {
         $cacheTool = new static($tempDir, $logger);
         $cacheTool->addProxy(new Proxy\ApcuProxy());

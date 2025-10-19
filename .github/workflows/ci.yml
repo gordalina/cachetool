@@ -18,13 +18,13 @@ jobs:
       max-parallel: 15
       matrix:
         operating-system: [ubuntu-latest, macos-latest]
-        php-version: ["8.1", "8.2", "8.3"]
+        php-version: ["8.1", "8.2", "8.3", "8.4"]
         allow-failure: [false]
         include:
-          - php-version: 8.4
+          - php-version: 8.5
             operating-system: ubuntu-latest
             allow-failure: true
-          - php-version: 8.4
+          - php-version: 8.5
             operating-system: macos-latest
             allow-failure: true
     name: Test PHP ${{ matrix.php-version }} on ${{ matrix.operating-system }}

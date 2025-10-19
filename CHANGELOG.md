@@ -1,3 +1,7 @@
+# 10.0.0
+
+- [#261](https://github.com/gordalina/cachetool/pull/261) Use `sys_get_temp_dir()` as default temporary directory
+
 # 9.2.1
 
 - Nothing changed

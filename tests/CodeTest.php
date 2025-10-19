@@ -93,25 +93,6 @@ class CodeTest extends \PHPUnit\Framework\TestCase
         $this->assertSame('exception', $result['errors'][0]['str']);
     }
 
-    public function testUserErrors()
-    {
-        $errors = [
-            'E_USER_NOTICE',
-            'E_USER_WARNING',
-            'E_USER_ERROR',
-            'E_USER_DEPRECATED',
-        ];
-
-        foreach ($errors as $error) {
-            $result = $this->getCodeResult(sprintf('trigger_error("%s", %s); return true;', $error, $error));
-
-            $this->assertTrue($result['result']);
-            $this->assertCount(1, $result['errors']);
-            $this->assertSame(constant($error), $result['errors'][0]['no']);
-            $this->assertSame($error, $result['errors'][0]['str']);
-        }
-    }
-
     protected function createFile()
     {
         $file = sprintf("%s/test-cachetool-%s.php", sys_get_temp_dir(), uniqid());

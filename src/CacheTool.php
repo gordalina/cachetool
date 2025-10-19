@@ -233,7 +233,7 @@ class CacheTool
      */
     protected function getWritableTempDir($tempDir = null) {
         if (is_null($tempDir)) {
-            $tempDirs = ['/dev/shm', '/var/run', sys_get_temp_dir()];
+            $tempDirs = [sys_get_temp_dir(), '/var/run'];
             foreach ($tempDirs as $dir) {
                 if ($this->isWritable($dir)) {
                     $tempDir = $dir;

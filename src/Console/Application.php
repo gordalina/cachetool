@@ -18,16 +18,17 @@ use CacheTool\Adapter\Http\SymfonyHttpClient;
 use CacheTool\Adapter\Web;
 use CacheTool\CacheTool;
 use CacheTool\Command as CacheToolCommand;
+use CacheTool\DependencyInjection\ContainerAwareInterface;
 use CacheTool\Monolog\ConsoleHandler;
 use Monolog\Logger;
 use SelfUpdate\SelfUpdateCommand;
+use SelfUpdate\SelfUpdateManager;
 use Symfony\Component\Console\Application as BaseApplication;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputDefinition;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
-use Symfony\Component\DependencyInjection\ContainerAwareInterface;
 use Symfony\Component\DependencyInjection\Container;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
@@ -62,11 +63,13 @@ class Application extends BaseApplication
     protected function getDefaultCommands(): array
     {
         $commands = parent::getDefaultCommands();
-        $commands[] = new SelfUpdateCommand(
+
+        $selfUpdateManager = new SelfUpdateManager(
             'gordalina/cachetool',
             '@package_version@',
             'gordalina/cachetool'
         );
+        $commands[] = new SelfUpdateCommand($selfUpdateManager);
 
         if (in_array('apcu', $this->config['extensions'], true)) {
             $commands[] = new CacheToolCommand\ApcuCacheClearCommand();

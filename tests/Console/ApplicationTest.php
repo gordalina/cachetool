@@ -39,6 +39,50 @@ class ApplicationTest extends CommandTest
         $this->assertSame(0, $app->buildContainer($input)->get('cachetool')->getAdapter()->getRetries());
     }
 
+    public function timeoutProvider()
+    {
+        return [
+            'cli' => ['--cli'],
+            'fastcgi' => ['--fcgi=127.0.0.1:%d'],
+            'FileGetContents' => ['--web=FileGetContents --web-url=http://127.0.0.1:%d --web-path=' . sys_get_temp_dir()],
+            'SymfonyHttpClient' => ['--web=SymfonyHttpClient --web-url=http://127.0.0.1:%d --web-path=' . sys_get_temp_dir()],
+        ];
+    }
+
+    /**
+     * @dataProvider timeoutProvider
+     */
+    public function testTimeout($options)
+    {
+        // accepts connections but never replies
+        $server = stream_socket_server('tcp://127.0.0.1:0');
+        $port = (int) substr(strrchr(stream_socket_get_name($server, false), ':'), 1);
+
+        $app = new Application(new Config());
+        $input = new StringInput(sprintf($options, $port) . ' --timeout=0.5 --retries=0');
+        $input->bind($app->getDefinition());
+        $adapter = $app->buildContainer($input)->get('cachetool')->getAdapter();
+
+        $start = microtime(true);
+        try {
+            $adapter->run(\CacheTool\Code::fromString('sleep(5); return true;'));
+            $this->fail('Expected a timeout');
+        } catch (\RuntimeException $e) {
+            $this->assertLessThan(3, microtime(true) - $start, $e->getMessage());
+        }
+    }
+
+    public function testInvalidTimeout()
+    {
+        $app = new Application(new Config());
+        $input = new StringInput('--cli --timeout=0');
+        $input->bind($app->getDefinition());
+
+        $this->expectException(\RuntimeException::class);
+        $this->expectExceptionMessage('Timeout must be a number of seconds greater than 0');
+        $app->buildContainer($input);
+    }
+
     public function testWithFcgi()
     {
         $app = new Application(new Config());

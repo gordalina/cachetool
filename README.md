@@ -104,6 +104,12 @@ php cachetool.phar opcache:status --web=SymfonyHttpClient --web-path=/path/to/yo
 php cachetool.phar opcache:reset --web --web-path=/path/to/your/document/root --web-url=http://url-to-your-document.root --retries=5
 ```
 
+- Use `--timeout` to set the time in seconds that CacheTool waits for each request. The timeout applies to each retry. Without this option, each adapter uses its default: 60 seconds for the CLI, a 5 second connection and 120 second read timeout for fastcgi, and `default_socket_timeout` for the web adapters.
+
+```sh
+php cachetool.phar opcache:status --fcgi=127.0.0.1:9000 --timeout=10
+```
+
 You have some useful commands that you can use
 
 ```sh
@@ -216,6 +222,12 @@ To change the number of retries for a failed fastcgi or web request (default: 3)
 
 ```yml
 retries: 5
+```
+
+To set a timeout in seconds for each request:
+
+```yml
+timeout: 10
 ```
 
 You can define the supported extensions in the config file. By default, `apcu`,

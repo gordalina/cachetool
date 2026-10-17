@@ -115,6 +115,7 @@ class Application extends BaseApplication
         $definition->addOption(new InputOption('--web-basic-auth', null, InputOption::VALUE_OPTIONAL, 'If specified, used for basic authorization (only for SymfonyHttpClient)'));
         $definition->addOption(new InputOption('--web-host', null, InputOption::VALUE_OPTIONAL, 'If specified, adds a Host header to web adapter request (only for SymfonyHttpClient)'));
         $definition->addOption(new InputOption('--retries', null, InputOption::VALUE_REQUIRED, 'Number of times to retry a failed fastcgi or web request (default: 3)'));
+        $definition->addOption(new InputOption('--timeout', null, InputOption::VALUE_REQUIRED, 'Timeout in seconds for each request to the PHP process'));
         $definition->addOption(new InputOption('--tmp-dir', '-t', InputOption::VALUE_REQUIRED, 'Temporary directory to write files to'));
         $definition->addOption(new InputOption('--config', '-c', InputOption::VALUE_REQUIRED, 'If specified use this yaml configuration file'));
         return $definition;
@@ -207,6 +208,16 @@ class Application extends BaseApplication
             }
         }
 
+        $this->config['timeout'] = $input->getOption('timeout') ?? $this->config['timeout'];
+
+        if ($this->config['timeout'] !== null) {
+            if (!is_numeric($this->config['timeout']) || $this->config['timeout'] <= 0) {
+                throw new \RuntimeException("Timeout must be a number of seconds greater than 0: {$this->config['timeout']}");
+            }
+
+            $this->config['timeout'] = (float) $this->config['timeout'];
+        }
+
         if ($this->config['adapter'] === 'web') {
             $this->config['http'] = $this->buildHttpClient();
         }
@@ -238,6 +249,11 @@ class Application extends BaseApplication
                 $options['headers']['Host'] = $this->config['webHost'];
             }
 
+            if ($this->config['timeout'] !== null) {
+                $options['timeout'] = $this->config['timeout'];
+                $options['max_duration'] = $this->config['timeout'];
+            }
+
             return new SymfonyHttpClient($this->config['webUrl'], $options);
         }
 
@@ -248,7 +264,7 @@ class Application extends BaseApplication
             ));
         }
 
-        return new FileGetContents($this->config['webUrl']);
+        return new FileGetContents($this->config['webUrl'], $this->config['timeout']);
     }
 
     /**
@@ -258,9 +274,9 @@ class Application extends BaseApplication
     {
         switch ($this->config['adapter']) {
             case 'cli':
-                return new Cli();
+                return new Cli($this->config['timeout']);
             case 'fastcgi':
-                return new FastCGI($this->config['fastcgi'], $this->config['fastcgiChroot']);
+                return new FastCGI($this->config['fastcgi'], $this->config['fastcgiChroot'], $this->config['timeout']);
             case 'web':
                 return new Web($this->config['webPath'], $this->config['http']);
         }

@@ -1,6 +1,7 @@
 # 10.1.0
 
 - [#199](https://github.com/gordalina/cachetool/issues/199), [#209](https://github.com/gordalina/cachetool/issues/209) Retry a failed fastcgi or web request 3 times. Use `--retries` or the `retries` config key to change this.
+- [#208](https://github.com/gordalina/cachetool/issues/208) Add the `--timeout` option and the `timeout` config key to set a timeout in seconds for each request.
 - `HttpInterface::fetch()` now throws an exception if the request fails. It no longer returns a serialized error.
 
 # 10.0.2

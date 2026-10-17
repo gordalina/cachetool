@@ -20,6 +20,7 @@ class Config implements \ArrayAccess
         'extensions' => ['apcu', 'opcache'],
         'temp_dir' => null,
         'retries' => 3,
+        'timeout' => null,
 
         'fastcgi' => null,
         'fastcgiChroot' => null,

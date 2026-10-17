@@ -51,9 +51,13 @@ class FastCGI extends AbstractAdapter
     /**
      * @param string $host 127.0.0.1:9000 or /var/run/php5-fpm.sock
      * @param string $chroot
+     * @param float|null $timeout in seconds, for the connection and for each read or write
      */
-    public function __construct($host = null, $chroot = null)
+    public function __construct($host = null, $chroot = null, $timeout = null)
     {
+        $connectTimeout = $timeout === null ? 5000 : (int) ($timeout * 1000);
+        $readWriteTimeout = $timeout === null ? 120000 : (int) ($timeout * 1000);
+
         // try to guess where it is
         if ($host === null) {
             foreach ($this->possibleSocketFilePatterns as $possibleSocketFilePattern) {
@@ -83,16 +87,16 @@ class FastCGI extends AbstractAdapter
             }
 
             $this->connection = new NetworkSocket(
-                $host,    # Hostname
-                $port,    # Port
-                5000,     # Connect timeout in milliseconds (default: 5000)
-                120000    # Read/write timeout in milliseconds (default: 5000)
+                $host,             # Hostname
+                $port,             # Port
+                $connectTimeout,   # Connect timeout in milliseconds
+                $readWriteTimeout  # Read/write timeout in milliseconds
             );
         } else {
             $this->connection = new UnixDomainSocket(
-                $host,  # Socket path to php-fpm
-                5000,   # Connect timeout in milliseconds (default: 5000)
-                120000  # Read/write timeout in milliseconds (default: 5000)
+                $host,             # Socket path to php-fpm
+                $connectTimeout,   # Connect timeout in milliseconds
+                $readWriteTimeout  # Read/write timeout in milliseconds
             );
         }
 

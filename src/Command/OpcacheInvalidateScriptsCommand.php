@@ -22,7 +22,7 @@ class OpcacheInvalidateScriptsCommand extends AbstractOpcacheCommand
     /**
      * {@inheritdoc}
      */
-    protected function configure()
+    protected function configure(): void
     {
         $this
             ->setName('opcache:invalidate:scripts')

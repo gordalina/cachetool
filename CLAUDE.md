@@ -4,7 +4,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project
 
-CacheTool is a PHP CLI tool and library. It manages APCu, OPcache, and the file status cache of a remote PHP process, usually PHP-FPM. It requires PHP >= 8.2. It uses Symfony 7 components and PHPUnit 9.
+CacheTool is a PHP CLI tool and library. It manages APCu, OPcache, and the file status cache of a remote PHP process, usually PHP-FPM. It requires PHP >= 8.4. It uses Symfony 8 components and PHPUnit 9.
 
 ## Commands
 
@@ -14,6 +14,7 @@ composer test                                                 # all tests (runs 
 ./vendor/bin/phpunit                                          # all tests
 ./vendor/bin/phpunit tests/Command/OpcacheStatusCommandTest.php   # one file
 ./vendor/bin/phpunit --filter testMethodName                  # one test
+./vendor/bin/phpunit --coverage-text                          # coverage report (needs pcov or xdebug)
 php bin/cachetool opcache:status --cli                        # run from source
 box compile                                                   # build cachetool.phar (needs humbug/box)
 ```
@@ -22,6 +23,8 @@ There is no linter or static analysis config.
 
 ## Test environment
 
+- Line coverage of `src/` must stay at 100%. If you add or change code, add tests for each new line. Check the result with `--coverage-text`.
+- If a line cannot run in a test, such as `exit()`, mark it with `// @codeCoverageIgnore`. Use this only when no test can reach the line.
 - Many tests run real code in a PHP subprocess. They need `apcu` loaded and these ini values: `apc.enable_cli=1`, `opcache.enable=1`, `opcache.enable_cli=1`. CI also sets `opcache.jit=disable`. `tests/cachetool.ini` has a sample.
 - If an extension is not available, `CommandTest::assertHasApcu()` and `assertHasOpcache()` skip the test.
 - `tests/Adapter/FastCGITest.php` starts a real `php-fpm` through `tests/PhpFpmRunner.php`. If `php-fpm` is not on the `PATH`, the tests that need it are skipped.

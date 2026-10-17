@@ -18,7 +18,7 @@ jobs:
       max-parallel: 15
       matrix:
         operating-system: [ubuntu-latest, macos-latest]
-        php-version: ["8.2", "8.3", "8.4", "8.5"]
+        php-version: ["8.4", "8.5"]
         allow-failure: [false]
         include:
           - php-version: 8.6
@@ -118,7 +118,7 @@ jobs:
       - name: Setup PHP
         uses: shivammathur/setup-php@v2
         with:
-          php-version: 8.2
+          php-version: 8.4
 
       - name: Install Dependencies
         run: |
@@ -143,7 +143,7 @@ jobs:
             BUILD_DATE=${{ steps.info.outputs.BUILD_DATE }}
             CACHETOOL_VERSION=${{ steps.info.outputs.VERSION }}
             COMMIT_SHA=${{ steps.info.outputs.COMMIT_SHA }}
-            PHP_VERSION=8.2
+            PHP_VERSION=8.4
           context: .
           platforms: linux/amd64,linux/arm64
           push: true
@@ -161,7 +161,7 @@ jobs:
             BUILD_DATE=${{ steps.info.outputs.BUILD_DATE }}
             CACHETOOL_VERSION=${{ steps.info.outputs.VERSION }}
             COMMIT_SHA=${{ steps.info.outputs.COMMIT_SHA }}
-            PHP_VERSION=8.2
+            PHP_VERSION=8.4
           context: .
           platforms: linux/amd64,linux/arm64
           push: true

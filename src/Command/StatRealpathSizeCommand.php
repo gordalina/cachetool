@@ -20,7 +20,7 @@ class StatRealpathSizeCommand extends AbstractCommand
     /**
      * {@inheritdoc}
      */
-    protected function configure()
+    protected function configure(): void
     {
         $this
             ->setName('stat:realpath_size')

@@ -20,7 +20,7 @@ class ApcuSmaInfoCommand extends AbstractCommand
     /**
      * {@inheritdoc}
      */
-    protected function configure()
+    protected function configure(): void
     {
         $this
             ->setName('apcu:sma:info')

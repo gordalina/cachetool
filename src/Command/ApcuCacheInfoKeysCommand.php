@@ -21,7 +21,7 @@ class ApcuCacheInfoKeysCommand extends ApcuCacheInfoCommand
     /**
      * {@inheritdoc}
      */
-    protected function configure()
+    protected function configure(): void
     {
         $this
             ->setName('apcu:cache:info:keys')

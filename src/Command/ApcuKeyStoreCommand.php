@@ -20,7 +20,7 @@ class ApcuKeyStoreCommand extends AbstractCommand
     /**
      * {@inheritdoc}
      */
-    protected function configure()
+    protected function configure(): void
     {
         $this
             ->setName('apcu:key:store')

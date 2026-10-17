@@ -19,7 +19,7 @@ class ApplicationTest extends CommandTest
     public function testWithCli()
     {
         $app = new Application(new Config());
-        $app->add(new DummyCommand);
+        $app->addCommand(new DummyCommand);
         $app->setAutoExit(false);
 
         $code = $app->run(new StringInput("dummy --cli"), new NullOutput());
@@ -86,7 +86,7 @@ class ApplicationTest extends CommandTest
     public function testWithFcgi()
     {
         $app = new Application(new Config());
-        $app->add(new DummyCommand);
+        $app->addCommand(new DummyCommand);
         $app->setAutoExit(false);
 
         $code = $app->run(new StringInput("dummy --fcgi=127.0.0.1:9000"), new NullOutput());
@@ -96,7 +96,7 @@ class ApplicationTest extends CommandTest
     public function testWebAdapter()
     {
         $app = new Application(new Config());
-        $app->add(new DummyCommand);
+        $app->addCommand(new DummyCommand);
         $app->setAutoExit(false);
 
         $output = new BufferedOutput();
@@ -108,7 +108,7 @@ class ApplicationTest extends CommandTest
     public function testWebFileGetContentsAdapter()
     {
         $app = new Application(new Config());
-        $app->add(new DummyCommand);
+        $app->addCommand(new DummyCommand);
         $app->setAutoExit(false);
 
         $output = new BufferedOutput();
@@ -120,7 +120,7 @@ class ApplicationTest extends CommandTest
     public function testWebSymfonyHttpClientAdapter()
     {
         $app = new Application(new Config());
-        $app->add(new DummyCommand);
+        $app->addCommand(new DummyCommand);
         $app->setAutoExit(false);
 
         $output = new BufferedOutput();
@@ -132,7 +132,7 @@ class ApplicationTest extends CommandTest
     public function testWrongAdapter()
     {
         $app = new Application(new Config(['adapter' => 'err']));
-        $app->add(new DummyCommand);
+        $app->addCommand(new DummyCommand);
         $app->setAutoExit(false);
 
         $output = new BufferedOutput();
@@ -145,7 +145,7 @@ class ApplicationTest extends CommandTest
     public function testOutput()
     {
         $app = new Application(new Config(['adapter' => 'cli']));
-        $app->add(new DummyCommand);
+        $app->addCommand(new DummyCommand);
         $app->setAutoExit(false);
 
         $output = new BufferedOutput();
@@ -160,7 +160,7 @@ class ApplicationTest extends CommandTest
         file_put_contents($temp, 'adapter: cli');
 
         $app = new Application(new Config(['adapter' => 'err']));
-        $app->add(new DummyCommand);
+        $app->addCommand(new DummyCommand);
         $app->setAutoExit(false);
 
         $output = new BufferedOutput();
@@ -181,7 +181,7 @@ webBasicAuth: user:password
 ');
 
         $app = new Application(new Config());
-        $app->add(new DummyCommand);
+        $app->addCommand(new DummyCommand);
         $app->setAutoExit(false);
 
         $output = new BufferedOutput();
@@ -262,7 +262,7 @@ webBasicAuth: user:password
     public function testWebSymfonyHttpClientInsecureWithHost()
     {
         $app = new Application(new Config());
-        $app->add(new DummyCommand);
+        $app->addCommand(new DummyCommand);
         $app->setAutoExit(false);
 
         $code = $app->run(new StringInput("dummy --web=SymfonyHttpClient --web-allow-insecure --web-host=example.com"), new NullOutput());
@@ -273,7 +273,7 @@ webBasicAuth: user:password
     public function testWebUnsupportedClient()
     {
         $app = new Application(new Config());
-        $app->add(new DummyCommand);
+        $app->addCommand(new DummyCommand);
         $app->setAutoExit(false);
 
         $output = new BufferedOutput();

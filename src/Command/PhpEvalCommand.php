@@ -20,7 +20,7 @@ class PhpEvalCommand extends AbstractCommand
     /**
      * {@inheritdoc}
      */
-    protected function configure()
+    protected function configure(): void
     {
         $this
             ->setName('php:eval')

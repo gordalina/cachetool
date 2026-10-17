@@ -23,7 +23,7 @@ class OpcacheCompileScriptsCommand extends AbstractCommand
     /**
      * {@inheritdoc}
      */
-    protected function configure()
+    protected function configure(): void
     {
         $this
             ->setName('opcache:compile:scripts')

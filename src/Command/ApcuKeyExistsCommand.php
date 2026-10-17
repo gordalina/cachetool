@@ -20,7 +20,7 @@ class ApcuKeyExistsCommand extends ApcuKeyFetchCommand
     /**
      * {@inheritdoc}
      */
-    protected function configure()
+    protected function configure(): void
     {
         $this
             ->setName('apcu:key:exists')

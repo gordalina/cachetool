@@ -1,3 +1,9 @@
+# 12.0.0
+
+- Require PHP >= 8.4
+- Upgrade to Symfony 8
+- Replace `consolidation/self-update` with a built-in `self:update` command. It installs the latest stable release. The `--preview`, `--compatible`, and version constraint options are removed.
+
 # 11.0.0
 
 - Require PHP >= 8.2

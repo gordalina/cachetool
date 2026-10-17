@@ -21,8 +21,6 @@ use CacheTool\Command as CacheToolCommand;
 use CacheTool\Command\AbstractCommand;
 use CacheTool\Monolog\ConsoleHandler;
 use Monolog\Logger;
-use SelfUpdate\SelfUpdateCommand;
-use SelfUpdate\SelfUpdateManager;
 use Symfony\Component\Console\Application as BaseApplication;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputDefinition;
@@ -63,14 +61,9 @@ class Application extends BaseApplication
     protected function getDefaultCommands(): array
     {
         $commands = parent::getDefaultCommands();
-        // The version is only valid inside the phar. SelfUpdateManager throws on '@package_version@'.
         // @codeCoverageIgnoreStart
         if (\Phar::running()) {
-            $commands[] = new SelfUpdateCommand(new SelfUpdateManager(
-                'gordalina/cachetool',
-                self::VERSION,
-                'gordalina/cachetool'
-            ));
+            $commands[] = new CacheToolCommand\SelfUpdateCommand(self::VERSION, \Phar::running(false));
         }
         // @codeCoverageIgnoreEnd
 

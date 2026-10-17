@@ -20,7 +20,7 @@ class ApcuRegexpDeleteCommand extends AbstractCommand
     /**
      * {@inheritdoc}
      */
-    protected function configure()
+    protected function configure(): void
     {
         $this
             ->setName('apcu:regexp:delete')

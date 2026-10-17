@@ -21,7 +21,7 @@ class OpcacheResetFileCacheCommand extends AbstractOpcacheCommand
     /**
      * {@inheritdoc}
      */
-    protected function configure()
+    protected function configure(): void
     {
         $this
             ->setName('opcache:reset:file-cache')

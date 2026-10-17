@@ -1,0 +1,2 @@
+[tools]
+"github:composer/composer" = { version = "2", asset_pattern = "composer.phar", bin = "composer" }

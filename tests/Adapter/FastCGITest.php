@@ -31,7 +31,6 @@ class FastCGITest extends \PHPUnit\Framework\TestCase
         $fcgi = new FastCGI(null, $tmpdir);
         $class = new \ReflectionClass($fcgi);
         $method = $class->getMethod('getScriptFileName');
-        $method->setAccessible(true);
 
         $this->assertSame('/test.php', $method->invoke($fcgi, "{$tmpdir}/test.php"));
     }
@@ -41,7 +40,6 @@ class FastCGITest extends \PHPUnit\Framework\TestCase
         $fcgi = new FastCGI(null);
         $class = new \ReflectionClass($fcgi);
         $method = $class->getMethod('getScriptFileName');
-        $method->setAccessible(true);
 
         $this->assertSame('/tmp/test.php', $method->invoke($fcgi, '/tmp/test.php'));
     }
@@ -55,7 +53,6 @@ class FastCGITest extends \PHPUnit\Framework\TestCase
 
         $reflection = new \ReflectionClass($fcgi);
         $reflectionClient = $reflection->getProperty('client');
-        $reflectionClient->setAccessible(true);
 
         $clientMock = $this->getMockBuilder(\hollodotme\FastCGI\Client::class)
             ->disableOriginalConstructor()
@@ -91,12 +88,10 @@ class FastCGITest extends \PHPUnit\Framework\TestCase
 
         $reflection = new \ReflectionClass($fcgi);
         $reflectionConn = $reflection->getProperty('connection');
-        $reflectionConn->setAccessible(true);
         $connection = $reflectionConn->getValue($fcgi);
 
         $reflection = new \ReflectionClass($connection);
         $reflectionHost = $reflection->getProperty('host');
-        $reflectionHost->setAccessible(true);
 
         $this->assertSame('127.0.0.1', $reflectionHost->getValue($connection));
     }
@@ -107,12 +102,10 @@ class FastCGITest extends \PHPUnit\Framework\TestCase
 
         $reflection = new \ReflectionClass($fcgi);
         $reflectionConn = $reflection->getProperty('connection');
-        $reflectionConn->setAccessible(true);
         $connection = $reflectionConn->getValue($fcgi);
 
         $reflection = new \ReflectionClass($connection);
         $reflectionHost = $reflection->getProperty('host');
-        $reflectionHost->setAccessible(true);
 
         $this->assertSame('[::]', $reflectionHost->getValue($connection));
     }

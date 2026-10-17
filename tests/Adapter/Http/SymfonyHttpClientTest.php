@@ -15,7 +15,10 @@ class SymfonyHttpClientTest extends \PHPUnit\Framework\TestCase
         self::$process = new Process(['php', '-S', '127.0.0.1:9999', '-t', '.']);
         self::$process->start();
 
-        usleep(100000); //wait for server to get going
+        // wait up to 5s for the server to accept connections
+        for ($i = 0; $i < 50 && !@fsockopen('127.0.0.1', 9999); $i++) {
+            usleep(100000);
+        }
     }
 
     public static function tearDownAfterClass(): void

@@ -57,8 +57,8 @@ jobs:
         uses: actions/cache@v6
         with:
           path: ${{ steps.composer-cache.outputs.dir }}
-          key: ${{ runner.os }}-composer-${{ hashFiles('composer.json') }}
-          restore-keys: ${{ runner.os }}-composer-${{ hashFiles('composer.json') }}
+          key: ${{ runner.os }}-php-${{ matrix.php-version }}-composer-${{ hashFiles('composer.json') }}-${{ github.run_id }}
+          restore-keys: ${{ runner.os }}-php-${{ matrix.php-version }}-composer-
 
       - name: Install Dependencies
         if: ${{ !matrix.allow-failure }}

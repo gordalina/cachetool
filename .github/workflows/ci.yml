@@ -27,7 +27,11 @@ jobs:
           - php-version: 8.6
             operating-system: macos-latest
             allow-failure: true
-    name: Test PHP ${{ matrix.php-version }} on ${{ matrix.operating-system }}
+          - php-version: 8.4
+            operating-system: ubuntu-latest
+            allow-failure: false
+            dependencies: lowest
+    name: Test PHP ${{ matrix.php-version }} on ${{ matrix.operating-system }} ${{ matrix.dependencies }}
     steps:
       - name: Checkout
         uses: actions/checkout@v7
@@ -61,8 +65,12 @@ jobs:
           restore-keys: ${{ runner.os }}-php-${{ matrix.php-version }}-composer-
 
       - name: Install Dependencies
-        if: ${{ !matrix.allow-failure }}
+        if: ${{ !matrix.allow-failure && matrix.dependencies != 'lowest' }}
         run: composer install --prefer-dist
+
+      - name: Install Dependencies (lowest versions)
+        if: ${{ matrix.dependencies == 'lowest' }}
+        run: composer update --prefer-dist --prefer-lowest --prefer-stable
 
       - name: Install Dependencies (ignoring platform requirements)
         if: ${{ matrix.allow-failure }}

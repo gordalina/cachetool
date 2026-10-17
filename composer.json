@@ -10,7 +10,7 @@
         "fpm"
     ],
     "require": {
-        "hollodotme/fast-cgi-client": "^3.0",
+        "hollodotme/fast-cgi-client": "^4.0",
         "monolog/monolog": "^3.0",
         "php": ">=8.4.0",
         "psr/log": "^2.0 || ^3.0",

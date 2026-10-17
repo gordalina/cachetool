@@ -112,10 +112,11 @@ class FastCGI extends AbstractAdapter
      */
     protected function doRun(Code $code)
     {
-        $body = $this->request($code);
+        $response = $this->request($code);
+        $body = $response->getBody();
 
         // php-fpm cannot see the temp file, e.g. systemd PrivateTmp hides /tmp
-        if (trim($body) === 'No input file specified.') {
+        if ($response->getStatusCode() === 404) {
             throw new \RuntimeException(sprintf(
                 "Error: php-fpm could not read the file that CacheTool wrote to the temporary directory %s.\n" .
                 "Set a temporary directory that both CacheTool and php-fpm can read and write:\n" .
@@ -141,15 +142,15 @@ class FastCGI extends AbstractAdapter
             $code->writeTo($file);
 
             $this->logger->info(sprintf('FastCGI: Requesting FPM using socket: %s', $this->host));
-            $request = new PostRequest($this->getScriptFileName($file), '');
+            $request = new PostRequest($this->getScriptFileName($file));
             $response = $this->retry(fn() => $this->client->sendRequest($this->connection, $request));
-            $this->logger->debug(sprintf('FastCGI: Response: %s', json_encode($response)));
+            $this->logger->debug(sprintf('FastCGI: Response: %s', $response->getOutput()));
 
             if (!@unlink($file)) {
                 $this->logger->debug(sprintf('FastCGI: Could not delete file: %s', $file));
             }
 
-            return $response->getBody();
+            return $response;
         } catch (\Exception $e) {
             if (!@unlink($file)) {
                 $this->logger->debug(sprintf('FastCGI: Could not delete file: %s', $file));

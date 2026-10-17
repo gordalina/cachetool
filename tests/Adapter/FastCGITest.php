@@ -65,7 +65,7 @@ class FastCGITest extends \PHPUnit\Framework\TestCase
             ->willReturn($fileName);
 
         $connectionMock = new NetworkSocket('127.0.0.1', '9000', 5000, 120000);
-        $request = new PostRequest($fileName, '');
+        $request = new PostRequest($fileName);
         $response = new Response("Content-type: text/html; charset=UTF-8\r\n\r\na:2:{s:6:\"result\";b:1;s:6:\"errors\";a:0:{}}", '', 0);
 
         $clientMock->expects(self::once())
@@ -128,6 +128,25 @@ class FastCGITest extends \PHPUnit\Framework\TestCase
         $this->expectException(\RuntimeException::class);
         $this->expectExceptionMessage('--tmp-dir');
         $fcgi->run(Code::fromString('return true;'));
+    }
+
+    public function testRunThrowsWhenFpmCannotFindFile()
+    {
+        $fpm = new PhpFpmRunner();
+        // the chroot strips the temp dir from the path, so php-fpm gets a file that does not exist
+        $fcgi = new FastCGI($fpm->socket, sys_get_temp_dir());
+        $fcgi->setTempDir(sys_get_temp_dir());
+        $handler = new \Monolog\Handler\TestHandler();
+        $fcgi->setLogger(new Logger('test', [$handler]));
+
+        try {
+            $fcgi->run(Code::fromString('return true;'));
+            $this->fail('Expected a RuntimeException');
+        } catch (\RuntimeException $e) {
+            $this->assertStringContainsString('--tmp-dir', $e->getMessage());
+        }
+
+        $this->assertTrue($handler->hasDebugThatContains('File not found.'));
     }
 
     public function testGuessesSocketFile()

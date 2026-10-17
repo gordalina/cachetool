@@ -4,28 +4,32 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "daa1b8d124f4fe6573f1227f74e515a2",
+    "content-hash": "0b335d9fd3fc07d48f1e197217277d8d",
     "packages": [
         {
             "name": "hollodotme/fast-cgi-client",
-            "version": "v3.1.8",
+            "version": "v4.0.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/hollodotme/fast-cgi-client.git",
-                "reference": "b77318889a7e177a3e65fd9c9272d877e8b002d4"
+                "reference": "b65cb9ba2f12ad456478813fe1550022b171dc9f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/hollodotme/fast-cgi-client/zipball/b77318889a7e177a3e65fd9c9272d877e8b002d4",
-                "reference": "b77318889a7e177a3e65fd9c9272d877e8b002d4",
+                "url": "https://api.github.com/repos/hollodotme/fast-cgi-client/zipball/b65cb9ba2f12ad456478813fe1550022b171dc9f",
+                "reference": "b65cb9ba2f12ad456478813fe1550022b171dc9f",
                 "shasum": ""
             },
             "require": {
+                "ext-fileinfo": "*",
                 "ext-json": "*",
-                "php": ">=7.1"
+                "php": ">=8.0"
             },
             "require-dev": {
-                "ext-xdebug": ">=2.6.0"
+                "ext-xdebug": ">=3.1",
+                "phpstan/phpstan": "^2.1",
+                "phpunit/phpunit": "^9",
+                "squizlabs/php_codesniffer": "^4.0"
             },
             "type": "library",
             "autoload": {
@@ -52,7 +56,7 @@
             ],
             "support": {
                 "issues": "https://github.com/hollodotme/fast-cgi-client/issues",
-                "source": "https://github.com/hollodotme/fast-cgi-client/tree/v3.1.8"
+                "source": "https://github.com/hollodotme/fast-cgi-client/tree/v4.0.0"
             },
             "funding": [
                 {
@@ -60,7 +64,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2026-10-05T11:41:51+00:00"
+            "time": "2026-10-05T12:05:19+00:00"
         },
         {
             "name": "monolog/monolog",

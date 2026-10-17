@@ -24,7 +24,7 @@ There is no linter or static analysis config.
 
 - Many tests run real code in a PHP subprocess. They need `apcu` loaded and these ini values: `apc.enable_cli=1`, `opcache.enable=1`, `opcache.enable_cli=1`. CI also sets `opcache.jit=disable`. `tests/cachetool.ini` has a sample.
 - If an extension is not available, `CommandTest::assertHasApcu()` and `assertHasOpcache()` skip the test.
-- `tests/Adapter/FastCGITest.php` starts a real `php-fpm` through `tests/PhpFpmRunner.php`. If `php-fpm` is not on the `PATH`, the test is skipped.
+- `tests/Adapter/FastCGITest.php` starts a real `php-fpm` through `tests/PhpFpmRunner.php`. If `php-fpm` is not on the `PATH`, the tests that need it are skipped.
 - The HTTP client tests resolve hostnames such as `_.127.0.0.1.sslip.io`. These tests need a DNS server that knows sslip.io.
 
 ## Architecture

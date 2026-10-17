@@ -1,2 +1,3 @@
 [tools]
 "github:composer/composer" = { version = "2", asset_pattern = "composer.phar", bin = "composer" }
+"github:box-project/box" = { version = "4", asset_pattern = "box.phar", bin = "box" }

@@ -42,7 +42,7 @@ class ApcuKeyFetchCommand extends AbstractCommand
         $value = $this->getCacheTool()->apcu_fetch($key, $success);
 
         if ($success->success) {
-            $output->writeln(sprintf("<comment>APCu key=<info>{$key}</info> has value=<info>%1\$s</info></comment>", var_export($value, true)));
+            $output->writeln(sprintf("<comment>APCu key=<info>%s</info> has value=<info>%s</info></comment>", $key, var_export($value, true)));
         } else {
             $output->writeln("<comment>APCu key=<info>{$key}</info> does not exist.</comment>");
             return 1;

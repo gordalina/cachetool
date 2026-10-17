@@ -46,7 +46,7 @@ class ApcuKeyStoreCommand extends AbstractCommand
 
         if ($output->isVerbose()) {
             if ($success) {
-                $output->writeln(sprintf("<comment>APCu key <info>{$key}</info> was stored with value=<info>%1\$s</info> and ttl=<info>{$ttl}</info></comment>", var_export($value, 1)));
+                $output->writeln(sprintf("<comment>APCu key <info>%s</info> was stored with value=<info>%s</info> and ttl=<info>%s</info></comment>", $key, var_export($value, 1), $ttl));
             } else {
                 $output->writeln("<comment>APCu key <info>{$key}</info> could not be stored.</comment>");
             }

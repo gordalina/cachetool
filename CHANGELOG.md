@@ -1,3 +1,7 @@
+# 10.0.2
+
+- [#237](https://github.com/gordalina/cachetool/issues/237) Fix `apcu:key:fetch` and `apcu:key:store` when the key contains `%`
+
 # 10.0.1
 
 - [#265](https://github.com/gordalina/cachetool/issues/265) Show a clear error when php-fpm cannot read the temporary file

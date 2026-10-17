@@ -17,4 +17,10 @@ class ApcuKeyFetchCommandTest extends CommandTest
         $result = $this->runCommand('apcu:key:fetch key', ['value', true]);
         $this->assertStringContainsString("APCu key=key has value='value'", $result);
     }
+
+    public function testFetchedKeyWithPercent()
+    {
+        $result = $this->runCommand('apcu:key:fetch Bundle%5CName', ['value', true]);
+        $this->assertStringContainsString("APCu key=Bundle%5CName has value='value'", $result);
+    }
 }

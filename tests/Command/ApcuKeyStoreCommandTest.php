@@ -20,4 +20,10 @@ class ApcuKeyStoreCommandTest extends CommandTest
 
         $this->assertStringContainsString('APCu key key could not be stored.', $result);
     }
+
+    public function testStoredKeyWithPercent()
+    {
+        $result = $this->runCommand('apcu:key:store Bundle%5CName value 60 -v', true);
+        $this->assertStringContainsString("APCu key Bundle%5CName was stored with value='value' and ttl=60", $result);
+    }
 }

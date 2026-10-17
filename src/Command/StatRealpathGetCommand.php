@@ -11,6 +11,7 @@
 
 namespace CacheTool\Command;
 
+use CacheTool\Util\Formatter;
 use Symfony\Component\Console\Helper\Table;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -62,7 +63,7 @@ class StatRealpathGetCommand extends AbstractCommand
                $item['key'],
                $item['is_dir'],
                $item['realpath'],
-               gmdate(DATE_RFC2822, $item['expires']),
+               Formatter::date($item['expires'], 'U'),
             ];
         }
 

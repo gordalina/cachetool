@@ -43,9 +43,30 @@ class Formatter
             } else {
                 $date = new \DateTime($date);
             }
-            $date->setTimezone(new \DateTimeZone(date_default_timezone_get()));
+            $date->setTimezone(new \DateTimeZone(self::timezone()));
         }
 
         return $date->format(\DateTime::RFC2822);
+    }
+
+    /**
+     * PHP ignores the system timezone and uses UTC when date.timezone is not set
+     *
+     * @return string
+     */
+    public static function timezone()
+    {
+        $default = date_default_timezone_get();
+
+        if (get_cfg_var('date.timezone') || $default !== 'UTC') {
+            return $default;
+        }
+
+        $tz = ltrim((string) getenv('TZ'), ':') ?: (string) @readlink('/etc/localtime');
+        if (false !== $pos = strpos($tz, 'zoneinfo/')) {
+            $tz = substr($tz, $pos + strlen('zoneinfo/'));
+        }
+
+        return in_array($tz, \DateTimeZone::listIdentifiers(\DateTimeZone::ALL_WITH_BC), true) ? $tz : $default;
     }
 }

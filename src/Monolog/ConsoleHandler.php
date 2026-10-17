@@ -131,7 +131,7 @@ class ConsoleHandler extends AbstractProcessingHandler
      */
     private function updateLevel()
     {
-        if (null === $this->output || OutputInterface::VERBOSITY_QUIET === $verbosity = $this->output->getVerbosity()) {
+        if (null === $this->output || ($verbosity = $this->output->getVerbosity()) <= OutputInterface::VERBOSITY_QUIET) {
             return false;
         }
 

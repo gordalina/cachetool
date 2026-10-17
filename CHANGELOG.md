@@ -1,3 +1,9 @@
+# 11.0.0
+
+- Require PHP >= 8.2
+- [#238](https://github.com/gordalina/cachetool/issues/238) Upgrade to Symfony 7. The new `--silent` option also disables log output.
+- Upgrade `consolidation/self-update` to 3.x. The command is now `self:update`. `self-update` and `update` are aliases. It is only available in the phar.
+
 # 10.1.0
 
 - [#199](https://github.com/gordalina/cachetool/issues/199), [#209](https://github.com/gordalina/cachetool/issues/209) Retry a failed fastcgi or web request 3 times. Use `--retries` or the `retries` config key to change this.

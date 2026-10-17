@@ -1,7 +1,8 @@
 {
     "chmod": "0755",
     "directories": [
-        "src"
+        "src",
+        "vendor/symfony/console/Resources"
     ],
     "files": [
         "LICENSE"

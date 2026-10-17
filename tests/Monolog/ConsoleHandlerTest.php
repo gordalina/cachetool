@@ -2,7 +2,9 @@
 
 namespace CacheTool\Monolog;
 
+use Monolog\Level;
 use Monolog\Logger;
+use Monolog\LogRecord;
 use Symfony\Component\Console\Output\BufferedOutput;
 use Symfony\Component\Console\Output\ConsoleOutputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -32,6 +34,16 @@ class ConsoleHandlerTest extends \PHPUnit\Framework\TestCase
         $logger->debug('debug');
 
         $this->assertStringContainsString('debug', $output->fetch());
+    }
+
+    public function testSilentAndQuietDisableHandling()
+    {
+        $record = new LogRecord(new \DateTimeImmutable(), 'test', Level::Error, 'error');
+
+        foreach ([OutputInterface::VERBOSITY_SILENT, OutputInterface::VERBOSITY_QUIET] as $verbosity) {
+            $handler = new ConsoleHandler(new BufferedOutput($verbosity));
+            $this->assertFalse($handler->isHandling($record));
+        }
     }
 
     public function testErrorsGoToErrorOutput()

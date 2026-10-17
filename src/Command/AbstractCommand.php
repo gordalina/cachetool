@@ -13,10 +13,9 @@ namespace CacheTool\Command;
 
 use CacheTool\CacheTool;
 use Symfony\Component\Console\Command\Command;
-use Symfony\Component\DependencyInjection\ContainerAwareInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
-abstract class AbstractCommand extends Command implements ContainerAwareInterface
+abstract class AbstractCommand extends Command
 {
     /**
      * @var ContainerInterface
@@ -42,9 +41,9 @@ abstract class AbstractCommand extends Command implements ContainerAwareInterfac
     }
 
     /**
-     * {@inheritdoc}
+     * @param ContainerInterface $container
      */
-    public function setContainer(ContainerInterface $container = null)
+    public function setContainer(ContainerInterface $container)
     {
         $this->container = $container;
     }

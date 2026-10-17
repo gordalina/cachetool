@@ -11,19 +11,12 @@
 
 namespace CacheTool\Console;
 
-use Symfony\Component\Console\Command\Command;
+use CacheTool\Command\AbstractCommand;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
-use Symfony\Component\DependencyInjection\ContainerAwareInterface;
-use Symfony\Component\DependencyInjection\ContainerInterface;
 
-class DummyCommand extends Command implements ContainerAwareInterface
+class DummyCommand extends AbstractCommand
 {
-    /**
-     * @var ContainerInterface
-     */
-    protected $container;
-
     /**
      * {@inheritdoc}
      */
@@ -35,19 +28,11 @@ class DummyCommand extends Command implements ContainerAwareInterface
     /**
      * {@inheritdoc}
      */
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $this->container->get('logger')->critical('critical');
         $this->container->get('logger')->debug('debug');
 
         return 42;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function setContainer(ContainerInterface $container = null)
-    {
-        $this->container = $container;
     }
 }

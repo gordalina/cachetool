@@ -109,4 +109,24 @@ class FastCGITest extends \PHPUnit\Framework\TestCase
 
         $this->assertSame('[::]', $reflectionHost->getValue($connection));
     }
+
+    public function testRunThrowsWhenFpmCannotReadFile()
+    {
+        $fcgi = new FastCGI('127.0.0.1:9000');
+
+        $clientMock = $this->getMockBuilder(\hollodotme\FastCGI\Client::class)
+            ->disableOriginalConstructor()
+            ->getMock();
+        $clientMock->method('sendRequest')->willReturn(
+            new Response("Status: 404 Not Found\r\nContent-type: text/html; charset=UTF-8\r\n\r\nNo input file specified.\n", '', 0)
+        );
+        (new \ReflectionClass($fcgi))->getProperty('client')->setValue($fcgi, $clientMock);
+
+        $fcgi->setTempDir(sys_get_temp_dir());
+        $fcgi->setLogger($this->getMockBuilder(Logger::class)->disableOriginalConstructor()->getMock());
+
+        $this->expectException(\RuntimeException::class);
+        $this->expectExceptionMessage('--tmp-dir');
+        $fcgi->run(Code::fromString('return true;'));
+    }
 }

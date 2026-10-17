@@ -110,6 +110,17 @@ class FastCGI extends AbstractAdapter
     {
         $body = $this->request($code);
 
+        // php-fpm cannot see the temp file, e.g. systemd PrivateTmp hides /tmp
+        if (trim($body) === 'No input file specified.') {
+            throw new \RuntimeException(sprintf(
+                "Error: php-fpm could not read the file that CacheTool wrote to the temporary directory %s.\n" .
+                "Set a temporary directory that both CacheTool and php-fpm can read and write:\n" .
+                "  - use the --tmp-dir=/path/to/dir argument, or\n" .
+                "  - add \"temp_dir: /path/to/dir\" to your .cachetool.yml config file.",
+                $this->tempDir
+            ));
+        }
+
         if (@unserialize($body) === false) {
             throw new \RuntimeException(sprintf("Error: %s", $body));
         }

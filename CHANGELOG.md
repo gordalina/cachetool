@@ -1,3 +1,7 @@
+# 10.0.1
+
+- [#265](https://github.com/gordalina/cachetool/issues/265) Show a clear error when php-fpm cannot read the temporary file
+
 # 10.0.0
 
 - [#261](https://github.com/gordalina/cachetool/pull/261) Use `sys_get_temp_dir()` as default temporary directory

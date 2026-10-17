@@ -49,4 +49,16 @@ class CliTest extends \PHPUnit\Framework\TestCase
             $this->assertSame(PHP_BINARY, $result);
         }
     }
+
+    public function testLogsWhenFileCannotBeDeleted()
+    {
+        $logger = $this->getMockBuilder(Logger::class)->disableOriginalConstructor()->getMock();
+        $logger->expects($this->once())->method('error')->with($this->stringContains('Could not delete file'));
+
+        $cli = new Cli();
+        $cli->setTempDir(sys_get_temp_dir());
+        $cli->setLogger($logger);
+
+        $this->assertTrue($cli->run(Code::fromString('unlink(__FILE__); return true;')));
+    }
 }

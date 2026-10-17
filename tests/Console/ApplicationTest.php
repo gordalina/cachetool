@@ -201,4 +201,28 @@ webBasicAuth: user:password
         $this->assertSame(1, $code);
         $this->assertThat($content, new RegularExpression('|Could not write to `/doesnotexist/cachetool-.*\.php`:|'));
     }
+
+    public function testWebSymfonyHttpClientInsecureWithHost()
+    {
+        $app = new Application(new Config());
+        $app->add(new DummyCommand);
+        $app->setAutoExit(false);
+
+        $code = $app->run(new StringInput("dummy --web=SymfonyHttpClient --web-allow-insecure --web-host=example.com"), new NullOutput());
+
+        $this->assertSame(42, $code);
+    }
+
+    public function testWebUnsupportedClient()
+    {
+        $app = new Application(new Config());
+        $app->add(new DummyCommand);
+        $app->setAutoExit(false);
+
+        $output = new BufferedOutput();
+        $code = $app->run(new StringInput("dummy --web=Unknown"), $output);
+
+        $this->assertSame(42, $code);
+        $this->assertStringContainsString('Web client `Unknown` not supported - defaulting to FileGetContents', $output->fetch());
+    }
 }

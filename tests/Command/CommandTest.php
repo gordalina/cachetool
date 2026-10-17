@@ -34,10 +34,15 @@ abstract class CommandTest extends \PHPUnit\Framework\TestCase
 
                         public function doRun(Code $code)
                         {
-                            if ($this->mockData) {
+                            // a closure gets the code and returns the result, or null to run the code
+                            $result = $this->mockData instanceof \Closure
+                                ? ($this->mockData)($code->getCode())
+                                : ($this->mockData ?: null);
+
+                            if ($result !== null) {
                                 $wrappedMockData = [
                                     'errors' => null,
-                                    'result' => $this->mockData,
+                                    'result' => $result,
                                 ];
                                 return serialize($wrappedMockData);
                             }

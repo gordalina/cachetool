@@ -13,7 +13,6 @@ namespace CacheTool\Monolog;
 
 use Monolog\Formatter\LineFormatter;
 use Monolog\Level;
-use Monolog\Logger;
 use Monolog\LogRecord;
 
 /**
@@ -30,20 +29,6 @@ class ConsoleFormatter extends LineFormatter
      */
     public function format(array|LogRecord $record): string
     {
-        if (Logger::API < 3) {
-            if ($record['level'] >= Logger::ERROR) {
-                $record = $this->addTags($record, 'error');
-            } elseif ($record['level'] >= Logger::NOTICE) {
-                $record = $this->addTags($record, 'comment');
-            } elseif ($record['level'] >= Logger::INFO) {
-                $record = $this->addTags($record, 'info');
-            } else {
-                $record = $this->addTags($record);
-            }
-
-            return parent::format($record);
-        }
-
         if (Level::Error->includes($record->level)) {
             $this->addTags($record, 'error');
         } elseif (Level::Notice->includes($record->level)) {

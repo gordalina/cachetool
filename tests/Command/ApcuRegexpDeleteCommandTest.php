@@ -21,4 +21,13 @@ class ApcuRegexpDeleteCommandTest extends CommandTest
 
         $this->assertStringContainsString('InvalidArgumentException', $result);
     }
+
+    public function testNotDeleted()
+    {
+        $result = $this->runCommand('apcu:regexp:delete /test/ -v', function ($code) {
+            return str_contains($code, 'extension_loaded');
+        });
+
+        $this->assertStringContainsString('APC keys by regexp /test/ could not be deleted.', $result);
+    }
 }

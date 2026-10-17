@@ -146,10 +146,6 @@ class ConsoleHandler extends AbstractProcessingHandler
 
     private function isError(array|LogRecord $record): bool
     {
-        if (Logger::API < 3) {
-            return $record['level'] >= Logger::ERROR;
-        }
-
         return Level::Error->includes($record->level);
     }
 }

@@ -129,4 +129,71 @@ class FastCGITest extends \PHPUnit\Framework\TestCase
         $this->expectExceptionMessage('--tmp-dir');
         $fcgi->run(Code::fromString('return true;'));
     }
+
+    public function testGuessesSocketFile()
+    {
+        $socket = tempnam(sys_get_temp_dir(), 'php-fpm-sock');
+
+        $fcgi = new class($socket) extends FastCGI {
+            public function __construct($socket)
+            {
+                $this->possibleSocketFilePatterns = [$socket];
+                parent::__construct();
+            }
+        };
+        unlink($socket);
+
+        $this->assertSame($socket, (new \ReflectionClass($fcgi))->getProperty('host')->getValue($fcgi));
+    }
+
+    public function testGetScriptFileNameOutsideChroot()
+    {
+        $fcgi = new FastCGI(null, '/does-not-exist');
+        $method = (new \ReflectionClass($fcgi))->getMethod('getScriptFileName');
+
+        $this->expectException(\RuntimeException::class);
+        $this->expectExceptionMessage('file not in chroot directory');
+        $method->invoke($fcgi, '/tmp/test.php');
+    }
+
+    public function testRunThrowsOnInvalidResponse()
+    {
+        $fcgi = $this->createFastCGIWithResponse(function () {
+            return new Response("Content-type: text/html\r\n\r\nFatal error", '', 0);
+        });
+        $fcgi->setLogger($this->getMockBuilder(Logger::class)->disableOriginalConstructor()->getMock());
+
+        $this->expectException(\RuntimeException::class);
+        $this->expectExceptionMessage('Error: Fatal error');
+        $fcgi->run(Code::fromString('return true;'));
+    }
+
+    public function testLogsWhenFileCannotBeDeleted()
+    {
+        $fcgi = $this->createFastCGIWithResponse(function ($connection, $request) {
+            unlink($request->getScriptFilename());
+            return new Response("Content-type: text/html\r\n\r\na:2:{s:6:\"result\";b:1;s:6:\"errors\";a:0:{}}", '', 0);
+        });
+
+        $handler = new \Monolog\Handler\TestHandler();
+        $fcgi->setLogger(new Logger('test', [$handler]));
+
+        $this->assertTrue($fcgi->run(Code::fromString('return true;')));
+        $this->assertTrue($handler->hasDebugThatContains('Could not delete file'));
+    }
+
+    private function createFastCGIWithResponse(callable $callback)
+    {
+        $fcgi = new FastCGI('127.0.0.1:9000');
+
+        $clientMock = $this->getMockBuilder(\hollodotme\FastCGI\Client::class)
+            ->disableOriginalConstructor()
+            ->getMock();
+        $clientMock->method('sendRequest')->willReturnCallback($callback);
+        (new \ReflectionClass($fcgi))->getProperty('client')->setValue($fcgi, $clientMock);
+
+        $fcgi->setTempDir(sys_get_temp_dir());
+
+        return $fcgi;
+    }
 }

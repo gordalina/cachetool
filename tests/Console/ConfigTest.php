@@ -30,4 +30,38 @@ class ConfigTest extends \PHPUnit\Framework\TestCase
 
         $this->assertEquals($config, new Config());
     }
+
+    public function testFactoryFindsFileInCurrentDir()
+    {
+        $cwd = getcwd();
+        $dir = sys_get_temp_dir() . '/cachetool-config-' . uniqid();
+        mkdir($dir);
+        file_put_contents("{$dir}/.cachetool.yml", 'adapter: cli');
+
+        try {
+            chdir($dir);
+            $this->assertSame('cli', Config::factory()['adapter']);
+        } finally {
+            chdir($cwd);
+            unlink("{$dir}/.cachetool.yml");
+            rmdir($dir);
+        }
+    }
+
+    public function testWindowsHomeDir()
+    {
+        $home = getenv('HOME');
+        $server = $_SERVER;
+        putenv('HOME');
+        $_SERVER['HOMEDRIVE'] = 'C:';
+        $_SERVER['HOMEPATH'] = '\\Users\\sam\\';
+
+        try {
+            $method = new \ReflectionMethod(Config::class, 'getUserHomeDir');
+            $this->assertSame('C:\\Users\\sam', $method->invoke(null));
+        } finally {
+            putenv($home === false ? 'HOME' : "HOME={$home}");
+            $_SERVER = $server;
+        }
+    }
 }

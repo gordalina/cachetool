@@ -256,8 +256,9 @@ class CacheTool
 
         $tempFile = tempnam($tempDir, 'cachetool-test');
 
+        // tempnam() falls back to the system temp dir, so this needs a broken system temp dir
         if ($tempFile === false) {
-            return false;
+            return false; // @codeCoverageIgnore
         }
 
         @unlink($tempFile);

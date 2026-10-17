@@ -44,4 +44,10 @@ class FormatterTest extends \PHPUnit\Framework\TestCase
         putenv('TZ=Not/AZone');
         $this->assertSame('UTC', Formatter::timezone());
     }
+
+    public function testDateWithoutFormat()
+    {
+        putenv('TZ=UTC');
+        $this->assertSame('Wed, 02 Oct 2024 12:19:07 +0000', Formatter::date('2024-10-02 12:19:07'));
+    }
 }

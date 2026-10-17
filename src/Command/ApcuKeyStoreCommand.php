@@ -27,7 +27,7 @@ class ApcuKeyStoreCommand extends AbstractCommand
             ->setDescription('Store an APCu key with given value')
             ->addArgument('key', InputArgument::REQUIRED)
             ->addArgument('value', InputArgument::REQUIRED)
-            ->addArgument('ttl', InputArgument::OPTIONAL, 0)
+            ->addArgument('ttl', InputArgument::REQUIRED, 'Time to live in seconds. 0 keeps the key until it is deleted.')
             ->setHelp('');
     }
 
@@ -40,7 +40,7 @@ class ApcuKeyStoreCommand extends AbstractCommand
 
         $key = $input->getArgument('key');
         $value = $input->getArgument('value');
-        $ttl = $input->getArgument('ttl');
+        $ttl = (int) $input->getArgument('ttl');
 
         $success = $this->getCacheTool()->apcu_store($key, $value, $ttl);
 

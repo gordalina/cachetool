@@ -6,6 +6,7 @@
 - Upgrade `hollodotme/fast-cgi-client` to 4. It requires the `fileinfo` extension. A FastCGI request now times out after `--timeout`, or 120 seconds if it is not set.
 - Show the `--tmp-dir` hint when php-fpm returns `File not found.`. The fastcgi adapter now checks for the 404 status code.
 - Log the FastCGI response at debug level. Before, the log showed `{}`.
+- The `ttl` argument of `apcu:key:store` is now required. Before, the command failed without it. Use 0 to keep the key until it is deleted.
 
 # 11.0.0
 

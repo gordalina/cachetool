@@ -9,12 +9,18 @@ class ApcuKeyStoreCommandTest extends CommandTest
         $this->assertHasApcu();
 
         $result = $this->runCommand('apcu:key:store key value 3600 -v');
-        $this->assertStringContainsString('apcu_store("key", "value", "3600")', $result);
+        $this->assertStringContainsString('apcu_store("key", "value", 3600)', $result);
+    }
+
+    public function testTtlIsRequired()
+    {
+        $result = $this->runCommand('apcu:key:store key value');
+        $this->assertStringContainsString('Not enough arguments (missing: "ttl")', $result);
     }
 
     public function testNotStored()
     {
-        $result = $this->runCommand('apcu:key:store key value -v', function ($code) {
+        $result = $this->runCommand('apcu:key:store key value 0 -v', function ($code) {
             return str_contains($code, 'extension_loaded');
         });
 

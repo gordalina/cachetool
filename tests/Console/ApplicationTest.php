@@ -26,6 +26,19 @@ class ApplicationTest extends CommandTest
         $this->assertSame(42, $code);
     }
 
+    public function testRetry()
+    {
+        $app = new Application(new Config());
+
+        $input = new StringInput('--cli');
+        $input->bind($app->getDefinition());
+        $this->assertSame(3, $app->buildContainer($input)->get('cachetool')->getAdapter()->getRetries());
+
+        $input = new StringInput('--cli --retries=0');
+        $input->bind($app->getDefinition());
+        $this->assertSame(0, $app->buildContainer($input)->get('cachetool')->getAdapter()->getRetries());
+    }
+
     public function testWithFcgi()
     {
         $app = new Application(new Config());

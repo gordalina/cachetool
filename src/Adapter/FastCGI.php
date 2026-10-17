@@ -138,7 +138,7 @@ class FastCGI extends AbstractAdapter
 
             $this->logger->info(sprintf('FastCGI: Requesting FPM using socket: %s', $this->host));
             $request = new PostRequest($this->getScriptFileName($file), '');
-            $response = $this->client->sendRequest($this->connection, $request);
+            $response = $this->retry(fn() => $this->client->sendRequest($this->connection, $request));
             $this->logger->debug(sprintf('FastCGI: Response: %s', json_encode($response)));
 
             if (!@unlink($file)) {

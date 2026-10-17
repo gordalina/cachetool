@@ -182,6 +182,66 @@ class FastCGITest extends \PHPUnit\Framework\TestCase
         $this->assertTrue($handler->hasDebugThatContains('Could not delete file'));
     }
 
+    public function testRetriesFailedRequestWithSameFile()
+    {
+        $files = [];
+        $fcgi = $this->createFastCGIWithResponse(function ($connection, $request) use (&$files) {
+            $files[] = $request->getScriptFilename();
+            $this->assertFileExists($request->getScriptFilename());
+            if (count($files) === 1) {
+                throw new \hollodotme\FastCGI\Exceptions\ConnectException('Unable to connect');
+            }
+            return new Response("Content-type: text/html\r\n\r\na:2:{s:6:\"result\";b:1;s:6:\"errors\";a:0:{}}", '', 0);
+        });
+
+        $handler = new \Monolog\Handler\TestHandler();
+        $fcgi->setLogger(new Logger('test', [$handler]));
+        $fcgi->setRetries(1);
+
+        $this->assertTrue($fcgi->run(Code::fromString('return true;')));
+        $this->assertCount(2, $files);
+        $this->assertSame($files[0], $files[1]);
+        $this->assertTrue($handler->hasWarningThatContains('Retry 1/1 in 100ms: Unable to connect'));
+    }
+
+    public function testGivesUpAfterRetries()
+    {
+        $calls = 0;
+        $fcgi = $this->createFastCGIWithResponse(function () use (&$calls) {
+            $calls++;
+            throw new \hollodotme\FastCGI\Exceptions\ConnectException('Unable to connect');
+        });
+        $fcgi->setLogger($this->getMockBuilder(Logger::class)->disableOriginalConstructor()->getMock());
+        $fcgi->setRetries(2);
+
+        try {
+            $fcgi->run(Code::fromString('return true;'));
+            $this->fail('Expected exception');
+        } catch (\RuntimeException $e) {
+            $this->assertStringContainsString('FastCGI error: Unable to connect', $e->getMessage());
+        }
+        $this->assertSame(3, $calls);
+    }
+
+    public function testDoesNotRetryErrorsOfTheCode()
+    {
+        $calls = 0;
+        $fcgi = $this->createFastCGIWithResponse(function () use (&$calls) {
+            $calls++;
+            return new Response("Content-type: text/html\r\n\r\n" . serialize(['result' => false, 'errors' => [['no' => 1, 'str' => 'boom']]]), '', 0);
+        });
+        $fcgi->setLogger($this->getMockBuilder(Logger::class)->disableOriginalConstructor()->getMock());
+        $fcgi->setRetries(3);
+
+        try {
+            $fcgi->run(Code::fromString('return true;'));
+            $this->fail('Expected exception');
+        } catch (\RuntimeException $e) {
+            $this->assertStringContainsString('boom', $e->getMessage());
+        }
+        $this->assertSame(1, $calls);
+    }
+
     private function createFastCGIWithResponse(callable $callback)
     {
         $fcgi = new FastCGI('127.0.0.1:9000');

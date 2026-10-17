@@ -114,6 +114,7 @@ class Application extends BaseApplication
         $definition->addOption(new InputOption('--web-allow-insecure', null, InputOption::VALUE_NONE, 'If specified, verify_peer and verify_host are disabled (only for SymfonyHttpClient)'));
         $definition->addOption(new InputOption('--web-basic-auth', null, InputOption::VALUE_OPTIONAL, 'If specified, used for basic authorization (only for SymfonyHttpClient)'));
         $definition->addOption(new InputOption('--web-host', null, InputOption::VALUE_OPTIONAL, 'If specified, adds a Host header to web adapter request (only for SymfonyHttpClient)'));
+        $definition->addOption(new InputOption('--retries', null, InputOption::VALUE_REQUIRED, 'Number of times to retry a failed fastcgi or web request (default: 3)'));
         $definition->addOption(new InputOption('--tmp-dir', '-t', InputOption::VALUE_REQUIRED, 'Temporary directory to write files to'));
         $definition->addOption(new InputOption('--config', '-c', InputOption::VALUE_REQUIRED, 'If specified use this yaml configuration file'));
         return $definition;
@@ -160,7 +161,7 @@ class Application extends BaseApplication
         $this->logger->debug(sprintf('Config: %s', $this->config->toJSON()));
 
         $cacheTool = CacheTool::factory(
-            $this->getAdapter(),
+            $this->getAdapter()->setRetries((int) $this->config['retries']),
             $this->config['temp_dir'],
             $this->logger
         );
@@ -211,6 +212,7 @@ class Application extends BaseApplication
         }
 
         $this->config['temp_dir'] = $input->getOption('tmp-dir') ?? $this->config['temp_dir'];
+        $this->config['retries'] = $input->getOption('retries') ?? $this->config['retries'];
     }
 
     /**

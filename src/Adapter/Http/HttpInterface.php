@@ -13,5 +13,10 @@ namespace CacheTool\Adapter\Http;
 
 interface HttpInterface
 {
+    /**
+     * @param  string $filename
+     * @throws \Exception if the request fails
+     * @return string
+     */
     public function fetch($filename);
 }

@@ -47,20 +47,18 @@ class SymfonyHttpClientTest extends \PHPUnit\Framework\TestCase
     public function testFetchFailed()
     {
         $client = new SymfonyHttpClient('http://localhost:9999');
-        $result = unserialize($client->fetch('does-not-exist'));
 
-        $this->assertIsArray($result);
-        $this->assertEquals(false, $result['result']);
-        $this->assertCount(1, $result['errors']);
+        $this->expectException(\RuntimeException::class);
+        $this->expectExceptionMessage('is not 200, it is: 404');
+        $client->fetch('does-not-exist');
     }
 
     public function testFetchInvalidUrl()
     {
         $client = new SymfonyHttpClient('foo');
-        $result = unserialize($client->fetch('bar'));
 
-        $this->assertIsArray($result);
-        $this->assertEquals(false, $result['result']);
-        $this->assertCount(1, $result['errors']);
+        $this->expectException(\RuntimeException::class);
+        $this->expectExceptionMessage('The given url is not valid');
+        $client->fetch('bar');
     }
 }

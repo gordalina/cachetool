@@ -1,3 +1,8 @@
+# 10.1.0
+
+- [#199](https://github.com/gordalina/cachetool/issues/199), [#209](https://github.com/gordalina/cachetool/issues/209) Retry a failed fastcgi or web request 3 times. Use `--retries` or the `retries` config key to change this.
+- `HttpInterface::fetch()` now throws an exception if the request fails. It no longer returns a serialized error.
+
 # 10.0.2
 
 - [#237](https://github.com/gordalina/cachetool/issues/237) Fix `apcu:key:fetch` and `apcu:key:store` when the key contains `%`

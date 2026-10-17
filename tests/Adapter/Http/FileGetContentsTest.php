@@ -47,10 +47,9 @@ class FileGetContentsTest extends \PHPUnit\Framework\TestCase
     public function testFetchFailed()
     {
         $client = new FileGetContents('http://localhost:9999');
-        $result = unserialize($client->fetch('does-not-exist'));
 
-        $this->assertIsArray($result);
-        $this->assertEquals(false, $result['result']);
-        $this->assertCount(1, $result['errors']);
+        $this->expectException(\RuntimeException::class);
+        $this->expectExceptionMessage('file_get_contents() call failed');
+        $client->fetch('does-not-exist');
     }
 }

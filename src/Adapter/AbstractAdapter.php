@@ -27,6 +27,11 @@ abstract class AbstractAdapter
     protected $logger;
 
     /**
+     * @var int
+     */
+    protected $retries = 0;
+
+    /**
      * @param  Code   $code
      * @return string
      */
@@ -82,6 +87,25 @@ abstract class AbstractAdapter
     }
 
     /**
+     * @return int
+     */
+    public function getRetries()
+    {
+        return $this->retries;
+    }
+
+    /**
+     * @param  int $retries
+     * @return AbstractAdapter
+     */
+    public function setRetries(int $retries)
+    {
+        $this->retries = $retries;
+
+        return $this;
+    }
+
+    /**
      * @return LoggerInterface
      */
     public function getLogger()
@@ -98,6 +122,36 @@ abstract class AbstractAdapter
         $this->logger = $logger;
 
         return $this;
+    }
+
+    /**
+     * Calls $fn again with exponential backoff if it throws.
+     * Wrap only the transport step: a retry must not hide errors of the remote code.
+     *
+     * @param  callable $fn
+     * @return mixed
+     */
+    protected function retry(callable $fn)
+    {
+        for ($attempt = 1; ; $attempt++) {
+            try {
+                return $fn();
+            } catch (\Exception $e) {
+                if ($attempt > $this->retries) {
+                    throw $e;
+                }
+
+                $delay = 100 * 2 ** ($attempt - 1);
+                $this->logger->warning(sprintf(
+                    'Retry %d/%d in %dms: %s',
+                    $attempt,
+                    $this->retries,
+                    $delay,
+                    $e->getMessage()
+                ));
+                usleep($delay * 1000);
+            }
+        }
     }
 
     /**

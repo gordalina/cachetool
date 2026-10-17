@@ -19,15 +19,7 @@ class FileGetContents extends AbstractHttp
         $contents = @file_get_contents($url);
 
         if (false === $contents) {
-            return serialize([
-                'result' => false,
-                'errors' => [
-                    [
-                        'no' => 0,
-                        'str' => "file_get_contents() call failed with url: {$url}",
-                    ],
-                ],
-            ]);
+            throw new \RuntimeException("file_get_contents() call failed with url: {$url}");
         }
 
         return $contents;

@@ -34,13 +34,14 @@ class Web extends AbstractAdapter
         $file = $this->createWebFile($filename);
         $code->writeTo($file);
 
-        $content = $this->http->fetch($filename);
-
-        if (!@unlink($file)) {
-            $this->logger->debug(sprintf('Web: Could not delete file: %s', $file));
+        try {
+            // the same file is fetched again: some hosts serve a new file only after a delay
+            return $this->retry(fn() => $this->http->fetch($filename));
+        } finally {
+            if (!@unlink($file)) {
+                $this->logger->debug(sprintf('Web: Could not delete file: %s', $file));
+            }
         }
-
-        return $content;
     }
 
     /**

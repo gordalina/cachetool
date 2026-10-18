@@ -236,14 +236,26 @@ class CacheTool
             $tempDirs = [sys_get_temp_dir(), '/var/run'];
             foreach ($tempDirs as $dir) {
                 if ($this->isWritable($dir)) {
-                    $tempDir = $dir;
-                    break;
+                    return $dir;
                 }
             }
+
+            $tempDir = $tempDirs[0];
         }
 
         if (!file_exists($tempDir)) {
-            mkdir($tempDir, 0700, true);
+            // the check below reports a directory that cannot be created
+            @mkdir($tempDir, 0700, true);
+        }
+
+        if (!$this->isWritable($tempDir)) {
+            throw new \RuntimeException(sprintf(
+                "Error: CacheTool cannot write to the temporary directory %s.\n" .
+                "Set a temporary directory that CacheTool can write to:\n" .
+                "  - use the --tmp-dir=/path/to/dir argument, or\n" .
+                "  - add \"temp_dir: /path/to/dir\" to your .cachetool.yml config file.",
+                $tempDir
+            ));
         }
 
         return $tempDir;

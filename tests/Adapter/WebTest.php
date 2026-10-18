@@ -9,14 +9,14 @@ class WebTest extends \PHPUnit\Framework\TestCase
 {
     public function testRun()
     {
-        $httpMock = $this->getMockBuilder(SymfonyHttpClient::class)->disableOriginalConstructor()->getMock();
+        $httpMock = $this->createStub(SymfonyHttpClient::class);
         $httpMock
             ->method('fetch')
             ->willReturn(serialize(['errors' => [], 'result' => true]));
 
         $web = new Web(sys_get_temp_dir(), $httpMock);
         $web->setTempDir(sys_get_temp_dir());
-        $web->setLogger($this->getMockBuilder(\Monolog\Logger::class)->disableOriginalConstructor()->getMock());
+        $web->setLogger($this->createStub(\Monolog\Logger::class));
 
         $this->assertSame(sys_get_temp_dir(), $web->getTempDir());
         $code = Code::fromString('return true;');
@@ -29,13 +29,13 @@ class WebTest extends \PHPUnit\Framework\TestCase
     {
         $this->expectException(\RuntimeException::class);
 
-        $httpMock = $this->getMockBuilder(SymfonyHttpClient::class)->disableOriginalConstructor()->getMock();
+        $httpMock = $this->createStub(SymfonyHttpClient::class);
         $httpMock
             ->method('fetch')
             ->willReturn(serialize(['errors' => [], 'result' => true]));
 
         $web = new Web("^", $httpMock);
-        $web->setLogger($this->getMockBuilder(\Monolog\Logger::class)->disableOriginalConstructor()->getMock());
+        $web->setLogger($this->createStub(\Monolog\Logger::class));
 
         $code = Code::fromString('return true;');
 
@@ -46,13 +46,13 @@ class WebTest extends \PHPUnit\Framework\TestCase
     {
         $this->expectException(\RuntimeException::class);
 
-        $httpMock = $this->getMockBuilder(SymfonyHttpClient::class)->disableOriginalConstructor()->getMock();
+        $httpMock = $this->createStub(SymfonyHttpClient::class);
         $httpMock
             ->method('fetch')
             ->willReturn("");
 
         $web = new Web(sys_get_temp_dir(), $httpMock);
-        $web->setLogger($this->getMockBuilder(\Monolog\Logger::class)->disableOriginalConstructor()->getMock());
+        $web->setLogger($this->createStub(\Monolog\Logger::class));
 
         $code = Code::fromString('return true;');
 
@@ -62,7 +62,7 @@ class WebTest extends \PHPUnit\Framework\TestCase
     public function testLogsWhenFileCannotBeDeleted()
     {
         $dir = sys_get_temp_dir();
-        $httpMock = $this->getMockBuilder(SymfonyHttpClient::class)->disableOriginalConstructor()->getMock();
+        $httpMock = $this->createStub(SymfonyHttpClient::class);
         $httpMock
             ->method('fetch')
             ->willReturnCallback(function ($filename) use ($dir) {
@@ -82,7 +82,7 @@ class WebTest extends \PHPUnit\Framework\TestCase
     {
         $dir = sys_get_temp_dir();
         $files = [];
-        $httpMock = $this->getMockBuilder(SymfonyHttpClient::class)->disableOriginalConstructor()->getMock();
+        $httpMock = $this->createStub(SymfonyHttpClient::class);
         $httpMock
             ->method('fetch')
             ->willReturnCallback(function ($filename) use ($dir, &$files) {
@@ -95,7 +95,7 @@ class WebTest extends \PHPUnit\Framework\TestCase
             });
 
         $web = new Web($dir, $httpMock);
-        $web->setLogger($this->getMockBuilder(\Monolog\Logger::class)->disableOriginalConstructor()->getMock());
+        $web->setLogger($this->createStub(\Monolog\Logger::class));
         $web->setRetries(2);
 
         $this->assertTrue($web->run(Code::fromString('return true;')));
@@ -108,7 +108,7 @@ class WebTest extends \PHPUnit\Framework\TestCase
     {
         $dir = sys_get_temp_dir();
         $files = [];
-        $httpMock = $this->getMockBuilder(SymfonyHttpClient::class)->disableOriginalConstructor()->getMock();
+        $httpMock = $this->createStub(SymfonyHttpClient::class);
         $httpMock
             ->method('fetch')
             ->willReturnCallback(function ($filename) use (&$files) {
@@ -117,7 +117,7 @@ class WebTest extends \PHPUnit\Framework\TestCase
             });
 
         $web = new Web($dir, $httpMock);
-        $web->setLogger($this->getMockBuilder(\Monolog\Logger::class)->disableOriginalConstructor()->getMock());
+        $web->setLogger($this->createStub(\Monolog\Logger::class));
 
         try {
             $web->run(Code::fromString('return true;'));
@@ -135,7 +135,7 @@ class WebTest extends \PHPUnit\Framework\TestCase
             $this->markTestSkipped('root can chmod /dev/null');
         }
 
-        $httpMock = $this->getMockBuilder(SymfonyHttpClient::class)->disableOriginalConstructor()->getMock();
+        $httpMock = $this->createStub(SymfonyHttpClient::class);
 
         // /dev/null accepts touch() but only its owner can chmod() it
         $web = new class('/dev', $httpMock) extends Web {
@@ -144,7 +144,7 @@ class WebTest extends \PHPUnit\Framework\TestCase
                 return 'null';
             }
         };
-        $web->setLogger($this->getMockBuilder(\Monolog\Logger::class)->disableOriginalConstructor()->getMock());
+        $web->setLogger($this->createStub(\Monolog\Logger::class));
 
         $this->expectException(\RuntimeException::class);
         $this->expectExceptionMessage('Could not chmod file: null');

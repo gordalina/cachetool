@@ -21,7 +21,7 @@ class Web extends AbstractAdapter
 
     public function __construct($path, HttpInterface $http)
     {
-        $this->path = realpath($path);
+        $this->path = realpath($path ?? '');
         $this->http = $http;
     }
 

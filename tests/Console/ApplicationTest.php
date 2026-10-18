@@ -6,6 +6,7 @@ use CacheTool\Command\CommandTest;
 use Symfony\Component\Console\Input\StringInput;
 use Symfony\Component\Console\Output\NullOutput;
 use Symfony\Component\Console\Output\BufferedOutput;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Constraint\RegularExpression;
 
 class ApplicationTest extends CommandTest
@@ -39,7 +40,7 @@ class ApplicationTest extends CommandTest
         $this->assertSame(0, $app->buildContainer($input)->get('cachetool')->getAdapter()->getRetries());
     }
 
-    public function timeoutProvider()
+    public static function timeoutProvider()
     {
         return [
             'cli' => ['--cli'],
@@ -49,9 +50,7 @@ class ApplicationTest extends CommandTest
         ];
     }
 
-    /**
-     * @dataProvider timeoutProvider
-     */
+    #[DataProvider('timeoutProvider')]
     public function testTimeout($options)
     {
         // accepts connections but never replies
@@ -243,7 +242,7 @@ webBasicAuth: user:password
         $content = $output->fetch();
 
         $this->assertSame(1, $code);
-        $this->assertThat($content, new RegularExpression('|Could not write to `/doesnotexist/cachetool-.*\.php`:|'));
+        $this->assertStringContainsString('CacheTool cannot write to the temporary directory /doesnotexist.', $content);
     }
 
     public function testWithTmpDirConfigNotWritable()
@@ -256,7 +255,7 @@ webBasicAuth: user:password
         $content = $output->fetch();
 
         $this->assertSame(1, $code);
-        $this->assertThat($content, new RegularExpression('|Could not write to `/doesnotexist/cachetool-.*\.php`:|'));
+        $this->assertStringContainsString('CacheTool cannot write to the temporary directory /doesnotexist.', $content);
     }
 
     public function testWebSymfonyHttpClientInsecureWithHost()

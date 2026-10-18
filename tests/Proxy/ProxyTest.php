@@ -11,7 +11,7 @@ abstract class ProxyTest extends \PHPUnit\Framework\TestCase
         $mock = $this->createMock('CacheTool\Adapter\Cli');
         $mock->expects($this->once())
             ->method('run')
-            ->will($this->returnArgument(0));
+            ->willReturnArgument(0);
 
         $proxy = $this->createProxyInstance();
         $proxy->setAdapter($mock);
@@ -26,9 +26,9 @@ abstract class ProxyTest extends \PHPUnit\Framework\TestCase
         $mock = $this->createMock('CacheTool\Adapter\Cli');
         $mock->expects($this->once())
             ->method('run')
-            ->will($this->returnCallback(function ($code) {
-                return [$code];
-            }));
+            ->willReturnCallback(function ($code) {
+                return [$code, true];
+            });
 
         $proxy = $this->createProxyInstance();
         $proxy->setAdapter($mock);
@@ -40,7 +40,7 @@ abstract class ProxyTest extends \PHPUnit\Framework\TestCase
 
     protected function assertFailedProxyCode($code, $function, $arguments)
     {
-        $mock = $this->createMock('CacheTool\Adapter\Cli');
+        $mock = $this->createStub('CacheTool\Adapter\Cli');
         $proxy = $this->createProxyInstance();
         $proxy->setAdapter($mock);
 

@@ -4,7 +4,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project
 
-CacheTool is a PHP CLI tool and library. It manages APCu, OPcache, and the file status cache of a remote PHP process, usually PHP-FPM. It requires PHP >= 8.4. It uses Symfony 8 components and PHPUnit 9.
+CacheTool is a PHP CLI tool and library. It manages APCu, OPcache, and the file status cache of a remote PHP process, usually PHP-FPM. It requires PHP >= 8.4. It uses Symfony 8 components and PHPUnit 13.
 
 ## Commands
 

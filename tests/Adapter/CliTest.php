@@ -11,7 +11,7 @@ class CliTest extends \PHPUnit\Framework\TestCase
     {
         $cli = new Cli();
         $cli->setTempDir(sys_get_temp_dir());
-        $cli->setLogger($this->getMockBuilder(Logger::class)->disableOriginalConstructor()->getMock());
+        $cli->setLogger($this->createStub(Logger::class));
 
         $code = Code::fromString('return true;');
 
@@ -26,7 +26,7 @@ class CliTest extends \PHPUnit\Framework\TestCase
 
         $cli = new Cli();
         $cli->setTempDir(sys_get_temp_dir());
-        $cli->setLogger($this->getMockBuilder(Logger::class)->disableOriginalConstructor()->getMock());
+        $cli->setLogger($this->createStub(Logger::class));
 
         $code = Code::fromString('throw new \Exception("test");');
         $result = $cli->run($code);
@@ -36,7 +36,7 @@ class CliTest extends \PHPUnit\Framework\TestCase
     {
         $cli = new Cli();
         $cli->setTempDir(sys_get_temp_dir());
-        $cli->setLogger($this->getMockBuilder(Logger::class)->disableOriginalConstructor()->getMock());
+        $cli->setLogger($this->createStub(Logger::class));
 
         $code = Code::fromString('return PHP_BINARY;');
 
@@ -52,7 +52,7 @@ class CliTest extends \PHPUnit\Framework\TestCase
 
     public function testLogsWhenFileCannotBeDeleted()
     {
-        $logger = $this->getMockBuilder(Logger::class)->disableOriginalConstructor()->getMock();
+        $logger = $this->createMock(Logger::class);
         $logger->expects($this->once())->method('error')->with($this->stringContains('Could not delete file'));
 
         $cli = new Cli();

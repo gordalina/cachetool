@@ -1,13 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<phpunit xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" colors="true" xsi:noNamespaceSchemaLocation="https://schema.phpunit.de/9.3/phpunit.xsd">
-  <coverage processUncoveredFiles="true">
-    <include>
-      <directory suffix=".php">src</directory>
-    </include>
-  </coverage>
+<phpunit xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" colors="true" xsi:noNamespaceSchemaLocation="https://schema.phpunit.de/13.4/phpunit.xsd" cacheDirectory=".phpunit.cache">
   <testsuites>
     <testsuite name="CacheTool Test Suite">
       <directory>tests/</directory>
+      <exclude>tests/Command/CommandTest.php</exclude>
+      <exclude>tests/Proxy/ProxyTest.php</exclude>
     </testsuite>
   </testsuites>
+  <source>
+    <include>
+      <directory suffix=".php">src</directory>
+    </include>
+  </source>
 </phpunit>

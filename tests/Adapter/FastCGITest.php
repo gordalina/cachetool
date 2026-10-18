@@ -17,7 +17,7 @@ class FastCGITest extends \PHPUnit\Framework\TestCase
         $fpm = new PhpFpmRunner();
         $fcgi = new FastCGI($fpm->socket);
         $fcgi->setTempDir(sys_get_temp_dir());
-        $fcgi->setLogger($this->getMockBuilder(Logger::class)->disableOriginalConstructor()->getMock());
+        $fcgi->setLogger($this->createStub(Logger::class));
 
         $code = Code::fromString('return true;');
 
@@ -47,7 +47,7 @@ class FastCGITest extends \PHPUnit\Framework\TestCase
     public function testRunWithChroot()
     {
         $fcgi = $this->getMockBuilder(FastCGI::class)
-            ->setMethods(['getScriptFileName'])
+            ->onlyMethods(['getScriptFileName'])
             ->setConstructorArgs(['127.0.0.1:9000', sys_get_temp_dir()])
             ->getMock();
 
@@ -74,7 +74,7 @@ class FastCGITest extends \PHPUnit\Framework\TestCase
             ->willReturn($response);
 
         $fcgi->setTempDir(sys_get_temp_dir());
-        $fcgi->setLogger($this->getMockBuilder(Logger::class)->disableOriginalConstructor()->getMock());
+        $fcgi->setLogger($this->createStub(Logger::class));
 
         $code = Code::fromString('return true;');
 
@@ -114,16 +114,14 @@ class FastCGITest extends \PHPUnit\Framework\TestCase
     {
         $fcgi = new FastCGI('127.0.0.1:9000');
 
-        $clientMock = $this->getMockBuilder(\hollodotme\FastCGI\Client::class)
-            ->disableOriginalConstructor()
-            ->getMock();
+        $clientMock = $this->createStub(\hollodotme\FastCGI\Client::class);
         $clientMock->method('sendRequest')->willReturn(
             new Response("Status: 404 Not Found\r\nContent-type: text/html; charset=UTF-8\r\n\r\nNo input file specified.\n", '', 0)
         );
         (new \ReflectionClass($fcgi))->getProperty('client')->setValue($fcgi, $clientMock);
 
         $fcgi->setTempDir(sys_get_temp_dir());
-        $fcgi->setLogger($this->getMockBuilder(Logger::class)->disableOriginalConstructor()->getMock());
+        $fcgi->setLogger($this->createStub(Logger::class));
 
         $this->expectException(\RuntimeException::class);
         $this->expectExceptionMessage('--tmp-dir');
@@ -180,7 +178,7 @@ class FastCGITest extends \PHPUnit\Framework\TestCase
         $fcgi = $this->createFastCGIWithResponse(function () {
             return new Response("Content-type: text/html\r\n\r\nFatal error", '', 0);
         });
-        $fcgi->setLogger($this->getMockBuilder(Logger::class)->disableOriginalConstructor()->getMock());
+        $fcgi->setLogger($this->createStub(Logger::class));
 
         $this->expectException(\RuntimeException::class);
         $this->expectExceptionMessage('Error: Fatal error');
@@ -198,6 +196,24 @@ class FastCGITest extends \PHPUnit\Framework\TestCase
         $fcgi->setLogger(new Logger('test', [$handler]));
 
         $this->assertTrue($fcgi->run(Code::fromString('return true;')));
+        $this->assertTrue($handler->hasDebugThatContains('Could not delete file'));
+    }
+
+    public function testLogsWhenFileCannotBeDeletedAfterError()
+    {
+        $fcgi = $this->createFastCGIWithResponse(fn() => null);
+        $fcgi->setTempDir(__FILE__ . '/tmp');
+
+        $handler = new \Monolog\Handler\TestHandler();
+        $fcgi->setLogger(new Logger('test', [$handler]));
+
+        try {
+            $fcgi->run(Code::fromString('return true;'));
+            $this->fail('Expected a RuntimeException');
+        } catch (\RuntimeException $e) {
+            $this->assertStringContainsString('Could not write to', $e->getMessage());
+        }
+
         $this->assertTrue($handler->hasDebugThatContains('Could not delete file'));
     }
 
@@ -230,7 +246,7 @@ class FastCGITest extends \PHPUnit\Framework\TestCase
             $calls++;
             throw new \hollodotme\FastCGI\Exceptions\ConnectException('Unable to connect');
         });
-        $fcgi->setLogger($this->getMockBuilder(Logger::class)->disableOriginalConstructor()->getMock());
+        $fcgi->setLogger($this->createStub(Logger::class));
         $fcgi->setRetries(2);
 
         try {
@@ -249,7 +265,7 @@ class FastCGITest extends \PHPUnit\Framework\TestCase
             $calls++;
             return new Response("Content-type: text/html\r\n\r\n" . serialize(['result' => false, 'errors' => [['no' => 1, 'str' => 'boom']]]), '', 0);
         });
-        $fcgi->setLogger($this->getMockBuilder(Logger::class)->disableOriginalConstructor()->getMock());
+        $fcgi->setLogger($this->createStub(Logger::class));
         $fcgi->setRetries(3);
 
         try {
@@ -265,9 +281,7 @@ class FastCGITest extends \PHPUnit\Framework\TestCase
     {
         $fcgi = new FastCGI('127.0.0.1:9000');
 
-        $clientMock = $this->getMockBuilder(\hollodotme\FastCGI\Client::class)
-            ->disableOriginalConstructor()
-            ->getMock();
+        $clientMock = $this->createStub(\hollodotme\FastCGI\Client::class);
         $clientMock->method('sendRequest')->willReturnCallback($callback);
         (new \ReflectionClass($fcgi))->getProperty('client')->setValue($fcgi, $clientMock);
 

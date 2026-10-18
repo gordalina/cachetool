@@ -161,8 +161,9 @@ abstract class AbstractAdapter
     {
         $file = sprintf("%s/cachetool-%s.php", $this->tempDir, uniqid('', true));
 
-        touch($file);
-        chmod($file, 0666);
+        // Code::writeTo() reports a file that cannot be written
+        @touch($file);
+        @chmod($file, 0666);
 
         return $file;
     }

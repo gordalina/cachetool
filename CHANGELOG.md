@@ -7,6 +7,8 @@
 - Show the `--tmp-dir` hint when php-fpm returns `File not found.`. The fastcgi adapter now checks for the 404 status code.
 - Log the FastCGI response at debug level. Before, the log showed `{}`.
 - The `ttl` argument of `apcu:key:store` is now required. Before, the command failed without it. Use 0 to keep the key until it is deleted.
+- Fix PHP 8.4 deprecations for implicitly nullable parameters and for `realpath(null)`.
+- Show a clear error with the `--tmp-dir` hint when the temporary directory cannot be written. Before, PHP warnings showed before a `Could not write to` error.
 
 # 11.0.0
 

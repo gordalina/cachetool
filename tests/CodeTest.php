@@ -67,6 +67,7 @@ class CodeTest extends \PHPUnit\Framework\TestCase
 
         ob_start();
         eval($exec);
+        restore_error_handler();
         $result = ob_get_clean();
 
         $this->assertTrue(strlen($result) > 0);
@@ -109,6 +110,7 @@ class CodeTest extends \PHPUnit\Framework\TestCase
 
         ob_start();
         eval($exec);
+        restore_error_handler();
 
         $result = ob_get_clean();
 

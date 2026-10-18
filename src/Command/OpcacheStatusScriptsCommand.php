@@ -65,7 +65,7 @@ class OpcacheStatusScriptsCommand extends AbstractOpcacheCommand
 
     protected function processFileList(
         array $cacheList,
-        string $exclude = null
+        ?string $exclude = null
     ) {
         $list = [];
 
@@ -81,7 +81,7 @@ class OpcacheStatusScriptsCommand extends AbstractOpcacheCommand
         return $list;
     }
 
-    protected function excludeFiles(array $cacheList, string $exclude = null): array
+    protected function excludeFiles(array $cacheList, ?string $exclude = null): array
     {
         return array_intersect_key($cacheList, array_flip(preg_grep("({$exclude})", array_keys($cacheList), \PREG_GREP_INVERT)));
     }

@@ -138,6 +138,18 @@ You have some useful commands that you can use
   stat:realpath_size          Display size of realpath cache
 ```
 
+- Use `--format` to select the output format of the commands that show information: `table`, `json`, `csv`, or `yaml`. The default is `table`. The `json`, `csv`, and `yaml` formats contain raw values. For example, memory sizes are in bytes and times are Unix timestamps.
+
+```sh
+php cachetool.phar opcache:status --format=json
+```
+
+- Use `--sort` to sort the rows of a list by a column. Add a `-` before the column to sort in descending order. The column names are the keys of the `json` output. If the column does not exist, the error message shows the valid columns.
+
+```sh
+php cachetool.phar opcache:status:scripts --sort=-memory
+```
+
 ## Usage via Docker
 
 Images are available in docker hub and github container registries:
@@ -307,6 +319,7 @@ Tests in `tests/Adapter/Http/FileGetContentsTest` and `tests/Adapter/Http/Symfon
 
 | CacheTool | PHP
 | - | -
+| `12.x` | `>=8.4`
 | `11.x` | `>=8.2`
 | `10.x` | `>=8.1`
 | `9.x` | `>=8.1`

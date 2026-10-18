@@ -67,10 +67,17 @@ class Formatter
     {
         $default = date_default_timezone_get();
 
-        if (get_cfg_var('date.timezone') || $default !== 'UTC') {
-            return $default;
-        }
+        return get_cfg_var('date.timezone') || $default !== 'UTC' ? $default : self::systemTimezone($default);
+    }
 
+    /**
+     * The timezone from the TZ environment variable or /etc/localtime
+     *
+     * @param  string $default
+     * @return string
+     */
+    public static function systemTimezone($default = 'UTC')
+    {
         $tz = ltrim((string) getenv('TZ'), ':') ?: (string) @readlink('/etc/localtime');
         if (false !== $pos = strpos($tz, 'zoneinfo/')) {
             $tz = substr($tz, $pos + strlen('zoneinfo/'));

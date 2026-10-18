@@ -9,10 +9,6 @@ class FormatterTest extends \PHPUnit\Framework\TestCase
 
     protected function setUp(): void
     {
-        if (get_cfg_var('date.timezone')) {
-            $this->markTestSkipped('date.timezone is set in php.ini');
-        }
-
         $this->tz = date_default_timezone_get();
         $this->envTz = getenv('TZ');
         date_default_timezone_set('UTC');
@@ -26,10 +22,16 @@ class FormatterTest extends \PHPUnit\Framework\TestCase
         }
     }
 
-    public function testDateUsesTzEnv()
+    public function testSystemTimezoneUsesTzEnv()
     {
         putenv('TZ=America/New_York');
-        $this->assertSame('Wed, 02 Oct 2024 08:19:07 -0400', Formatter::date('1727871547', 'U'));
+        $this->assertSame('America/New_York', Formatter::systemTimezone());
+    }
+
+    public function testSystemTimezoneUsesZoneinfoPath()
+    {
+        putenv('TZ=:/usr/share/zoneinfo/Europe/Lisbon');
+        $this->assertSame('Europe/Lisbon', Formatter::systemTimezone());
     }
 
     public function testDateRespectsDefaultTimezone()
@@ -39,10 +41,10 @@ class FormatterTest extends \PHPUnit\Framework\TestCase
         $this->assertSame('Wed, 02 Oct 2024 13:19:07 +0100', Formatter::date('1727871547', 'U'));
     }
 
-    public function testInvalidTzEnvFallsBackToUtc()
+    public function testInvalidTzEnvFallsBackToDefault()
     {
         putenv('TZ=Not/AZone');
-        $this->assertSame('UTC', Formatter::timezone());
+        $this->assertSame('UTC', Formatter::systemTimezone());
     }
 
     public function testDateWithoutFormat()

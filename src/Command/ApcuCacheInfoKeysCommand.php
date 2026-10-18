@@ -12,7 +12,6 @@
 namespace CacheTool\Command;
 
 use CacheTool\Util\Formatter;
-use Symfony\Component\Console\Helper\Table;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
@@ -26,6 +25,8 @@ class ApcuCacheInfoKeysCommand extends ApcuCacheInfoCommand
         $this
             ->setName('apcu:cache:info:keys')
             ->setDescription('Shows APCu keys cache information')
+            ->addFormatOption()
+            ->addSortOption()
             ->setHelp('');
     }
 
@@ -43,21 +44,15 @@ class ApcuCacheInfoKeysCommand extends ApcuCacheInfoCommand
             throw new \RuntimeException("Could not fetch info from APCu");
         }
 
-        $header = [
-            'Hits',
-            'Accessed',
-            'Deleted',
-            'Memory size',
-            'Key',
+        $columns = [
+            'hits' => ['Hits', number_format(...)],
+            'access_time' => ['Accessed', fn ($time) => Formatter::bool($time > 0)],
+            'deletion_time' => ['Deleted', fn ($time) => Formatter::bool($time > 0)],
+            'memory_size' => ['Memory size', Formatter::bytes(...)],
+            'key' => ['Key'],
         ];
 
-        $table = new Table($output);
-        $table
-            ->setHeaders($header)
-            ->setRows($this->processFilelist($info['cache_list']))
-        ;
-
-        $table->render();
+        $this->renderRows($input, $output, $columns, $this->processFilelist($info['cache_list']));
 
         return 0;
     }
@@ -68,11 +63,11 @@ class ApcuCacheInfoKeysCommand extends ApcuCacheInfoCommand
 
         foreach ($cacheList as $item) {
             $list[] = [
-                number_format($item['num_hits']),
-                $item['access_time'] > 0 ? 'Yes' : 'No',
-                $item['deletion_time'] > 0 ? 'Yes' : 'No',
-                Formatter::bytes($item['mem_size']),
-                $item['info'],
+                'hits' => $item['num_hits'],
+                'access_time' => $item['access_time'],
+                'deletion_time' => $item['deletion_time'],
+                'memory_size' => $item['mem_size'],
+                'key' => $item['info'],
             ];
         }
 

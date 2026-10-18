@@ -32,4 +32,10 @@ class ApcuKeyStoreCommandTest extends CommandTest
         $result = $this->runCommand('apcu:key:store Bundle%5CName value 60 -v', true);
         $this->assertStringContainsString("APCu key Bundle%5CName was stored with value='value' and ttl=60", $result);
     }
+
+    public function testYaml()
+    {
+        $result = $this->runCommand('apcu:key:store key value 60 --format=yaml', true);
+        $this->assertSame("key: key\nvalue: value\nttl: 60\nstored: true\n", $result);
+    }
 }

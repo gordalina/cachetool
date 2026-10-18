@@ -26,6 +26,7 @@ class ApcuKeyFetchCommand extends AbstractCommand
             ->setName('apcu:key:fetch')
             ->setDescription('Shows the content of an APCu key')
             ->addArgument('key', InputArgument::REQUIRED)
+            ->addFormatOption()
             ->setHelp('');
     }
 
@@ -41,13 +42,18 @@ class ApcuKeyFetchCommand extends AbstractCommand
         $success = new \stdClass();
         $value = $this->getCacheTool()->apcu_fetch($key, $success);
 
-        if ($success->success) {
+        if ($input->getOption('format') !== 'table') {
+            $this->renderRecord($input, $output, [
+                'key' => ['Key', $key],
+                'exists' => ['Exists', $success->success],
+                'value' => ['Value', $success->success ? $value : null],
+            ]);
+        } elseif ($success->success) {
             $output->writeln(sprintf("<comment>APCu key=<info>%s</info> has value=<info>%s</info></comment>", $key, var_export($value, true)));
         } else {
             $output->writeln("<comment>APCu key=<info>{$key}</info> does not exist.</comment>");
-            return 1;
         }
 
-        return 0;
+        return $success->success ? 0 : 1;
     }
 }

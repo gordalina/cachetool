@@ -26,6 +26,7 @@ class ApcuKeyDeleteCommand extends AbstractCommand
             ->setName('apcu:key:delete')
             ->setDescription('Deletes an APCu key')
             ->addArgument('key', InputArgument::REQUIRED)
+            ->addFormatOption()
             ->setHelp('');
     }
 
@@ -39,7 +40,9 @@ class ApcuKeyDeleteCommand extends AbstractCommand
         $key = $input->getArgument('key');
         $success = $this->getCacheTool()->apcu_delete($key);
 
-        if ($output->isVerbose()) {
+        if ($input->getOption('format') !== 'table') {
+            $this->renderRecord($input, $output, ['key' => ['Key', $key], 'deleted' => ['Deleted', $success]]);
+        } elseif ($output->isVerbose()) {
             if ($success) {
                 $output->writeln("<comment>APCu key <info>{$key}</info> was deleted</comment>");
             } else {

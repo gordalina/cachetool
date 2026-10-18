@@ -28,6 +28,7 @@ class ApcuKeyStoreCommand extends AbstractCommand
             ->addArgument('key', InputArgument::REQUIRED)
             ->addArgument('value', InputArgument::REQUIRED)
             ->addArgument('ttl', InputArgument::REQUIRED, 'Time to live in seconds. 0 keeps the key until it is deleted.')
+            ->addFormatOption()
             ->setHelp('');
     }
 
@@ -44,7 +45,14 @@ class ApcuKeyStoreCommand extends AbstractCommand
 
         $success = $this->getCacheTool()->apcu_store($key, $value, $ttl);
 
-        if ($output->isVerbose()) {
+        if ($input->getOption('format') !== 'table') {
+            $this->renderRecord($input, $output, [
+                'key' => ['Key', $key],
+                'value' => ['Value', $value],
+                'ttl' => ['TTL', $ttl],
+                'stored' => ['Stored', $success],
+            ]);
+        } elseif ($output->isVerbose()) {
             if ($success) {
                 $output->writeln(sprintf("<comment>APCu key <info>%s</info> was stored with value=<info>%s</info> and ttl=<info>%s</info></comment>", $key, var_export($value, 1), $ttl));
             } else {

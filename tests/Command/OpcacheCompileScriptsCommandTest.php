@@ -23,4 +23,20 @@ class OpcacheCompileScriptsCommandTest extends CommandTest
         $this->assertStringContainsString('opcache_compile_files(', $result);
         $this->assertStringContainsString('Compiled', $result);
     }
+
+    public function testJson()
+    {
+        $result = $this->runCommand('opcache:compile:scripts src/Util --format=json', true);
+
+        $this->assertSame([['compiled' => true, 'filename' => realpath('src/Util/Formatter.php')]], json_decode($result, true));
+    }
+
+    public function testBatchJson()
+    {
+        $result = $this->runCommand('opcache:compile:scripts src/Util --batch --format=json', function ($code) {
+            return str_contains($code, 'opcache_compile_file') ? 1 : true;
+        });
+
+        $this->assertSame([['compiled' => 1]], json_decode($result, true));
+    }
 }

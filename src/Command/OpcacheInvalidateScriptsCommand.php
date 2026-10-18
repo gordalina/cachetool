@@ -11,7 +11,6 @@
 
 namespace CacheTool\Command;
 
-use Symfony\Component\Console\Helper\Table;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
@@ -29,6 +28,8 @@ class OpcacheInvalidateScriptsCommand extends AbstractOpcacheCommand
             ->setDescription('Remove scripts from the opcode cache')
             ->addArgument('path', InputArgument::REQUIRED)
             ->addOption('force', 'f', InputOption::VALUE_NONE, 'Force scripts invalidation')
+            ->addFormatOption()
+            ->addSortOption()
             ->setHelp('');
     }
 
@@ -44,16 +45,12 @@ class OpcacheInvalidateScriptsCommand extends AbstractOpcacheCommand
         $info = $this->getCacheTool()->opcache_get_status(true);
         $this->ensureSuccessfulOpcacheCall($info);
 
-        $table = new Table($output);
-        $table
-            ->setHeaders([
-                'Invalidated',
-                'Filename'
-            ])
-            ->setRows($this->processFilelist($info['scripts'], $path, $force))
-        ;
+        $columns = [
+            'invalidated' => ['Invalidated', fn ($value) => var_export($value, true)],
+            'filename' => ['Filename'],
+        ];
 
-        $table->render();
+        $this->renderRows($input, $output, $columns, $this->processFilelist($info['scripts'], $path, $force));
 
         return 0;
     }
@@ -75,7 +72,7 @@ class OpcacheInvalidateScriptsCommand extends AbstractOpcacheCommand
         $result = $this->getCacheTool()->opcache_invalidate_many($toInvalidate, $force);
 
         foreach ($toInvalidate as $idx => $filename) {
-            $processed[] = [var_export($result[$idx], true), $filename];
+            $processed[] = ['invalidated' => $result[$idx], 'filename' => $filename];
         }
 
         return $processed;

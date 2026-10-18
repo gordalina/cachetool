@@ -26,6 +26,7 @@ class ApcuKeyExistsCommand extends ApcuKeyFetchCommand
             ->setName('apcu:key:exists')
             ->setDescription('Checks if an APCu key exists')
             ->addArgument('key', InputArgument::REQUIRED)
+            ->addFormatOption()
             ->setHelp('');
     }
 
@@ -39,13 +40,14 @@ class ApcuKeyExistsCommand extends ApcuKeyFetchCommand
         $key = $input->getArgument('key');
         $value = $this->getCacheTool()->apcu_exists($key);
 
-        if ($value) {
+        if ($input->getOption('format') !== 'table') {
+            $this->renderRecord($input, $output, ['key' => ['Key', $key], 'exists' => ['Exists', $value]]);
+        } elseif ($value) {
             $output->writeln("<comment>APCu key=<info>{$key}</info> exists</comment>");
         } else {
             $output->writeln("<comment>APCu key=<info>{$key}</info> does not exist.</comment>");
-            return 1;
         }
 
-        return 0;
+        return $value ? 0 : 1;
     }
 }

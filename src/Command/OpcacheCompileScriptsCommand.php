@@ -11,7 +11,6 @@
 
 namespace CacheTool\Command;
 
-use Symfony\Component\Console\Helper\Table;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
@@ -41,6 +40,8 @@ class OpcacheCompileScriptsCommand extends AbstractCommand
                 InputOption::VALUE_NONE,
                 'Compile all files at once, could be useful if pm.max_requests is too low'
             )
+            ->addFormatOption()
+            ->addSortOption()
             ->setHelp('');
     }
 
@@ -59,9 +60,9 @@ class OpcacheCompileScriptsCommand extends AbstractCommand
 
         $splFiles = $this->prepareFileList($path, $exclude);
         if ($input->getOption('batch')) {
-            $this->compileBatch($splFiles, $output);
+            $this->compileBatch($splFiles, $input, $output);
         } else {
-            $this->compile($splFiles, $output);
+            $this->compile($splFiles, $input, $output);
         }
 
         return 0;
@@ -69,31 +70,28 @@ class OpcacheCompileScriptsCommand extends AbstractCommand
 
     /**
      * @param \Traversable|\SplFileInfo[] $splFiles
+     * @param InputInterface $input
      * @param OutputInterface $output
      */
-    protected function compile($splFiles, OutputInterface $output)
+    protected function compile($splFiles, InputInterface $input, OutputInterface $output)
     {
         $rows = [];
         foreach ($splFiles as $file) {
             $rows[] = [
-                $this->getCacheTool()->opcache_compile_file($file->getRealPath()),
-                $file->getRealPath()
+                'compiled' => $this->getCacheTool()->opcache_compile_file($file->getRealPath()),
+                'filename' => $file->getRealPath(),
             ];
         }
 
-        $table = new Table($output);
-        $table
-            ->setHeaders(['Compiled', 'Filename'])
-            ->setRows($rows)
-        ;
-        $table->render();
+        $this->renderRows($input, $output, ['compiled' => ['Compiled'], 'filename' => ['Filename']], $rows);
     }
 
     /**
      * @param \Traversable|\SplFileInfo[] $splFiles
+     * @param InputInterface $input
      * @param OutputInterface $output
      */
-    protected function compileBatch($splFiles, OutputInterface $output)
+    protected function compileBatch($splFiles, InputInterface $input, OutputInterface $output)
     {
         $paths = [];
         foreach ($splFiles as $file) {
@@ -102,13 +100,7 @@ class OpcacheCompileScriptsCommand extends AbstractCommand
 
         $compiled = $this->getCacheTool()->opcache_compile_files($paths);
 
-        $table = new Table($output);
-        $table
-            ->setHeaders(['Compiled'])
-            ->setRows([[$compiled]])
-        ;
-
-        $table->render();
+        $this->renderRows($input, $output, ['compiled' => ['Compiled']], [['compiled' => $compiled]]);
     }
 
     /**

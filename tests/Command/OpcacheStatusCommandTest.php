@@ -38,4 +38,22 @@ class OpcacheStatusCommandTest extends CommandTest
 
         $this->assertMatchesRegularExpression('/file_cache_only +\| true/', $result);
     }
+
+    public function testJson()
+    {
+        $this->assertHasOpcache();
+
+        $result = json_decode($this->runCommand('opcache:status --format=json'), true);
+
+        $this->assertTrue($result['enabled']);
+        $this->assertIsInt($result['memory_used']);
+        $this->assertIsInt($result['start_time']);
+    }
+
+    public function testCsvEncodesArraysAndBooleansAsJson()
+    {
+        $result = $this->runCommand('opcache:status --format=csv', ['opcache_enabled' => false, 'file_cache_only' => true, 'memory_usage' => ['used_memory' => 1]]);
+
+        $this->assertSame("opcache_enabled,file_cache_only,memory_usage\nfalse,true,\"{\"\"used_memory\"\":1}\"\n", $result);
+    }
 }

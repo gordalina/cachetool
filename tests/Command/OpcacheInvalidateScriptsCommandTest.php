@@ -37,4 +37,17 @@ class OpcacheInvalidateScriptsCommandTest extends CommandTest
         $this->assertMatchesRegularExpression('/true +\| \/app\/src\/a.php/', $result);
         $this->assertStringNotContainsString('vendor', $result);
     }
+
+    public function testJson()
+    {
+        $result = $this->runCommand('opcache:invalidate:scripts src --format=json', function ($code) {
+            if (str_contains($code, 'opcache_get_status')) {
+                return ['opcache_enabled' => true, 'scripts' => [['full_path' => '/app/src/a.php']]];
+            }
+
+            return str_contains($code, 'opcache_invalidate') ? [true] : true;
+        });
+
+        $this->assertSame([['invalidated' => true, 'filename' => '/app/src/a.php']], json_decode($result, true));
+    }
 }

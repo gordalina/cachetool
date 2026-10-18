@@ -12,7 +12,6 @@
 namespace CacheTool\Command;
 
 use CacheTool\Util\Formatter;
-use Symfony\Component\Console\Helper\Table;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -28,6 +27,8 @@ class OpcacheStatusScriptsCommand extends AbstractOpcacheCommand
             ->setName('opcache:status:scripts')
             ->setDescription('Show scripts in the opcode cache')
             ->setHelp('')
+            ->addFormatOption()
+            ->addSortOption()
             ->addOption(
                 'exclude',
                 'e',
@@ -48,17 +49,13 @@ class OpcacheStatusScriptsCommand extends AbstractOpcacheCommand
 
         $exclude = $input->getOption('exclude') ?? null;
 
-        $table = new Table($output);
-        $table
-            ->setHeaders([
-                'Hits',
-                'Memory',
-                'Filename'
-            ])
-            ->setRows($this->processFilelist($info['scripts'], $exclude))
-        ;
+        $columns = [
+            'hits' => ['Hits', number_format(...)],
+            'memory' => ['Memory', Formatter::bytes(...)],
+            'filename' => ['Filename'],
+        ];
 
-        $table->render();
+        $this->renderRows($input, $output, $columns, $this->processFilelist($info['scripts'], $exclude));
 
         return 0;
     }
@@ -72,9 +69,9 @@ class OpcacheStatusScriptsCommand extends AbstractOpcacheCommand
         $filteredList = $exclude ? $this->excludeFiles($cacheList, $exclude) : $cacheList;
         foreach ($filteredList as $item) {
             $list[] = [
-                number_format($item['hits']),
-                Formatter::bytes($item['memory_consumption']),
-                $item['full_path'],
+                'hits' => $item['hits'],
+                'memory' => $item['memory_consumption'],
+                'filename' => $item['full_path'],
             ];
         }
 

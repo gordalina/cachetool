@@ -17,4 +17,10 @@ class ApcuKeyDeleteCommandTest extends CommandTest
         $result = $this->runCommand('apcu:key:delete key -v', true);
         $this->assertStringContainsString('APCu key key was deleted', $result);
     }
+
+    public function testJson()
+    {
+        $result = $this->runCommand('apcu:key:delete key --format=json', true);
+        $this->assertSame(['key' => 'key', 'deleted' => true], json_decode($result, true));
+    }
 }

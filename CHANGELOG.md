@@ -8,6 +8,10 @@
 - Log the FastCGI response at debug level. Before, the log showed `{}`.
 - The `ttl` argument of `apcu:key:store` is now required. Before, the command failed without it. Use 0 to keep the key until it is deleted.
 - Fix PHP 8.4 deprecations for implicitly nullable parameters and for `realpath(null)`.
+- [#81](https://github.com/gordalina/cachetool/issues/81) Add the `--format` option to the commands that show information. The formats are `table`, `json`, `csv`, and `yaml`. The `json`, `csv`, and `yaml` formats contain raw values, such as bytes and Unix timestamps.
+- The `apcu:key:*` commands also accept `--format`. The `table` format shows the same messages as before. The other formats always show a record, also without `-v`.
+- [#241](https://github.com/gordalina/cachetool/issues/241) Add the `--sort` option to the commands that show a list. For example, `opcache:status:scripts --sort=-memory` shows the largest scripts first.
+- `apcu:sma:info` and `stat:realpath_size` now show a table. `opcache:status` shows the wasted memory and the blacklist misses in separate rows, without a separator line. The value column of `apcu:cache:info` is now `Value`.
 - Show a clear error with the `--tmp-dir` hint when the temporary directory cannot be written. Before, PHP warnings showed before a `Could not write to` error.
 
 # 11.0.0

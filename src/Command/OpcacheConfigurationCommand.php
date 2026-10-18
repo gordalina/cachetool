@@ -11,7 +11,6 @@
 
 namespace CacheTool\Command;
 
-use Symfony\Component\Console\Helper\Table;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
@@ -25,6 +24,8 @@ class OpcacheConfigurationCommand extends AbstractCommand
         $this
             ->setName('opcache:configuration')
             ->setDescription('Get configuration information about the cache')
+            ->addFormatOption()
+            ->addSortOption()
             ->setHelp('');
     }
 
@@ -37,15 +38,16 @@ class OpcacheConfigurationCommand extends AbstractCommand
 
         $info = $this->getCacheTool()->opcache_get_configuration();
 
-        $output->writeln("<info>{$info['version']['opcache_product_name']}</info> <comment>{$info['version']['version']}</comment>");
+        if ($input->getOption('format') === 'table') {
+            $output->writeln("<info>{$info['version']['opcache_product_name']}</info> <comment>{$info['version']['version']}</comment>");
+        }
 
-        $table = new Table($output);
-        $table
-            ->setHeaders(['Directive', 'Value'])
-            ->setRows($this->processDirectives($info['directives']))
-        ;
+        $columns = [
+            'directive' => ['Directive'],
+            'value' => ['Value', fn ($value) => var_export($value, true)],
+        ];
 
-        $table->render();
+        $this->renderRows($input, $output, $columns, $this->processDirectives($info['directives']));
 
         return 0;
     }
@@ -55,7 +57,7 @@ class OpcacheConfigurationCommand extends AbstractCommand
         $list = [];
 
         foreach ($directives as $name => $value) {
-            $list[] = [$name, var_export($value, true)];
+            $list[] = ['directive' => $name, 'value' => $value];
         }
 
         return $list;

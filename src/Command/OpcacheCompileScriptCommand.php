@@ -11,7 +11,6 @@
 
 namespace CacheTool\Command;
 
-use Symfony\Component\Console\Helper\Table;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -27,6 +26,7 @@ class OpcacheCompileScriptCommand extends AbstractCommand
             ->setName('opcache:compile:script')
             ->setDescription('Compile a given script to the opcode cache')
             ->addArgument('path', InputArgument::REQUIRED)
+            ->addFormatOption()
             ->setHelp('');
     }
 
@@ -39,16 +39,12 @@ class OpcacheCompileScriptCommand extends AbstractCommand
         $path = $input->getArgument('path');
         $splFiles = array($path);
 
-        $table = new Table($output);
-        $table
-            ->setHeaders(array(
-                'Compiled',
-                'Filename'
-            ))
-            ->setRows($this->processFilelist($splFiles))
-        ;
+        $columns = [
+            'compiled' => ['Compiled'],
+            'filename' => ['Filename'],
+        ];
 
-        $table->render();
+        $this->renderRows($input, $output, $columns, $this->processFilelist($splFiles));
 
         return 0;
     }
@@ -58,10 +54,10 @@ class OpcacheCompileScriptCommand extends AbstractCommand
         $list = array();
 
         foreach ($splFiles as $file) {
-            $list[] = array(
-                $this->getCacheTool()->opcache_compile_file(realpath($file)),
-                realpath($file)
-            );
+            $list[] = [
+                'compiled' => $this->getCacheTool()->opcache_compile_file(realpath($file)),
+                'filename' => realpath($file),
+            ];
         }
 
         return $list;

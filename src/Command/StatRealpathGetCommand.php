@@ -12,7 +12,6 @@
 namespace CacheTool\Command;
 
 use CacheTool\Util\Formatter;
-use Symfony\Component\Console\Helper\Table;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
@@ -26,6 +25,8 @@ class StatRealpathGetCommand extends AbstractCommand
         $this
             ->setName('stat:realpath_get')
             ->setDescription('Show summary information of realpath cache entries')
+            ->addFormatOption()
+            ->addSortOption()
             ->setHelp('');
     }
 
@@ -36,19 +37,15 @@ class StatRealpathGetCommand extends AbstractCommand
     {
         $info = $this->getCacheTool()->stat_realpath_get();
 
-        $table = new Table($output);
-        $table
-            ->setHeaders([
-                'Path entry',
-                'key',
-                'is_dir',
-                'realpath',
-                'expires',
-            ])
-            ->setRows($this->processFilelist($info))
-        ;
+        $columns = [
+            'path_entry' => ['Path entry'],
+            'key' => ['key'],
+            'is_dir' => ['is_dir'],
+            'realpath' => ['realpath'],
+            'expires' => ['expires', fn ($time) => Formatter::date($time, 'U')],
+        ];
 
-        $table->render();
+        $this->renderRows($input, $output, $columns, $this->processFilelist($info));
 
         return 0;
     }
@@ -59,11 +56,11 @@ class StatRealpathGetCommand extends AbstractCommand
 
         foreach ($cacheList as $path_entry => $item) {
             $list[] = [
-               $path_entry,
-               $item['key'],
-               $item['is_dir'],
-               $item['realpath'],
-               Formatter::date($item['expires'], 'U'),
+                'path_entry' => $path_entry,
+                'key' => $item['key'],
+                'is_dir' => $item['is_dir'],
+                'realpath' => $item['realpath'],
+                'expires' => $item['expires'],
             ];
         }
 

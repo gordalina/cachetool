@@ -12,8 +12,6 @@
 namespace CacheTool\Command;
 
 use CacheTool\Util\Formatter;
-use Symfony\Component\Console\Helper\Table;
-use Symfony\Component\Console\Helper\TableSeparator;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
@@ -27,6 +25,7 @@ class OpcacheStatusCommand extends AbstractOpcacheCommand
         $this
             ->setName('opcache:status')
             ->setDescription('Show summary information about the opcode cache')
+            ->addFormatOption()
             ->setHelp('');
     }
 
@@ -39,7 +38,6 @@ class OpcacheStatusCommand extends AbstractOpcacheCommand
 
         $info = $this->getCacheTool()->opcache_get_status(false);
         try {
-
             $this->ensureSuccessfulOpcacheCall($info);
         } catch (\RuntimeException $e) {
             // lets handle gracefully when file_cache_only is true
@@ -49,71 +47,62 @@ class OpcacheStatusCommand extends AbstractOpcacheCommand
         }
 
         if ($info['file_cache_only'] ?? false) {
-            $this->renderFileCacheOnlyMode($output, $info);
+            $fields = $this->getFileCacheOnlyFields($info);
         } else {
-            $this->render($output, $info);
+            $fields = $this->getFields($info, $info['opcache_statistics']);
         }
+
+        $this->renderRecord($input, $output, $fields);
 
         return 0;
     }
 
     /**
-     * @param  OutputInterface $output
      * @param  array $info
-     */
-    protected function renderFileCacheOnlyMode(OutputInterface $output, $info) {
-        $iterator = function ($k) use (&$info) {
-            return [$k, var_export($info[$k], true)];
-        };
-
-        $table = new Table($output);
-        $table->setHeaders(['Name', 'Value']);
-        $table->setRows(array_map($iterator, array_keys($info)));
-        $table->render();
-    }
-
-    /**
-     * @param  OutputInterface $output
-     * @param  array $info
-     */
-    protected function render(OutputInterface $output, $info) {
-        $table = new Table($output);
-        $table->setHeaders(['Name', 'Value']);
-        $table->setRows($this->getRows($info, $info['opcache_statistics']));
-        $table->render();
-    }
-
-
-    /**
-     * @param  array $info
-     * @param  array $stats
      * @return array
      */
-    protected function getRows($info, $stats)
+    protected function getFileCacheOnlyFields($info)
     {
-        $rows = $this->getGeneralRows($info);
+        $fields = [];
 
-        if (isset($info['interned_strings_usage'])) {
-            $rows = array_merge($rows, $this->getStringsRows($info));
+        foreach ($info as $key => $value) {
+            $fields[$key] = [$key, $value, fn ($value) => var_export($value, true)];
         }
 
-        return array_merge($rows, $this->getOpcacheStatsRows($stats));
+        return $fields;
+    }
+
+    /**
+     * @param  array $info
+     * @param  array $stats
+     * @return array
+     */
+    protected function getFields($info, $stats)
+    {
+        $fields = $this->getGeneralFields($info);
+
+        if (isset($info['interned_strings_usage'])) {
+            $fields += $this->getStringsFields($info);
+        }
+
+        return $fields + $this->getOpcacheStatsFields($stats);
     }
 
     /**
      * @param  array $info
      * @return array
      */
-    protected function getGeneralRows($info)
+    protected function getGeneralFields($info)
     {
         return [
-            ['Enabled', $info['opcache_enabled'] ? 'Yes' : 'No'],
-            ['Cache full', $info['cache_full'] ? 'Yes' : 'No'],
-            ['Restart pending', $info['restart_pending'] ? 'Yes' : 'No'],
-            ['Restart in progress', $info['restart_in_progress'] ? 'Yes' : 'No'],
-            ['Memory used', Formatter::bytes($info['memory_usage']['used_memory'])],
-            ['Memory free', Formatter::bytes($info['memory_usage']['free_memory'])],
-            ['Memory wasted (%)', sprintf("%s (%s%%)", Formatter::bytes($info['memory_usage']['wasted_memory']), $info['memory_usage']['current_wasted_percentage'])],
+            'enabled' => ['Enabled', $info['opcache_enabled'], Formatter::bool(...)],
+            'cache_full' => ['Cache full', $info['cache_full'], Formatter::bool(...)],
+            'restart_pending' => ['Restart pending', $info['restart_pending'], Formatter::bool(...)],
+            'restart_in_progress' => ['Restart in progress', $info['restart_in_progress'], Formatter::bool(...)],
+            'memory_used' => ['Memory used', $info['memory_usage']['used_memory'], Formatter::bytes(...)],
+            'memory_free' => ['Memory free', $info['memory_usage']['free_memory'], Formatter::bytes(...)],
+            'memory_wasted' => ['Memory wasted', $info['memory_usage']['wasted_memory'], Formatter::bytes(...)],
+            'memory_wasted_percentage' => ['Memory wasted (%)', $info['memory_usage']['current_wasted_percentage'], fn ($percentage) => "{$percentage}%"],
         ];
     }
 
@@ -121,13 +110,13 @@ class OpcacheStatusCommand extends AbstractOpcacheCommand
      * @param  array $info
      * @return array
      */
-    protected function getStringsRows($info)
+    protected function getStringsFields($info)
     {
         return [
-            ['Strings buffer size', Formatter::bytes($info['interned_strings_usage']['buffer_size'])],
-            ['Strings memory used', Formatter::bytes($info['interned_strings_usage']['used_memory'])],
-            ['Strings memory free', Formatter::bytes($info['interned_strings_usage']['free_memory'])],
-            ['Number of strings', $info['interned_strings_usage']['number_of_strings']],
+            'strings_buffer_size' => ['Strings buffer size', $info['interned_strings_usage']['buffer_size'], Formatter::bytes(...)],
+            'strings_memory_used' => ['Strings memory used', $info['interned_strings_usage']['used_memory'], Formatter::bytes(...)],
+            'strings_memory_free' => ['Strings memory free', $info['interned_strings_usage']['free_memory'], Formatter::bytes(...)],
+            'number_of_strings' => ['Number of strings', $info['interned_strings_usage']['number_of_strings']],
         ];
     }
 
@@ -135,22 +124,22 @@ class OpcacheStatusCommand extends AbstractOpcacheCommand
      * @param  array $stats
      * @return array
      */
-    protected function getOpcacheStatsRows($stats)
+    protected function getOpcacheStatsFields($stats)
     {
         return [
-            new TableSeparator(),
-            ['Cached scripts', $stats['num_cached_scripts']],
-            ['Cached keys', $stats['num_cached_keys']],
-            ['Max cached keys', $stats['max_cached_keys']],
-            ['Start time', Formatter::date($stats['start_time'], 'U')],
-            ['Last restart time', $stats['last_restart_time'] ? Formatter::date($stats['last_restart_time'], 'U') : 'Never'],
-            ['Oom restarts', $stats['oom_restarts']],
-            ['Hash restarts', $stats['hash_restarts']],
-            ['Manual restarts', $stats['manual_restarts']],
-            ['Hits', $stats['hits']],
-            ['Misses', $stats['misses']],
-            ['Blacklist misses (%)', sprintf('%s (%s%%)', $stats['blacklist_misses'], $stats['blacklist_miss_ratio'])],
-            ['Opcache hit rate', $stats['opcache_hit_rate']],
+            'cached_scripts' => ['Cached scripts', $stats['num_cached_scripts']],
+            'cached_keys' => ['Cached keys', $stats['num_cached_keys']],
+            'max_cached_keys' => ['Max cached keys', $stats['max_cached_keys']],
+            'start_time' => ['Start time', $stats['start_time'], fn ($time) => Formatter::date($time, 'U')],
+            'last_restart_time' => ['Last restart time', $stats['last_restart_time'], fn ($time) => $time ? Formatter::date($time, 'U') : 'Never'],
+            'oom_restarts' => ['Oom restarts', $stats['oom_restarts']],
+            'hash_restarts' => ['Hash restarts', $stats['hash_restarts']],
+            'manual_restarts' => ['Manual restarts', $stats['manual_restarts']],
+            'hits' => ['Hits', $stats['hits']],
+            'misses' => ['Misses', $stats['misses']],
+            'blacklist_misses' => ['Blacklist misses', $stats['blacklist_misses']],
+            'blacklist_miss_ratio' => ['Blacklist misses (%)', $stats['blacklist_miss_ratio'], fn ($percentage) => "{$percentage}%"],
+            'opcache_hit_rate' => ['Opcache hit rate', $stats['opcache_hit_rate']],
         ];
     }
 }

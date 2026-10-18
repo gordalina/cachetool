@@ -25,6 +25,7 @@ class ApcuSmaInfoCommand extends AbstractCommand
         $this
             ->setName('apcu:sma:info')
             ->setDescription('Show APCu shared memory allocation information')
+            ->addFormatOption()
             ->setHelp('');
     }
 
@@ -37,9 +38,11 @@ class ApcuSmaInfoCommand extends AbstractCommand
 
         $sma = $this->getCacheTool()->apcu_sma_info(true);
 
-        $output->writeln(sprintf("<comment>Segments: <info>%s</info></comment>", $sma['num_seg']));
-        $output->writeln(sprintf("<comment>Segment size: <info>%s</info></comment>", Formatter::bytes($sma['seg_size'])));
-        $output->writeln(sprintf("<comment>Available memory: <info>%s</info></comment>", Formatter::bytes($sma['avail_mem'])));
+        $this->renderRecord($input, $output, [
+            'segments' => ['Segments', $sma['num_seg']],
+            'segment_size' => ['Segment size', $sma['seg_size'], Formatter::bytes(...)],
+            'available_memory' => ['Available memory', $sma['avail_mem'], Formatter::bytes(...)],
+        ]);
 
         return 0;
     }

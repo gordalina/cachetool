@@ -31,6 +31,15 @@ class Formatter
     }
 
     /**
+     * @param  mixed $value
+     * @return string
+     */
+    public static function bool($value)
+    {
+        return $value ? 'Yes' : 'No';
+    }
+
+    /**
      * @param  mixed  $date
      * @param  string $format
      * @return string

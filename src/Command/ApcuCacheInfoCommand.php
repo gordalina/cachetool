@@ -12,7 +12,6 @@
 namespace CacheTool\Command;
 
 use CacheTool\Util\Formatter;
-use Symfony\Component\Console\Helper\Table;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
@@ -44,6 +43,7 @@ class ApcuCacheInfoCommand extends AbstractCommand
         $this
             ->setName('apcu:cache:info')
             ->setDescription('Shows APCu user & system cache information')
+            ->addFormatOption()
             ->setHelp('');
     }
 
@@ -62,10 +62,7 @@ class ApcuCacheInfoCommand extends AbstractCommand
             throw new \RuntimeException("Could not fetch info from APCu");
         }
 
-        $table = new Table($output);
-        $table->setHeaders(['Name', 'Info']);
-        $table->setRows($this->getRows($info));
-        $table->render();
+        $this->renderRecord($input, $output, $this->getFields($info));
 
         return 0;
     }
@@ -74,22 +71,22 @@ class ApcuCacheInfoCommand extends AbstractCommand
      * @param  array $info
      * @return array
      */
-    protected function getRows($info)
+    protected function getFields($info)
     {
         // missing: cache_list, deleted_list, slot_distribution
         return [
-            ['Slots', $info['num_slots']],
-            ['TTL', $info['ttl']],
-            ['Hits', number_format($info['num_hits'])],
-            ['Misses', number_format($info['num_misses'])],
-            ['Inserts', number_format($info['num_inserts'])],
-            ['Expunges', number_format($info['expunges'])],
-            ['Start time', Formatter::date($info['start_time'], 'U')],
-            ['Memory size', Formatter::bytes($info['mem_size'])],
-            ['Entries', number_format($info['num_entries'])],
-            ['File upload progress', ini_get('apcu.rfc1867') ? 'Yes' : 'No'],
-            ['Memory type', $info['memory_type']],
-            ['Locking type', $info['locking_type'] ?? 'Not Supported'],
+            'slots' => ['Slots', $info['num_slots']],
+            'ttl' => ['TTL', $info['ttl']],
+            'hits' => ['Hits', $info['num_hits'], number_format(...)],
+            'misses' => ['Misses', $info['num_misses'], number_format(...)],
+            'inserts' => ['Inserts', $info['num_inserts'], number_format(...)],
+            'expunges' => ['Expunges', $info['expunges'], number_format(...)],
+            'start_time' => ['Start time', $info['start_time'], fn ($time) => Formatter::date($time, 'U')],
+            'memory_size' => ['Memory size', $info['mem_size'], Formatter::bytes(...)],
+            'entries' => ['Entries', $info['num_entries'], number_format(...)],
+            'file_upload_progress' => ['File upload progress', (bool) ini_get('apcu.rfc1867'), Formatter::bool(...)],
+            'memory_type' => ['Memory type', $info['memory_type']],
+            'locking_type' => ['Locking type', $info['locking_type'] ?? null, fn ($type) => $type ?? 'Not Supported'],
         ];
     }
 
